@@ -90,9 +90,15 @@
     miniRoot = document.createElement("div");
     miniRoot.className = `azimut-mini-player${collapsed ? " is-collapsed" : ""}`;
     miniRoot.innerHTML = `
+      <div class="mini-collapsed" aria-label="Мини-плеер">
+        <button class="mini-half mini-half-play" type="button" data-player="play" aria-label="Воспроизвести или поставить на паузу">▶</button>
+        <button class="mini-half mini-half-expand" type="button" data-player="collapse" aria-label="Развернуть аудиоплеер" aria-expanded="${!collapsed}">⌃</button>
+      </div>
       <div class="mini-row">
-        <button class="player-btn" type="button" data-player="play" aria-label="Воспроизвести или поставить на паузу">▶</button>
-        <div class="mini-track" data-player-title></div>
+        <div class="mini-title">
+          <span>Плейлист Азимут</span>
+          <strong class="mini-track" data-player-title></strong>
+        </div>
         ${controlsMarkup(true)}
       </div>
       <div class="mini-expanded">
@@ -113,6 +119,11 @@
     roots().forEach((root) => {
       root.querySelectorAll("[data-player-title]").forEach((item) => item.textContent = tracks[index].title);
       root.querySelectorAll('[data-player="play"]').forEach((item) => item.textContent = audio.paused ? "▶" : "Ⅱ");
+      root.querySelectorAll('[data-player="collapse"]').forEach((item) => {
+        item.setAttribute("aria-expanded", String(!collapsed));
+        if (item.classList.contains("mini-half-expand")) item.textContent = "⌃";
+        else item.textContent = collapsed ? "⌃" : "⌄";
+      });
       root.querySelectorAll("[data-player-volume]").forEach((item) => item.value = audio.volume);
       root.querySelectorAll("[data-player-current]").forEach((item) => item.textContent = formatTime(audio.currentTime));
       root.querySelectorAll("[data-player-duration]").forEach((item) => item.textContent = formatTime(audio.duration));

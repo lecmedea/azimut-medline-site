@@ -34,27 +34,34 @@
     items.forEach((item) => {
       const link = $(".nav-link", item);
       const button = $(".mobile-nav-accordion", item);
+      let closeTimer;
 
-      item.addEventListener("mouseenter", () => {
-        if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
-          closeDropdowns(item);
-          setDropdown(item, true);
-        }
-      });
+      const openDesktop = () => {
+        if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+        clearTimeout(closeTimer);
+        closeDropdowns(item);
+        setDropdown(item, true);
+      };
 
-      item.addEventListener("mouseleave", () => {
-        if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
-          setDropdown(item, false);
-        }
-      });
+      const scheduleCloseDesktop = () => {
+        if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+        clearTimeout(closeTimer);
+        closeTimer = setTimeout(() => setDropdown(item, false), 450);
+      };
+
+      item.addEventListener("mouseenter", openDesktop);
+      item.addEventListener("mouseleave", scheduleCloseDesktop);
 
       item.addEventListener("focusin", () => {
+        clearTimeout(closeTimer);
         closeDropdowns(item);
         setDropdown(item, true);
       });
 
       item.addEventListener("focusout", (event) => {
-        if (!item.contains(event.relatedTarget)) setDropdown(item, false);
+        if (!item.contains(event.relatedTarget)) {
+          closeTimer = setTimeout(() => setDropdown(item, false), 180);
+        }
       });
 
       if (button) {
