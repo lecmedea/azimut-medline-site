@@ -1,0 +1,360 @@
+@media (max-width: 1180px) {
+  .header-inner {
+    grid-template-columns: 1fr auto;
+    width: min(1180px, calc(100% - 40px));
+  }
+
+  .nav-toggle {
+    display: block;
+    justify-self: end;
+  }
+
+  .main-nav,
+  .header-actions {
+    display: none;
+  }
+
+  body.nav-open .main-nav,
+  body.nav-open .header-actions {
+    display: flex;
+  }
+
+  body.nav-open .header-inner {
+    align-items: start;
+  }
+
+  body.nav-open .main-nav {
+    grid-column: 1 / -1;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    max-height: calc(100vh - 190px);
+    overflow: auto;
+    padding: 10px 0;
+  }
+
+  .nav-item {
+    display: grid;
+    grid-template-columns: 1fr 44px;
+    align-items: center;
+    border: 1px solid rgba(219, 232, 232, 0.78);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  .nav-link {
+    min-height: 48px;
+    padding: 12px 14px;
+  }
+
+  .nav-link::after {
+    left: 14px;
+    right: 14px;
+  }
+
+  .nav-link .nav-arrow {
+    display: none;
+  }
+
+  .mobile-nav-accordion {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    justify-self: center;
+    border: 1px solid rgba(30, 154, 145, 0.22);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--teal);
+    cursor: pointer;
+  }
+
+  .mobile-nav-accordion .nav-arrow {
+    transition: transform var(--azimut-transition);
+  }
+
+  .nav-item.dropdown-open .mobile-nav-accordion .nav-arrow {
+    transform: rotate(180deg);
+  }
+
+  .nav-dropdown {
+    position: static;
+    grid-column: 1 / -1;
+    min-width: 0;
+    max-width: none;
+    max-height: 0;
+    padding: 0 10px;
+    border: 0;
+    border-top: 1px solid transparent;
+    border-radius: 0 0 12px 12px;
+    background: rgba(247, 251, 251, 0.96);
+    box-shadow: none;
+    opacity: 1;
+    overflow: hidden;
+    pointer-events: none;
+    transform: none;
+    visibility: visible;
+    transition: max-height 300ms cubic-bezier(.2,.8,.2,1), padding 300ms cubic-bezier(.2,.8,.2,1), border-color 300ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  .nav-item:hover > .nav-dropdown,
+  .nav-item:focus-within > .nav-dropdown {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    pointer-events: none;
+    transform: none;
+  }
+
+  .nav-item.dropdown-open > .nav-dropdown {
+    max-height: 520px;
+    padding-top: 8px;
+    padding-bottom: 10px;
+    border-color: rgba(219, 232, 232, 0.9);
+    pointer-events: auto;
+  }
+
+  .nav-dropdown-link:hover,
+  .nav-dropdown-link:focus-visible {
+    transform: none;
+  }
+
+  body.nav-open .header-actions {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+    padding-bottom: 18px;
+  }
+
+  .benefits-grid,
+  .four-col,
+  .help-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-dropdown,
+  .nav-link,
+  .nav-link::after,
+  .nav-arrow,
+  .mobile-nav-accordion .nav-arrow,
+  .nav-dropdown-link {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 860px) {
+  html,
+  body {
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+    touch-action: pan-y;
+  }
+
+  input[type="range"] {
+    touch-action: auto;
+  }
+
+  .container,
+  .narrow {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .hero {
+    padding-top: 48px;
+  }
+
+  .hero-grid,
+  .split-layout,
+  .reverse,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    max-width: 100%;
+  }
+
+  .hero-visual {
+    min-height: 360px;
+    order: -1;
+    transform: translateY(0);
+  }
+
+  .hero-content h1 {
+    font-size: 41px;
+  }
+
+  .card-grid,
+  .feature-grid,
+  .two-col,
+  .three-col,
+  .four-col,
+  .price-mini-grid,
+  .price-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-row {
+    grid-template-columns: 1fr;
+  }
+
+  .help-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .steps li {
+    min-height: 124px;
+  }
+
+  .price-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading,
+  .hero-content,
+  .page-hero .container,
+  .info-card,
+  .feature-card,
+  .service-group-card,
+  .price-card,
+  .doctor-card,
+  .article-card,
+  .review-card,
+  .contact-form,
+  .hero-form {
+    text-align: left;
+  }
+
+  .mini-card:hover,
+  .info-card:hover,
+  .feature-card:hover,
+  .article-card:hover,
+  .doctor-card:hover,
+  .service-group-card:hover,
+  .price-card:hover,
+  .price-mini-card:hover,
+  .review-card:hover,
+  .photo-frame:hover {
+    transform: none;
+  }
+
+  .doctor-card:hover .doctor-photo,
+  .article-card:hover .article-image,
+  .photo-frame:hover img,
+  .photo-stack:hover img {
+    transform: none;
+  }
+
+  .azimut-mini-player:hover,
+  .azimut-player:hover,
+  .player-btn:hover {
+    transform: none;
+  }
+
+  .footer-subscribe {
+    max-width: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .header-inner {
+    min-height: 72px;
+    gap: 12px;
+  }
+
+  .brand {
+    grid-template-columns: 42px 1fr;
+    font-size: 13px;
+  }
+
+  .brand img {
+    width: 42px;
+    height: 42px;
+  }
+
+  h1,
+  .hero-content h1 {
+    font-size: 34px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  .section,
+  .page-hero {
+    padding: 54px 0;
+  }
+
+  .hero-actions,
+  .button {
+    width: 100%;
+  }
+
+  .hero-form {
+    grid-template-columns: 1fr;
+  }
+
+  .button {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .help-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .compass-card {
+    width: min(310px, 88vw);
+  }
+
+  .compass-core {
+    width: 96px;
+    height: 96px;
+    font-size: 14px;
+  }
+
+  .mini-card,
+  .info-card,
+  .feature-card,
+  .article-card,
+  .doctor-card,
+  .service-card,
+  .review-card,
+  .info-panel,
+  .contact-form {
+    padding: 18px;
+  }
+
+  .doctor-photo {
+    width: calc(100% + 36px);
+    height: 210px;
+    margin: -18px -18px 18px;
+    background-size: 200% 200%;
+  }
+
+  .article-image {
+    width: calc(100% + 36px);
+    height: 160px;
+    margin: -18px -18px 18px;
+  }
+
+  .photo-frame img,
+  .photo-stack img {
+    height: 260px;
+    object-fit: cover;
+    object-position: center;
+  }
+}
