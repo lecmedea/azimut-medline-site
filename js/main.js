@@ -111,15 +111,59 @@
   function initCompass() {
     const compass = $(".compass-card");
     if (!compass) return;
+    let usesDeviceOrientation = false;
+
+    const setNeedleAngle = (angle, mode) => {
+      compass.style.setProperty("--needle-angle", `${angle}deg`);
+      compass.classList.toggle("is-orientation", mode === "orientation");
+      compass.classList.toggle("is-following", mode === "pointer");
+    };
+
+    const normalizeHeading = (event) => {
+      if (typeof event.webkitCompassHeading === "number") {
+        return event.webkitCompassHeading;
+      }
+      if (typeof event.alpha === "number") {
+        return 360 - event.alpha;
+      }
+      return null;
+    };
+
+    const updateNorthNeedle = (event) => {
+      const heading = normalizeHeading(event);
+      if (heading === null) return;
+      usesDeviceOrientation = true;
+      const screenAngle = screen.orientation?.angle || window.orientation || 0;
+      setNeedleAngle(-heading - 90 + screenAngle, "orientation");
+    };
+
+    const startOrientationCompass = async () => {
+      if (!window.DeviceOrientationEvent) return;
+      if (typeof DeviceOrientationEvent.requestPermission === "function") {
+        try {
+          const permission = await DeviceOrientationEvent.requestPermission();
+          if (permission !== "granted") return;
+        } catch {
+          return;
+        }
+      }
+      window.addEventListener("deviceorientation", updateNorthNeedle, true);
+    };
+
     const updateNeedle = (event) => {
+      if (usesDeviceOrientation) return;
       const rect = compass.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
       const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * 180 / Math.PI;
-      compass.style.setProperty("--needle-angle", `${angle}deg`);
-      compass.classList.add("is-following");
+      setNeedleAngle(angle, "pointer");
     };
-    window.addEventListener("mousemove", updateNeedle);
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      window.addEventListener("mousemove", updateNeedle);
+    }
+    startOrientationCompass();
+    compass.addEventListener("click", startOrientationCompass);
+    compass.addEventListener("touchstart", startOrientationCompass, { passive: true, once: true });
   }
 
   function renderServices(target) {

@@ -55,10 +55,19 @@
     }
   }
 
+  function playButtonMarkup(extraClass = "") {
+    return `
+      <button class="player-btn player-play-btn ${extraClass}" type="button" data-player="play" aria-label="Воспроизвести">
+        <span class="player-icon player-icon-play" aria-hidden="true"></span>
+        <span class="player-icon player-icon-pause" aria-hidden="true"></span>
+      </button>
+    `;
+  }
+
   function controlsMarkup(compact = false) {
     return `
       <button class="player-btn" type="button" data-player="prev" aria-label="Предыдущий трек">‹</button>
-      <button class="player-btn" type="button" data-player="play" aria-label="Воспроизвести или поставить на паузу">▶</button>
+      ${playButtonMarkup()}
       <button class="player-btn" type="button" data-player="next" aria-label="Следующий трек">›</button>
       ${compact ? `<button class="player-btn" type="button" data-player="collapse" aria-label="Свернуть или развернуть плеер">⌄</button>` : ""}
     `;
@@ -91,7 +100,7 @@
     miniRoot.className = `azimut-mini-player${collapsed ? " is-collapsed" : ""}`;
     miniRoot.innerHTML = `
       <div class="mini-collapsed" aria-label="Мини-плеер">
-        <button class="mini-half mini-half-play" type="button" data-player="play" aria-label="Воспроизвести или поставить на паузу">▶</button>
+        ${playButtonMarkup("mini-half mini-half-play")}
         <button class="mini-half mini-half-expand" type="button" data-player="collapse" aria-label="Развернуть аудиоплеер" aria-expanded="${!collapsed}">⌃</button>
       </div>
       <div class="mini-row">
@@ -118,7 +127,10 @@
   function renderState() {
     roots().forEach((root) => {
       root.querySelectorAll("[data-player-title]").forEach((item) => item.textContent = tracks[index].title);
-      root.querySelectorAll('[data-player="play"]').forEach((item) => item.textContent = audio.paused ? "▶" : "Ⅱ");
+      root.querySelectorAll('[data-player="play"]').forEach((item) => {
+        item.classList.toggle("is-playing", !audio.paused);
+        item.setAttribute("aria-label", audio.paused ? "Воспроизвести" : "Пауза");
+      });
       root.querySelectorAll('[data-player="collapse"]').forEach((item) => {
         item.setAttribute("aria-expanded", String(!collapsed));
         if (item.classList.contains("mini-half-expand")) item.textContent = "⌃";

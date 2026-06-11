@@ -487,16 +487,18 @@ button:focus-visible {
 
 .compass-card {
   position: relative;
-  --needle-angle: -34deg;
+  --needle-angle: -90deg;
   width: min(420px, 86vw);
   aspect-ratio: 1;
-  border: 1px solid rgba(22, 78, 122, 0.12);
+  border: 1px solid rgba(22, 78, 122, 0.16);
   border-radius: 50%;
   background:
-    linear-gradient(90deg, transparent 49.7%, rgba(22, 78, 122, 0.12) 50%, transparent 50.3%),
-    linear-gradient(0deg, transparent 49.7%, rgba(22, 78, 122, 0.12) 50%, transparent 50.3%),
-    radial-gradient(circle, #fff 0 36%, #eef8f6 37% 68%, #f4ead9 69% 100%);
-  box-shadow: var(--shadow);
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.96) 0 28%, transparent 29%),
+    repeating-conic-gradient(from -1deg, rgba(14, 54, 88, 0.22) 0 2deg, transparent 2deg 15deg),
+    conic-gradient(from -45deg, rgba(30, 154, 145, 0.10), rgba(22, 78, 122, 0.10), rgba(241, 230, 212, 0.42), rgba(30, 154, 145, 0.10)),
+    radial-gradient(circle, #fff 0 35%, #eef8f6 36% 68%, #f4ead9 69% 100%);
+  box-shadow: var(--shadow), inset 0 0 0 10px rgba(255, 255, 255, 0.58), inset 0 0 34px rgba(22, 78, 122, 0.08);
+  overflow: hidden;
 }
 
 .compass-card::before,
@@ -513,43 +515,107 @@ button:focus-visible {
   border-color: rgba(22, 78, 122, 0.16);
 }
 
+.compass-ring {
+  position: absolute;
+  inset: 18px;
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(22, 78, 122, 0.16) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(22, 78, 122, 0.16) 50%, transparent 50.2%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), inset 0 0 0 16px rgba(255, 255, 255, 0.22);
+  pointer-events: none;
+}
+
+.compass-mark {
+  position: absolute;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--blue-dark);
+  font-size: 13px;
+  font-weight: 950;
+  box-shadow: 0 8px 20px rgba(22, 78, 122, 0.10);
+}
+
+.mark-n {
+  left: 50%;
+  top: 18px;
+  color: var(--teal);
+  transform: translateX(-50%);
+}
+
+.mark-e {
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mark-s {
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+}
+
+.mark-w {
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .route-line {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 38%;
-  height: 5px;
+  width: 39%;
+  height: 10px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--teal), var(--blue));
+  background: linear-gradient(90deg, rgba(30, 154, 145, 0.18), var(--teal) 34%, var(--blue) 100%);
   transform: rotate(var(--needle-angle));
   transform-origin: left center;
-  transition: transform 0.12s ease-out;
-  box-shadow: 0 8px 18px rgba(30, 154, 145, 0.25);
+  transition: transform 0.16s ease-out;
+  box-shadow: 0 10px 22px rgba(30, 154, 145, 0.26);
   z-index: 4;
 }
 
 .route-line::before {
   content: "";
   position: absolute;
-  left: -13px;
+  left: -16px;
   top: 50%;
-  width: 18px;
-  height: 18px;
-  border: 4px solid var(--blue);
+  width: 26px;
+  height: 26px;
+  border: 5px solid var(--blue);
   border-radius: 50%;
   background: #fff;
   transform: translateY(-50%);
+  box-shadow: 0 6px 18px rgba(22, 78, 122, 0.18);
 }
 
 .route-line::after {
   content: "";
   position: absolute;
-  right: -11px;
+  right: -17px;
   top: 50%;
-  border-top: 9px solid transparent;
-  border-bottom: 9px solid transparent;
-  border-left: 15px solid var(--blue);
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 26px solid var(--blue);
   transform: translateY(-50%);
+  filter: drop-shadow(0 8px 12px rgba(22, 78, 122, 0.18));
+}
+
+.compass-card.is-following .route-line,
+.compass-card.is-orientation .route-line {
+  box-shadow: 0 12px 26px rgba(30, 154, 145, 0.34);
+}
+
+.compass-card.is-orientation .mark-n {
+  background: var(--teal);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(30, 154, 145, 0.24);
 }
 
 .compass-point {
@@ -576,10 +642,13 @@ button:focus-visible {
   place-items: center;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: var(--paper);
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.82) 42%, rgba(232, 246, 242, 0.96) 100%);
   color: var(--blue-dark);
   font-weight: 900;
-  box-shadow: 0 12px 34px rgba(22, 78, 122, 0.15);
+  border: 1px solid rgba(30, 154, 145, 0.18);
+  box-shadow: 0 16px 38px rgba(22, 78, 122, 0.16), inset 0 0 0 8px rgba(255, 255, 255, 0.55);
+  z-index: 6;
 }
 
 .section {

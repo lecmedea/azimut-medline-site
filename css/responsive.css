@@ -325,6 +325,58 @@
     width: min(310px, 88vw);
   }
 
+  .compass-card::before {
+    inset: 32px;
+  }
+
+  .compass-card::after {
+    inset: 68px;
+  }
+
+  .compass-ring {
+    inset: 14px;
+  }
+
+  .compass-mark {
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+  }
+
+  .mark-n {
+    top: 12px;
+  }
+
+  .mark-e {
+    right: 12px;
+  }
+
+  .mark-s {
+    bottom: 12px;
+  }
+
+  .mark-w {
+    left: 12px;
+  }
+
+  .route-line {
+    height: 8px;
+  }
+
+  .route-line::before {
+    left: -13px;
+    width: 22px;
+    height: 22px;
+    border-width: 4px;
+  }
+
+  .route-line::after {
+    right: -14px;
+    border-top-width: 12px;
+    border-bottom-width: 12px;
+    border-left-width: 22px;
+  }
+
   .compass-core {
     width: 96px;
     height: 96px;
