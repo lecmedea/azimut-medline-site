@@ -56,31 +56,31 @@ const SYSTEM_PROMPT = `
 
 const MENU = {
   main: {
-    title: "Главное меню",
+    title: "🧭 Главное меню",
     text: [
-      "Выберите, чем я могу помочь:",
+      "✨ Выберите, чем я могу помочь:",
       "",
       "Можно задать вопрос AI-консультанту, посмотреть услуги и цены или сразу оформить заявку."
     ].join("\n"),
     rows: [
-      [{ text: "Оформить заявку", data: "lead:start" }],
-      [{ text: "AI-консультант 24/7", data: "ai:start" }],
+      [{ text: "📝 Оформить заявку", data: "lead:start" }],
+      [{ text: "🤖 AI-консультант 24/7", data: "ai:start" }],
       [
-        { text: "Услуги", data: "menu:services" },
-        { text: "Цены", data: "menu:prices" }
+        { text: "🩺 Услуги", data: "menu:services" },
+        { text: "💳 Цены", data: "menu:prices" }
       ],
       [
-        { text: "Врачи и направления", data: "menu:doctors" },
-        { text: "Контакты", data: "menu:contacts" }
+        { text: "👩‍⚕️ Врачи и направления", data: "menu:doctors" },
+        { text: "📞 Контакты", data: "menu:contacts" }
       ],
       [
-        { text: "Оплата", data: "menu:payment" },
-        { text: "Сайт клиники", url: CLINIC_SITE_URL }
+        { text: "💰 Оплата", data: "menu:payment" },
+        { text: "🌐 Сайт клиники", url: CLINIC_SITE_URL }
       ]
     ]
   },
   services: {
-    title: "Услуги",
+    title: "🩺 Услуги",
     text: [
       "Основные направления помощи:",
       "",
@@ -90,13 +90,13 @@ const MENU = {
       "• Форматы: клиника, дом, онлайн, телефон."
     ].join("\n"),
     rows: [
-      [{ text: "Оформить заявку", data: "lead:start" }],
-      [{ text: "Спросить AI по услугам", data: "ai:start_services" }],
-      [{ text: "Назад", data: "menu:main" }]
+      [{ text: "📝 Оформить заявку", data: "lead:start" }],
+      [{ text: "🤖 Спросить AI по услугам", data: "ai:start_services" }],
+      [{ text: "⬅️ Назад", data: "menu:main" }]
     ]
   },
   prices: {
-    title: "Цены",
+    title: "💳 Цены",
     text: [
       "Ориентиры по стоимости:",
       "",
@@ -109,12 +109,12 @@ const MENU = {
       "Точная стоимость зависит от ситуации и формата помощи."
     ].join("\n"),
     rows: [
-      [{ text: "Уточнить стоимость", data: "lead:start" }],
-      [{ text: "Назад", data: "menu:main" }]
+      [{ text: "💬 Уточнить стоимость", data: "lead:start" }],
+      [{ text: "⬅️ Назад", data: "menu:main" }]
     ]
   },
   doctors: {
-    title: "Врачи и направления",
+    title: "👩‍⚕️ Врачи и направления",
     text: [
       "В центре доступны направления:",
       "",
@@ -127,13 +127,13 @@ const MENU = {
       "Если сложно выбрать специалиста, оставьте заявку: администратор поможет подобрать формат."
     ].join("\n"),
     rows: [
-      [{ text: "Подобрать специалиста", data: "lead:start" }],
-      [{ text: "Спросить AI", data: "ai:start_doctors" }],
-      [{ text: "Назад", data: "menu:main" }]
+      [{ text: "🧑‍⚕️ Подобрать специалиста", data: "lead:start" }],
+      [{ text: "🤖 Спросить AI", data: "ai:start_doctors" }],
+      [{ text: "⬅️ Назад", data: "menu:main" }]
     ]
   },
   contacts: {
-    title: "Контакты",
+    title: "📞 Контакты",
     text: [
       `${CLINIC_NAME} работает круглосуточно.`,
       "",
@@ -143,27 +143,37 @@ const MENU = {
       "Если ситуация острая и есть риск для жизни, звоните 112 или 103."
     ].join("\n"),
     rows: [
-      [{ text: "Оформить заявку", data: "lead:start" }],
-      [{ text: "Показать телефон", data: "contact:phone" }],
-      [{ text: "Назад", data: "menu:main" }]
+      [{ text: "📝 Оформить заявку", data: "lead:start" }],
+      [{ text: "☎️ Показать телефон", data: "contact:phone" }],
+      [{ text: "⬅️ Назад", data: "menu:main" }]
     ]
   },
   payment: {
-    title: "Оплата",
+    title: "💰 Оплата",
     text: [
       "Оплату и точный порядок расчёта лучше уточнить при записи.",
       "",
       "Администратор подскажет доступные способы оплаты для выбранного формата помощи."
     ].join("\n"),
     rows: [
-      [{ text: "Уточнить оплату", data: "lead:start" }],
-      [{ text: "Назад", data: "menu:main" }]
+      [{ text: "💬 Уточнить оплату", data: "lead:start" }],
+      [{ text: "⬅️ Назад", data: "menu:main" }]
     ]
   }
 };
 
 function inlineKeyboard(rows) {
-  return { inline_keyboard: rows };
+  return {
+    inline_keyboard: rows.map((row) =>
+      row.map((button) => {
+        if (button.data && !button.callback_data) {
+          const { data, ...rest } = button;
+          return { ...rest, callback_data: data };
+        }
+        return button;
+      })
+    )
+  };
 }
 
 function getChatId(update) {
@@ -221,13 +231,13 @@ async function showMenu(chatId, menuName = "main", messageId = null) {
 async function sendWelcome(chatId, firstName = "") {
   const nameLine = firstName ? `${firstName}, здравствуйте!` : "Здравствуйте!";
   const caption = [
-    `<b>${escapeHtml(nameLine)}</b>`,
+    `👋 <b>${escapeHtml(nameLine)}</b>`,
     "",
-    `Я онлайн-консультант центра <b>${escapeHtml(CLINIC_NAME)}</b>. Помогу сориентироваться по услугам, стоимости, форматам помощи и записи.`,
+    `🧭 Я онлайн-консультант центра <b>${escapeHtml(CLINIC_NAME)}</b>. Помогу сориентироваться по услугам, стоимости, форматам помощи и записи.`,
     "",
-    "Если вопрос срочный и есть риск для жизни или безопасности, пожалуйста, звоните <b>112</b> или <b>103</b>.",
+    "🚨 Если вопрос срочный и есть риск для жизни или безопасности, пожалуйста, звоните <b>112</b> или <b>103</b>.",
     "",
-    "Выберите действие ниже."
+    "👇 Выберите действие ниже."
   ].join("\n");
 
   try {
@@ -247,28 +257,28 @@ async function sendWelcome(chatId, firstName = "") {
 async function startLead(chatId) {
   userState.set(chatId, { mode: "lead", step: "name", lead: {} });
   await sendMessage(chatId, [
-    "<b>Оформление заявки</b>",
+    "📝 <b>Оформление заявки</b>",
     "",
     "Я задам несколько коротких вопросов, чтобы администратор мог связаться с вами и подобрать формат помощи.",
     "",
-    "Как к вам обращаться?"
+    "👤 Как к вам обращаться?"
   ].join("\n"), {
-    reply_markup: inlineKeyboard([[{ text: "Назад", data: "menu:main" }]])
+    reply_markup: inlineKeyboard([[{ text: "⬅️ Назад", data: "menu:main" }]])
   });
 }
 
 async function startAi(chatId, contextHint = "") {
   userState.set(chatId, { mode: "ai", history: [], contextHint });
   await sendMessage(chatId, [
-    "<b>AI-консультант 24/7</b>",
+    "🤖 <b>AI-консультант 24/7</b>",
     "",
-    "Напишите вопрос в свободной форме. Я помогу сориентироваться по услугам и следующему шагу.",
+    "💬 Напишите вопрос в свободной форме. Я помогу сориентироваться по услугам и следующему шагу.",
     "",
-    "Я не ставлю диагнозы и не назначаю лечение. При срочной угрозе жизни звоните 112 или 103."
+    "⚕️ Я не ставлю диагнозы и не назначаю лечение. При срочной угрозе жизни звоните 112 или 103."
   ].join("\n"), {
     reply_markup: inlineKeyboard([
-      [{ text: "Оформить заявку", data: "lead:start" }],
-      [{ text: "Назад", data: "menu:main" }]
+      [{ text: "📝 Оформить заявку", data: "lead:start" }],
+      [{ text: "⬅️ Назад", data: "menu:main" }]
     ])
   });
 }
@@ -279,31 +289,31 @@ async function handleLeadMessage(chatId, text) {
 
   const value = text.trim();
   if (!value) {
-    await sendMessage(chatId, "Пожалуйста, напишите ответ текстом или нажмите «Назад».");
+    await sendMessage(chatId, "✍️ Пожалуйста, напишите ответ текстом или нажмите «Назад».");
     return true;
   }
 
   if (state.step === "name") {
     state.lead.name = value;
     state.step = "phone";
-    await sendMessage(chatId, "Спасибо. Укажите, пожалуйста, номер телефона для связи.");
+    await sendMessage(chatId, "Спасибо. ☎️ Укажите, пожалуйста, номер телефона для связи.");
     return true;
   }
 
   if (state.step === "phone") {
     state.lead.phone = value;
     state.step = "service";
-    await sendMessage(chatId, "Какой формат или направление вас интересует?", {
+    await sendMessage(chatId, "🧭 Какой формат или направление вас интересует?", {
       reply_markup: inlineKeyboard([
         [
-          { text: "Наркология", data: "lead_service:Наркология" },
-          { text: "Психиатрия", data: "lead_service:Психиатрия" }
+          { text: "🧬 Наркология", data: "lead_service:Наркология" },
+          { text: "🧠 Психиатрия", data: "lead_service:Психиатрия" }
         ],
         [
-          { text: "Психология", data: "lead_service:Психология" },
-          { text: "Не знаю", data: "lead_service:Нужна помощь с выбором" }
+          { text: "💬 Психология", data: "lead_service:Психология" },
+          { text: "🧭 Не знаю", data: "lead_service:Нужна помощь с выбором" }
         ],
-        [{ text: "Назад", data: "menu:main" }]
+        [{ text: "⬅️ Назад", data: "menu:main" }]
       ])
     });
     return true;
@@ -315,7 +325,7 @@ async function handleLeadMessage(chatId, text) {
     return true;
   }
 
-  await sendMessage(chatId, "Выберите вариант кнопкой ниже или нажмите «Назад».");
+  await sendMessage(chatId, "👇 Выберите вариант кнопкой ниже или нажмите «Назад».");
   return true;
 }
 
@@ -326,26 +336,26 @@ async function finishLead(chatId, lead) {
 
   if (ADMIN_CHAT_ID) {
     await sendMessage(ADMIN_CHAT_ID, [
-      "<b>Новая заявка из Telegram-бота</b>",
+      "🆕 <b>Новая заявка из Telegram-бота</b>",
       "",
-      `Имя: ${escapeHtml(lead.name || "не указано")}`,
-      `Телефон: ${escapeHtml(lead.phone || "не указан")}`,
-      `Направление: ${escapeHtml(lead.service || "не указано")}`,
-      `Комментарий: ${escapeHtml(lead.comment || "не указан")}`
+      `👤 Имя: ${escapeHtml(lead.name || "не указано")}`,
+      `☎️ Телефон: ${escapeHtml(lead.phone || "не указан")}`,
+      `🧭 Направление: ${escapeHtml(lead.service || "не указано")}`,
+      `📝 Комментарий: ${escapeHtml(lead.comment || "не указан")}`
     ].join("\n"));
   }
 
   userState.delete(chatId);
   await sendMessage(chatId, [
-    "<b>Заявка принята.</b>",
+    "✅ <b>Заявка принята.</b>",
     "",
     "Спасибо. Администратор свяжется с вами, уточнит детали и подскажет ближайший подходящий формат помощи.",
     "",
-    `Если нужно быстрее, можно позвонить: ${escapeHtml(CLINIC_PHONE)}`
+    `☎️ Если нужно быстрее, можно позвонить: ${escapeHtml(CLINIC_PHONE)}`
   ].join("\n"), {
     reply_markup: inlineKeyboard([
-      [{ text: "Главное меню", data: "menu:main" }],
-      [{ text: "Задать вопрос AI", data: "ai:start" }]
+      [{ text: "🧭 Главное меню", data: "menu:main" }],
+      [{ text: "🤖 Задать вопрос AI", data: "ai:start" }]
     ])
   });
 }
@@ -359,13 +369,13 @@ async function handleAiMessage(chatId, text) {
 
   if (!DEEPSEEK_API_KEY) {
     await sendMessage(chatId, [
-      "AI-консультант пока не настроен: не задан `DEEPSEEK_API_KEY`.",
+      "⚙️ AI-консультант пока не настроен: не задан `DEEPSEEK_API_KEY`.",
       "",
-      "Можно оформить заявку, и администратор свяжется с вами."
+      "📝 Можно оформить заявку, и администратор свяжется с вами."
     ].join("\n"), {
       reply_markup: inlineKeyboard([
-        [{ text: "Оформить заявку", data: "lead:start" }],
-        [{ text: "Назад", data: "menu:main" }]
+        [{ text: "📝 Оформить заявку", data: "lead:start" }],
+        [{ text: "⬅️ Назад", data: "menu:main" }]
       ])
     });
     return true;
@@ -375,7 +385,10 @@ async function handleAiMessage(chatId, text) {
 
   const reply = await askDeepSeek(message, state.history, state.contextHint).catch((error) => {
     console.error("DeepSeek request failed:", error);
-    return "Сейчас AI-консультант временно недоступен. Оставьте заявку или позвоните в клинику, и мы поможем сориентироваться.";
+    if (error.status === 402 || /Insufficient Balance/i.test(error.message)) {
+      return "⚠️ AI-консультант сейчас не отвечает из-за ограничения DeepSeek API. Вы можете оформить заявку — администратор свяжется с вами и поможет сориентироваться.";
+    }
+    return "⚠️ Сейчас AI-консультант временно недоступен. Оставьте заявку или позвоните в клинику, и мы поможем сориентироваться.";
   });
 
   state.history.push({ role: "user", content: message });
@@ -384,8 +397,8 @@ async function handleAiMessage(chatId, text) {
 
   await sendMessage(chatId, escapeHtml(reply), {
     reply_markup: inlineKeyboard([
-      [{ text: "Оформить заявку", data: "lead:start" }],
-      [{ text: "Назад", data: "menu:main" }]
+      [{ text: "📝 Оформить заявку", data: "lead:start" }],
+      [{ text: "⬅️ Назад", data: "menu:main" }]
     ])
   });
   return true;
@@ -414,7 +427,11 @@ async function askDeepSeek(message, history, contextHint) {
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(`DeepSeek HTTP ${response.status}: ${JSON.stringify(data)}`);
+    const message = data.error?.message || JSON.stringify(data);
+    const error = new Error(`DeepSeek HTTP ${response.status}: ${message}`);
+    error.status = response.status;
+    error.deepseek = data.error || data;
+    throw error;
   }
 
   return data.choices?.[0]?.message?.content?.trim() || "Не получилось сформировать ответ. Попробуйте переформулировать вопрос.";
@@ -448,7 +465,7 @@ async function handleCallback(update) {
     }
     state.lead.service = data.slice("lead_service:".length);
     state.step = "comment";
-    await sendMessage(chatId, "Кратко опишите ситуацию или удобное время для звонка.");
+    await sendMessage(chatId, "📝 Кратко опишите ситуацию или удобное время для звонка.");
     return true;
   }
 
@@ -458,8 +475,8 @@ async function handleCallback(update) {
   }
 
   if (data === "contact:phone") {
-    await sendMessage(chatId, `Телефон клиники: ${escapeHtml(CLINIC_PHONE)}\n\nМы на связи круглосуточно.`, {
-      reply_markup: inlineKeyboard([[{ text: "Назад", data: "menu:contacts" }]])
+    await sendMessage(chatId, `☎️ Телефон клиники: ${escapeHtml(CLINIC_PHONE)}\n\n🌙 Мы на связи круглосуточно.`, {
+      reply_markup: inlineKeyboard([[{ text: "⬅️ Назад", data: "menu:contacts" }]])
     });
     return true;
   }
@@ -481,7 +498,7 @@ async function handleMessage(update) {
   }
 
   if (text === "/help") {
-    await sendMessage(chatId, "Напишите вопрос, нажмите «Оформить заявку» или откройте /menu.");
+    await sendMessage(chatId, "💬 Напишите вопрос, нажмите «Оформить заявку» или откройте /menu.");
     return;
   }
 
@@ -510,7 +527,7 @@ async function poll() {
           console.error("Update handling failed:", error);
           const chatId = getChatId(update);
           if (chatId) {
-            await sendMessage(chatId, "Произошла техническая ошибка. Попробуйте ещё раз или позвоните в клинику.");
+            await sendMessage(chatId, "⚠️ Произошла техническая ошибка. Попробуйте ещё раз или позвоните в клинику.");
           }
         }
       }
