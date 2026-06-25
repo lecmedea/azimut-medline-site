@@ -111,6 +111,7 @@
             <p>Помогу сориентироваться по услугам, ценам и записи</p>
           </div>
           <div class="ai-chatbot-actions">
+            <button class="ai-chatbot-collapse" type="button" data-chat-close>Свернуть</button>
             <button class="ai-chatbot-icon-btn" type="button" data-chat-clear aria-label="Очистить историю">↺</button>
             <button class="ai-chatbot-icon-btn" type="button" data-chat-close aria-label="Закрыть чат">×</button>
           </div>
@@ -244,7 +245,9 @@
     renderMessages(root);
 
     root.querySelector(".ai-chatbot-toggle").addEventListener("click", () => setOpen(root, !isOpen));
-    root.querySelector("[data-chat-close]").addEventListener("click", () => setOpen(root, false));
+    root.querySelectorAll("[data-chat-close]").forEach((button) => {
+      button.addEventListener("click", () => setOpen(root, false));
+    });
     root.querySelector("[data-chat-clear]").addEventListener("click", () => {
       history = [];
       saveHistory();

@@ -211,8 +211,14 @@
   .three-col,
   .four-col,
   .price-mini-grid,
-  .price-card-grid {
+  .price-card-grid,
+  .test-grid,
+  .order-panel {
     grid-template-columns: 1fr;
+  }
+
+  .order-actions {
+    justify-content: flex-start;
   }
 
   .service-row {
@@ -281,9 +287,6 @@
     transform: none;
   }
 
-  .footer-subscribe {
-    max-width: none;
-  }
 }
 
 @media (max-width: 560px) {
@@ -495,6 +498,28 @@
     gap: 10px;
     padding: 14px;
     font-size: 16px;
+  }
+
+  .order-panel {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .order-actions,
+  .order-actions .button {
+    width: 100%;
+  }
+
+  .test-card {
+    padding: 18px;
+  }
+
+  .test-question {
+    padding: 14px;
+  }
+
+  .test-options {
+    grid-template-columns: 1fr;
   }
 
   .premium-accordion summary::after {
