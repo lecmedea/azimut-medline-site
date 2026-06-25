@@ -430,10 +430,9 @@ button:focus-visible {
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 74px 0 54px;
+  padding: 70px 0 64px;
   background:
-    radial-gradient(circle at 78% 18%, rgba(30, 154, 145, 0.18), transparent 28%),
-    linear-gradient(135deg, #f7fbfb 0%, #edf7f8 58%, #f7f1e8 100%);
+    linear-gradient(180deg, #ffffff 0%, #f7f9fb 100%);
 }
 
 .hero-grid,
@@ -1283,40 +1282,47 @@ button:focus-visible {
 
 .hero-headline-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 420px);
-  gap: clamp(36px, 5vw, 72px);
+  grid-template-columns: minmax(0, 720px) minmax(260px, 330px);
+  gap: clamp(48px, 7vw, 92px);
   align-items: start;
+  justify-content: space-between;
 }
 
 .hero-copy {
-  padding-top: 18px;
+  position: relative;
+  z-index: 2;
+  padding-top: 10px;
 }
 
 .hero-copy h1 {
-  max-width: 780px;
-  font-size: clamp(48px, 5.6vw, 76px);
+  max-width: 690px;
+  font-size: clamp(46px, 5vw, 68px);
   font-weight: 850;
 }
 
 .hero-copy .lead {
-  max-width: 720px;
+  max-width: 650px;
 }
 
 .hero-visual {
+  position: relative;
+  z-index: 1;
   min-height: auto;
   align-self: start;
   transform: none;
+  justify-items: center;
 }
 
 .hero-visual .compass-card {
-  width: min(360px, 100%);
+  width: min(286px, 100%);
   margin: 0 auto;
 }
 
 .hero-proof-list {
   display: grid;
   gap: 10px;
-  margin: 24px 0 0;
+  width: min(300px, 100%);
+  margin: 22px auto 0;
   padding: 0;
   list-style: none;
 }
@@ -1485,12 +1491,12 @@ button:focus-visible {
 .appointment-dialog {
   position: relative;
   z-index: 1;
-  width: min(760px, 100%);
-  max-height: min(760px, calc(100dvh - 44px));
+  width: min(560px, 100%);
+  max-height: min(720px, calc(100dvh - 44px));
   overflow: auto;
   display: grid;
-  gap: 20px;
-  padding: clamp(22px, 4vw, 34px);
+  gap: 18px;
+  padding: clamp(24px, 4vw, 34px);
   border: 1px solid rgba(227, 231, 235, 0.95);
   border-radius: 18px;
   background: #fff;
@@ -1521,7 +1527,15 @@ button:focus-visible {
 }
 
 .appointment-dialog .contact-form {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
   box-shadow: none;
+}
+
+.appointment-dialog .contact-form button {
+  width: 100%;
 }
 
 .header-appointment {

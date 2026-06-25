@@ -139,6 +139,19 @@
   .steps {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .hero-headline-row {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 280px);
+    gap: 42px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(42px, 5vw, 58px);
+  }
+
+  .hero-visual .compass-card {
+    width: min(250px, 100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -183,8 +196,8 @@
   }
 
   .hero-visual {
-    min-height: 360px;
-    order: -1;
+    min-height: auto;
+    order: 0;
     transform: translateY(0);
   }
 
@@ -456,7 +469,7 @@
   }
 
   .appointment-dialog {
-    width: min(100%, 620px);
+    width: min(100%, 540px);
   }
 }
 
