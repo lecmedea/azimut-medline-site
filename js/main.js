@@ -111,6 +111,7 @@
   function initCompass() {
     const compass = $(".compass-card");
     if (!compass) return;
+    if (matchMedia("(max-width: 860px)").matches) return;
     let usesDeviceOrientation = false;
 
     const setNeedleAngle = (angle, mode) => {
@@ -164,6 +165,59 @@
     startOrientationCompass();
     compass.addEventListener("click", startOrientationCompass);
     compass.addEventListener("touchstart", startOrientationCompass, { passive: true, once: true });
+  }
+
+  function initModals() {
+    const openers = $$("[data-modal-open]");
+    if (!openers.length) return;
+    let lastFocus = null;
+
+    const closeModal = (modal) => {
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      lastFocus?.focus();
+    };
+
+    const openModal = (modal) => {
+      lastFocus = document.activeElement;
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      setTimeout(() => $("input, textarea, select, button", modal)?.focus(), 80);
+    };
+
+    openers.forEach((opener) => {
+      opener.addEventListener("click", () => {
+        const modal = $(`[data-modal="${opener.dataset.modalOpen}"]`);
+        if (modal) openModal(modal);
+      });
+    });
+
+    $$("[data-modal]").forEach((modal) => {
+      $$("[data-modal-close]", modal).forEach((closer) => {
+        closer.addEventListener("click", () => closeModal(modal));
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      const modal = $("[data-modal].is-open");
+      if (modal) closeModal(modal);
+    });
+  }
+
+  function initAccordions() {
+    $$("[data-accordion-group]").forEach((group) => {
+      $$("details", group).forEach((details) => {
+        details.addEventListener("toggle", () => {
+          if (!details.open) return;
+          $$("details", group).forEach((item) => {
+            if (item !== details) item.open = false;
+          });
+        });
+      });
+    });
   }
 
   function renderServices(target) {
@@ -314,6 +368,8 @@
     initMenu();
     initDropdowns();
     initCompass();
+    initModals();
+    initAccordions();
     renderBlocks();
   });
 })();

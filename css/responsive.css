@@ -415,3 +415,97 @@
     object-position: center;
   }
 }
+
+@media (max-width: 860px) {
+  .hero-headline-row,
+  .accordion-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    padding-top: 0;
+  }
+
+  .hero-visual {
+    order: 0;
+    min-height: auto;
+  }
+
+  .hero-visual .compass-card {
+    display: none;
+  }
+
+  .hero-proof-list {
+    margin-top: 8px;
+  }
+
+  .premium-accordion summary {
+    min-height: 64px;
+    padding: 16px;
+    font-size: 18px;
+  }
+
+  .accordion-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .accordion-content {
+    padding: 0 16px 18px;
+  }
+
+  .appointment-dialog {
+    width: min(100%, 620px);
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding: 42px 0 44px;
+  }
+
+  .hero-copy h1 {
+    font-size: 34px;
+  }
+
+  .hero-copy .lead {
+    font-size: 17px;
+  }
+
+  .premium-accordion-section .section-heading {
+    margin-bottom: 22px;
+  }
+
+  .premium-accordion summary {
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .premium-accordion summary::after {
+    width: 30px;
+    height: 30px;
+  }
+
+  .price-note-card {
+    padding: 14px;
+  }
+
+  .appointment-modal {
+    padding: 12px;
+    align-items: end;
+  }
+
+  .appointment-dialog {
+    max-height: calc(100dvh - 24px);
+    padding: 22px 16px 16px;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .modal-close {
+    right: 12px;
+    top: 12px;
+  }
+}

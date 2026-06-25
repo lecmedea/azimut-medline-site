@@ -94,91 +94,144 @@
       <div class="header-actions">
         <span class="round-badge">Круглосуточно</span>
         <a class="phone-link" href="tel:+79052727703">+7(905)27-277-03</a>
-        <a class="button button-primary" href="#appointment">Записаться</a>
+        <button class="button button-primary header-appointment" type="button" data-modal-open="appointment-modal">Записаться</button>
       </div>
     </div>
   </header>
 
   <main>
     <section class="hero clarity-section">
-      <div class="container hero-grid">
+      <div class="container hero-grid hero-grid-premium">
         <div class="hero-content">
           <p class="eyebrow">Анонимная медицинская помощь 24/7</p>
-          <h1>Когда внутри шторм — мы помогаем вернуть курс</h1>
-          <p class="lead">Психиатрия, наркология, психологическое тестирование и психологическая помощь для взрослых и подростков с 14 лет. Анонимно, комплексно, безопасно — в клинике, на дому и дистанционно.</p>
-          <p class="support-text">Азимут Медлайн — точка опоры, когда важно не терпеть, а обратиться за помощью.</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#appointment">Записаться на консультацию</a>
-            <a class="button button-secondary" href="tel:+79052727703">Позвонить круглосуточно</a>
-            <a class="button button-ghost" href="https://t.me/" target="_blank" rel="noreferrer">Написать в Telegram</a>
-          </div>
-          <div class="badge-list">
-            <span>Анонимно</span>
-            <span>Круглосуточно</span>
-            <span>Москва, МО и соседние области</span>
-            <span>Онлайн-консультации по РФ</span>
-            <span>Для взрослых и подростков с 14 лет</span>
-          </div>
-          <form class="hero-form" data-form="lead" data-form-name="hero">
-            <label>Имя<input name="name" type="text" placeholder="Ваше имя" required></label>
-            <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required></label>
-            <label>Формат помощи<select name="service_type"><option>в клинике</option><option>на дому</option><option>онлайн</option><option>по телефону</option></select></label>
-            <label>Направление<select name="direction"><option>психиатрия</option><option>психология</option><option>наркология</option><option>психологическое тестирование</option><option>другое</option></select></label>
-            <label class="wide-field">Комментарий<textarea name="message" rows="3" placeholder="Коротко опишите ситуацию"></textarea></label>
-            <label class="checkbox wide-field"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
-            <button class="button button-primary" type="submit">Получить консультацию специалиста</button>
-            <p class="form-status" aria-live="polite"></p>
-          </form>
-        </div>
-        <div class="hero-visual" aria-label="Абстрактная карта курса и опоры">
-          <div class="compass-card">
-            <div class="compass-ring" aria-hidden="true"></div>
-            <div class="compass-mark mark-n">N</div>
-            <div class="compass-mark mark-e">E</div>
-            <div class="compass-mark mark-s">S</div>
-            <div class="compass-mark mark-w">W</div>
-            <div class="route-line"></div>
-            <div class="compass-point point-a"></div>
-            <div class="compass-point point-b"></div>
-            <div class="compass-point point-c"></div>
-            <div class="compass-core">Азимут</div>
+          <div class="hero-headline-row">
+            <div class="hero-copy">
+              <h1>Когда внутри шторм — мы помогаем вернуть курс</h1>
+              <p class="lead">Психиатрия, наркология, психологическое тестирование и психологическая помощь для взрослых и подростков с 14 лет. Анонимно, комплексно, безопасно — в клинике, на дому и дистанционно.</p>
+              <p class="support-text">Азимут Медлайн — точка опоры, когда важно не терпеть, а обратиться за помощью.</p>
+              <div class="hero-actions">
+                <button class="button button-primary" type="button" data-modal-open="appointment-modal">Записаться на консультацию</button>
+                <a class="button button-secondary" href="tel:+79052727703">Позвонить круглосуточно</a>
+              </div>
+            </div>
+            <div class="hero-visual" aria-label="Абстрактная карта курса и опоры">
+              <div class="compass-card">
+                <div class="compass-ring" aria-hidden="true"></div>
+                <div class="compass-mark mark-n">N</div>
+                <div class="compass-mark mark-e">E</div>
+                <div class="compass-mark mark-s">S</div>
+                <div class="compass-mark mark-w">W</div>
+                <div class="route-line"></div>
+                <div class="compass-point point-a"></div>
+                <div class="compass-point point-b"></div>
+                <div class="compass-point point-c"></div>
+                <div class="compass-core">Азимут</div>
+              </div>
+              <ul class="hero-proof-list">
+                <li>Анонимно</li>
+                <li>Круглосуточно</li>
+                <li>Москва, МО и соседние области</li>
+                <li>Онлайн-консультации по РФ</li>
+                <li>Для взрослых и подростков с 14 лет</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section premium-accordion-section">
       <div class="container">
         <div class="section-heading">
-          <p class="eyebrow">С чем мы помогаем</p>
-          <h2>Бережная помощь в состояниях, с которыми не нужно оставаться одному</h2>
-        </div>
-        <div class="card-grid help-grid" data-render="help-topics"></div>
-      </div>
-    </section>
-
-    <section class="section section-soft formats-section">
-      <div class="container">
-        <div class="section-heading">
-          <p class="eyebrow">Форматы помощи</p>
-          <h2>Выберите безопасный и удобный формат обращения</h2>
-        </div>
-        <div class="feature-grid four-col" data-render="formats"></div>
-      </div>
-    </section>
-
-    <section class="section directions-section">
-      <div class="container">
-        <div class="section-heading">
+          <span class="accent-chip">3 направления</span>
           <p class="eyebrow">Клиника работает в 3 направлениях</p>
           <h2>Три направления помощи — один понятный маршрут</h2>
+          <p>Мы смотрим на ситуацию комплексно: учитываем состояние человека, обстоятельства, риски, запрос семьи и подбираем формат помощи, с которого безопаснее начать.</p>
         </div>
-        <div class="feature-grid three-col">
-          <article class="feature-card"><span class="icon-dot">Н</span><h3>Наркология</h3><p>Помощь при запойных состояниях, зависимостях, интоксикации и консультации родственников.</p></article>
-          <article class="feature-card"><span class="icon-dot">Пс</span><h3>Психиатрия</h3><p>Консультации, диагностика состояния и подбор дальнейшего маршрута помощи.</p></article>
-          <article class="feature-card"><span class="icon-dot">П</span><h3>Психология</h3><p>Поддержка при тревоге, выгорании, семейных кризисах и подростковых трудностях.</p></article>
+        <div class="accordion-stack" data-accordion-group>
+          <details class="premium-accordion" open>
+            <summary><span class="accordion-icon">Н</span><span>Наркология</span></summary>
+            <div class="accordion-content">
+              <p>Анонимная помощь при зависимостях, запойных состояниях, интоксикации и поддержка родственников.</p>
+              <div class="accordion-columns">
+                <div>
+                  <h3>С чем помогаем</h3>
+                  <ul class="clean-list">
+                    <li>алкогольная зависимость и запойные состояния;</li>
+                    <li>наркотическое опьянение и ухудшение самочувствия;</li>
+                    <li>консультации родственников;</li>
+                    <li>выезд специалиста на дом.</li>
+                  </ul>
+                </div>
+                <div class="price-note-card">
+                  <h3>Ориентиры по стоимости</h3>
+                  <p>Капельница очищающая — 3 900 ₽</p>
+                  <p>Консультация нарколога на дому — 4 900 ₽</p>
+                  <p>Онлайн-консультация нарколога — 2 900 ₽</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">Пс</span><span>Психиатрия</span></summary>
+            <div class="accordion-content">
+              <p>Консультации и диагностика состояния при тревоге, панических атаках, депрессивных состояниях и кризисах.</p>
+              <div class="accordion-columns">
+                <div>
+                  <h3>С чем помогаем</h3>
+                  <ul class="clean-list">
+                    <li>тревога и панические атаки;</li>
+                    <li>депрессивные состояния;</li>
+                    <li>подбор дальнейшего маршрута помощи;</li>
+                    <li>подростковые трудности с 14 лет.</li>
+                  </ul>
+                </div>
+                <div class="price-note-card">
+                  <h3>Ориентиры по стоимости</h3>
+                  <p>Консультация психиатра на дому — 5 900 ₽</p>
+                  <p>Онлайн-консультация психиатра — 2 900 ₽</p>
+                  <p>Консультация по телефону — бесплатно</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">П</span><span>Психология и тестирование</span></summary>
+            <div class="accordion-content">
+              <p>Психологическая поддержка, тестирование и помощь при эмоциональном напряжении, выгорании, семейных кризисах и подростковых трудностях.</p>
+              <div class="accordion-columns">
+                <div>
+                  <h3>С чем помогаем</h3>
+                  <ul class="clean-list">
+                    <li>эмоциональное выгорание;</li>
+                    <li>семейные кризисы;</li>
+                    <li>психологическое тестирование;</li>
+                    <li>онлайн-помощь и консультации родственников.</li>
+                  </ul>
+                </div>
+                <div class="price-note-card">
+                  <h3>Ориентиры по стоимости</h3>
+                  <p>Консультация психолога на дому — 4 900 ₽</p>
+                  <p>Онлайн-консультация психолога — 2 900 ₽</p>
+                  <p>Психологическое тестирование — по запросу</p>
+                </div>
+              </div>
+            </div>
+          </details>
         </div>
-        <p class="route-summary">Мы смотрим на ситуацию комплексно: учитываем состояние человека, обстоятельства, риски, запрос семьи и подбираем формат помощи, с которого безопаснее начать. Комплексный подход помогает не теряться в ситуации и двигаться по понятному плану.</p>
+        <p class="notice premium-notice">Цены являются предварительными и уточняются администратором. Итоговая стоимость зависит от состояния пациента, адреса, времени обращения и выбранного формата помощи.</p>
+      </div>
+    </section>
+
+    <section class="section specialists-section">
+      <div class="container split-layout">
+        <div>
+          <p class="eyebrow">Наши специалисты</p>
+          <h2>Наши специалисты</h2>
+          <p>Психиатры, психологи, наркологи и специалисты по диагностике состояния. На первичном обращении администратор поможет выбрать подходящее направление.</p>
+          <a class="button button-secondary" href="doctors.html">Смотреть направления</a>
+        </div>
+        <div class="card-grid two-col" data-render="doctors" data-limit="2"></div>
       </div>
     </section>
 
@@ -196,20 +249,53 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section-soft premium-accordion-section">
       <div class="container">
         <div class="section-heading">
-          <p class="eyebrow">Преимущества</p>
-          <h2>Почему пациенты выбирают Азимут Медлайн</h2>
+          <span class="accent-chip">Маршрут</span>
+          <p class="eyebrow">Форматы помощи</p>
+          <h2>Форматы, преимущества и этапы обращения в одном месте</h2>
         </div>
-        <div class="card-grid benefits-grid">
-          <article class="info-card"><h3>Анонимность и конфиденциальность</h3><p>Мы бережно относимся к личной информации и соблюдаем конфиденциальность обращения.</p></article>
-          <article class="info-card"><h3>Круглосуточная связь</h3><p>Обратиться можно в любое время: по телефону, через форму или мессенджер.</p></article>
-          <article class="info-card"><h3>Помощь в разных форматах</h3><p>В клинике, на дому, онлайн или по телефону — подбираем формат под ситуацию.</p></article>
-          <article class="info-card"><h3>Комплексный подход</h3><p>В работе могут участвовать специалисты разных направлений: психиатрия, психология, наркология.</p></article>
-          <article class="info-card"><h3>Комфортная коммуникация</h3><p>Мы объясняем простыми словами и не давим на пациента.</p></article>
-          <article class="info-card"><h3>Документы и условия</h3><p>После согласования здесь будет размещена информация о лицензиях, сертификатах и юридических документах.</p></article>
-          <article class="info-card"><h3>Программы сопровождения</h3><p>В будущем могут быть доступны специальные условия и программы для постоянных пациентов.</p></article>
+        <div class="accordion-stack" data-accordion-group>
+          <details class="premium-accordion" open>
+            <summary><span class="accordion-icon">01</span><span>В клинике</span></summary>
+            <div class="accordion-content"><p>Очная консультация специалиста в спокойной и конфиденциальной обстановке. Подходит для первичной диагностики, психологического тестирования и плановой помощи.</p></div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">02</span><span>На дому</span></summary>
+            <div class="accordion-content"><p>Выезд специалиста на дом по Москве и Московской области, когда пациенту сложно приехать самостоятельно или требуется помощь в привычной обстановке.</p></div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">03</span><span>Дистанционно</span></summary>
+            <div class="accordion-content"><p>Онлайн-консультации по видеосвязи для пациентов из разных регионов РФ. Удобно для повторных встреч, предварительной оценки запроса и сопровождения.</p></div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">04</span><span>По телефону</span></summary>
+            <div class="accordion-content"><p>Краткая первичная консультация помогает сориентироваться, какой специалист и формат обращения могут подойти в вашей ситуации.</p></div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">✓</span><span>Преимущества</span></summary>
+            <div class="accordion-content">
+              <ul class="clean-list">
+                <li>анонимность и конфиденциальность обращения;</li>
+                <li>круглосуточная связь;</li>
+                <li>помощь в разных форматах;</li>
+                <li>комплексный подход без давления на пациента.</li>
+              </ul>
+            </div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">→</span><span>Как проходит обращение</span></summary>
+            <div class="accordion-content">
+              <ol class="clean-list ordered">
+                <li>Вы оставляете заявку или звоните.</li>
+                <li>Администратор уточняет ситуацию.</li>
+                <li>Мы подбираем подходящий формат помощи.</li>
+                <li>Вы проходите консультацию или диагностику.</li>
+                <li>Специалист предлагает дальнейший план.</li>
+              </ol>
+            </div>
+          </details>
         </div>
       </div>
     </section>
@@ -226,124 +312,42 @@
             <li>подбираем формат помощи;</li>
             <li>объясняем дальнейшие шаги простым языком.</li>
           </ul>
-          <a class="button button-primary" href="#appointment">Обсудить ситуацию</a>
+          <a class="button button-primary" href="tel:+79052727703">Обсудить ситуацию</a>
         </div>
         <div class="photo-frame"><img src="assets/images/clinic-interior.png" alt="Спокойное пространство консультации"></div>
       </div>
     </section>
-
-    <section class="section section-soft">
-      <div class="container">
-        <div class="section-heading">
-          <p class="eyebrow">Как проходит обращение</p>
-          <h2>Понятный путь без лишней сложности</h2>
-        </div>
-        <ol class="steps">
-          <li><span>1</span>Вы оставляете заявку или звоните.</li>
-          <li><span>2</span>Администратор уточняет ситуацию.</li>
-          <li><span>3</span>Мы подбираем подходящий формат помощи.</li>
-          <li><span>4</span>Вы проходите консультацию или диагностику.</li>
-          <li><span>5</span>Специалист предлагает дальнейший план.</li>
-        </ol>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container split-layout">
-        <div>
-          <p class="eyebrow">Наши специалисты</p>
-          <h2>Наши специалисты</h2>
-          <p>Психиатры, психологи, наркологи и специалисты по диагностике состояния. На первичном обращении администратор поможет выбрать подходящее направление.</p>
-          <a class="button button-secondary" href="doctors.html">Смотреть направления</a>
-        </div>
-        <div class="card-grid two-col" data-render="doctors" data-limit="2"></div>
-      </div>
-    </section>
-
-    <section class="section section-soft">
-      <div class="container split-layout reverse">
-        <div class="reviews-list" data-render="reviews"></div>
-        <div>
-          <p class="eyebrow">Отзывы</p>
-          <h2>Доверие складывается из спокойной коммуникации</h2>
-          <p>Мы бережно относимся к состоянию человека и не публикуем личные данные пациентов. Отзывы приведены в обезличенном формате.</p>
-          <a class="button button-secondary" href="about.html#reviews">Отзывы пациентов</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-heading">
-          <p class="eyebrow">Популярные цены</p>
-          <h2>Ориентиры по стоимости</h2>
-          <p class="notice">Цены указаны для презентационной версии сайта и подлежат подтверждению после согласования с клиникой.</p>
-        </div>
-        <div class="price-mini-grid" data-render="popular-prices"></div>
-      </div>
-    </section>
-
-    <section class="section section-soft audio-section">
-      <div class="container split-layout">
-        <div>
-          <p class="eyebrow">Аудиоподдержка</p>
-          <h2>Спокойный звуковой фон для возвращения ясности</h2>
-          <p>Музыка не запускается автоматически. Вы можете включить трек вручную и свернуть плеер, если хотите продолжить смотреть сайт.</p>
-        </div>
-        <div data-audio-player="full"></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-heading">
-          <p class="eyebrow">Блог</p>
-          <h2>Материалы простым языком о ментальном здоровье</h2>
-        </div>
-        <div class="card-grid" data-render="articles" data-limit="3"></div>
-      </div>
-    </section>
-
-    <section class="section cta-band" id="appointment">
-      <div class="container split-layout">
-        <div>
-          <p class="eyebrow">Первичная запись</p>
-          <h2>Не обязательно справляться одному</h2>
-          <p>Оставьте заявку — мы бережно уточним ситуацию и подскажем, с какого формата помощи лучше начать: консультация, выезд на дом, онлайн-встреча или очный приём.</p>
-          <div class="hero-actions">
-            <a class="button button-secondary" href="tel:+79052727703">Позвонить круглосуточно</a>
-            <a class="button button-ghost" href="https://t.me/" target="_blank" rel="noreferrer">Написать в Telegram</a>
-          </div>
-        </div>
-        <form class="contact-form" data-form="lead" data-form-name="main_cta">
-          <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required></label>
-          <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required></label>
-          <label>Формат помощи<select name="service_type"><option>в клинике</option><option>на дому</option><option>онлайн</option><option>по телефону</option></select></label>
-          <label>Направление<select name="direction"><option>психиатрия</option><option>психология</option><option>наркология</option><option>психологическое тестирование</option><option>другое</option></select></label>
-          <label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label>
-          <label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
-          <button class="button button-primary" type="submit">Получить консультацию специалиста</button>
-          <a class="button button-secondary" href="services.html#home">Вызвать специалиста на дом</a>
-          <p class="form-status" aria-live="polite"></p>
-        </form>
-      </div>
-    </section>
   </main>
+
+  <div class="appointment-modal" data-modal="appointment-modal" aria-hidden="true">
+    <div class="appointment-modal-backdrop" data-modal-close></div>
+    <section class="appointment-dialog" role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title">
+      <button class="modal-close" type="button" data-modal-close aria-label="Закрыть окно записи">×</button>
+      <div>
+        <p class="eyebrow">Первичная запись</p>
+        <h2 id="appointment-modal-title">Записаться на консультацию</h2>
+        <p>Оставьте контакты — администратор бережно уточнит ситуацию и подскажет, с какого формата помощи лучше начать.</p>
+      </div>
+      <form class="contact-form" data-form="lead" data-form-name="main_modal">
+        <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required></label>
+        <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required></label>
+        <label>Формат помощи<select name="service_type"><option>в клинике</option><option>на дому</option><option>онлайн</option><option>по телефону</option></select></label>
+        <label>Направление<select name="direction"><option>психиатрия</option><option>психология</option><option>наркология</option><option>психологическое тестирование</option><option>другое</option></select></label>
+        <label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label>
+        <label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
+        <button class="button button-primary" type="submit">Получить консультацию специалиста</button>
+        <p class="form-status" aria-live="polite"></p>
+      </form>
+    </section>
+  </div>
 
   <footer class="site-footer"><div class="container footer-grid"><div><img class="footer-logo" src="assets/azimut_logo.jpg" alt="Азимут Медлайн"><p>Центр ментального здоровья Азимут Медлайн. Помощь доступна круглосуточно.</p><p>ООО «Рога и Копыта»<br>ИНН: 7700000000<br>ОГРН: 1207700000000<br>Юридический адрес: 109000, г. Москва, ул. Примерная, д. 1, офис 1</p><p>Телефон: <a href="tel:+79052727703">+7(905)27-277-03</a><br>E-mail: <a href="mailto:info@azimutmedline.ru">info@azimutmedline.ru</a></p><p class="footer-note">Данные юридического лица указаны временно для презентационной версии сайта и подлежат замене после согласования с клиентом.</p><form class="footer-subscribe" data-form="lead" data-form-name="footer_subscribe"><h3>Полезные материалы о ментальном здоровье</h3><p>Подпишитесь, чтобы получать статьи, памятки и новости центра.</p><input name="phone" type="tel" placeholder="Телефон" required><input name="email" type="email" placeholder="Email" required><label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label><button class="button button-secondary" type="submit">Подписаться</button><p class="form-status" aria-live="polite"></p></form></div><div><h3>Документы</h3><a href="privacy.html">Политика конфиденциальности</a><a href="personal-data.html">Согласие на обработку персональных данных</a><a href="terms.html">Пользовательское соглашение</a><a href="about.html">Лицензии и сертификаты</a><a href="contacts.html">Контакты</a></div><div><h3>Разделы</h3><a href="services.html">Услуги</a><a href="prices.html">Стоимость</a><a href="doctors.html">Направления и врачи</a><a href="blog.html">Блог</a><a href="partnership.html">Сотрудничество</a><a href="tel:+79052727703">Позвонить круглосуточно</a></div></div></footer>
 
-  <script src="data/services.js"></script>
   <script src="data/doctors.js"></script>
-  <script src="data/articles.js"></script>
-  <script src="data/reviews.js"></script>
   <script src="js/bitrix24-placeholder.js"></script>
-  <script src="js/payment-placeholder.js"></script>
-  <script src="data/audio.js"></script>
   <script src="js/main.js"></script>
   <script src="js/azimut-animations.js"></script>
-  <script src="js/audio-player.js"></script>
   <script src="js/forms.js"></script>
-  <script src="js/blog.js"></script>
   <script src="js/chatbot.js"></script>
 </body>
 </html>
