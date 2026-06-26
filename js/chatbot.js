@@ -14,7 +14,7 @@
     ["Позвонить", "Подскажите, как позвонить в центр"]
   ];
 
-  const fallbackGreeting = "Здравствуйте. Я AI-помощник Азимут Медлайн. Могу подсказать по услугам, ценам, форматам помощи и записи. В экстренной ситуации звоните 112 или 103.";
+  const fallbackGreeting = "Здравствуйте. Я AI-помощник Азимут Клиник. Могу подсказать по услугам, ценам, форматам помощи и записи. В экстренной ситуации звоните 112 или 103.";
 
   let history = loadHistory();
   let isOpen = false;
@@ -96,7 +96,7 @@
   function createWidget() {
     const widget = document.createElement("section");
     widget.className = "ai-chatbot";
-    widget.setAttribute("aria-label", "AI-помощник Азимут Медлайн");
+    widget.setAttribute("aria-label", "AI-помощник Азимут Клиник");
     widget.innerHTML = `
       <button class="ai-chatbot-toggle" type="button" aria-expanded="false" aria-controls="ai-chatbot-panel" title="AI-помощник">
         <span class="ai-chatbot-toggle-icon" aria-hidden="true"></span>
@@ -107,7 +107,7 @@
         <header class="ai-chatbot-header">
           <div>
             <p class="ai-chatbot-kicker">Круглосуточно</p>
-            <h2 id="ai-chatbot-title">AI-помощник Азимут Медлайн</h2>
+            <h2 id="ai-chatbot-title">AI-помощник Азимут Клиник</h2>
             <p>Помогу сориентироваться по услугам, ценам и записи</p>
           </div>
           <div class="ai-chatbot-actions">

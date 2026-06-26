@@ -1,8 +1,8 @@
 {
-  "name": "azimut-medline-telegram-bot",
+  "name": "azimut-clinic-telegram-bot",
   "version": "1.0.0",
   "private": true,
-  "description": "Telegram online consultant bot for Azimut Medline clinic.",
+  "description": "Telegram online consultant bot for Azimut Clinic.",
   "type": "commonjs",
   "scripts": {
     "start": "node bot.js",

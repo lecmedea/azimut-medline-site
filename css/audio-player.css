@@ -84,7 +84,7 @@
   flex: 0 0 auto;
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(30, 154, 145, 0.24);
+  border: 1px solid rgba(173, 195, 149, 0.24);
   border-radius: 50%;
   background: rgba(255,255,255,0.8);
   color: var(--blue-dark);
@@ -105,7 +105,7 @@
   inset: 8px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.82);
-  box-shadow: inset 0 0 0 1px rgba(30, 154, 145, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(173, 195, 149, 0.12);
 }
 
 .player-icon {
@@ -154,7 +154,7 @@
 .player-btn:hover {
   transform: scale(1.08);
   background: var(--teal-soft);
-  box-shadow: 0 12px 28px rgba(30, 154, 145, 0.18);
+  box-shadow: 0 12px 28px rgba(173, 195, 149, 0.18);
 }
 
 .player-progress {
@@ -268,7 +268,7 @@
 }
 
 .mini-half + .mini-half {
-  border-left: 1px solid rgba(30, 154, 145, 0.22);
+  border-left: 1px solid rgba(173, 195, 149, 0.22);
 }
 
 .mini-half:hover,

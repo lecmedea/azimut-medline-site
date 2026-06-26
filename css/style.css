@@ -1,23 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
+
 :root {
-  --bg: #fbfcfd;
+  --bg: #fbf7ee;
   --paper: #ffffff;
-  --soft: #f4f7f8;
-  --soft-2: #f7f8fa;
-  --ink: #151922;
-  --muted: #5f6875;
-  --line: #e3e7eb;
-  --blue: #164e7a;
-  --blue-dark: #0e3658;
-  --teal: #1e9a91;
-  --teal-soft: #dff3f0;
-  --sand: #f1e6d4;
-  --emc-accent: #666675;
-  --shadow: 0 18px 45px rgba(21, 31, 45, 0.09);
+  --soft: #f4eee2;
+  --soft-2: #faf5ec;
+  --ink: #25211d;
+  --muted: #6f665b;
+  --line: #e8decf;
+  --blue: #a98652;
+  --blue-dark: #4a4036;
+  --teal: #ADC395;
+  --teal-soft: #eef4e7;
+  --sand: #ead8bd;
+  --emc-accent: #7c6a55;
+  --gold: #b99059;
+  --onyx: #5f5b66;
+  --shadow: 0 18px 45px rgba(62, 46, 26, 0.10);
   --radius: 8px;
-  --azimut-glow: rgba(115, 180, 150, 0.28);
-  --azimut-glow-strong: rgba(105, 190, 170, 0.42);
-  --azimut-card-shadow: 0 18px 45px rgba(40, 70, 65, 0.12);
-  --azimut-card-shadow-hover: 0 28px 75px rgba(50, 110, 95, 0.20);
+  --azimut-glow: rgba(173, 195, 149, 0.28);
+  --azimut-glow-strong: rgba(185, 144, 89, 0.34);
+  --azimut-card-shadow: 0 18px 45px rgba(74, 58, 35, 0.11);
+  --azimut-card-shadow-hover: 0 28px 75px rgba(80, 60, 34, 0.18);
   --azimut-transition: 320ms cubic-bezier(.2,.8,.2,1);
 }
 
@@ -39,8 +43,9 @@ body {
   overflow-x: hidden;
   background: var(--bg);
   color: var(--ink);
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-family: Montserrat, Inter, "Segoe UI", Arial, sans-serif;
   font-size: 16px;
+  font-weight: 500;
   line-height: 1.6;
 }
 
@@ -51,8 +56,8 @@ body::before {
   z-index: -3;
   pointer-events: none;
   background:
-    linear-gradient(115deg, transparent 0 18%, rgba(30, 154, 145, 0.055) 18% 30%, transparent 30% 58%, rgba(102, 102, 117, 0.045) 58% 70%, transparent 70% 100%),
-    linear-gradient(180deg, #ffffff 0%, #f7f9fb 48%, #fbfcfd 100%);
+    linear-gradient(115deg, transparent 0 18%, rgba(173, 195, 149, 0.12) 18% 30%, transparent 30% 58%, rgba(185, 144, 89, 0.08) 58% 70%, transparent 70% 100%),
+    linear-gradient(180deg, #fffaf1 0%, #f7efe1 48%, #fbf7ee 100%);
   background-size: 100% 118vh, 100% 100%;
   background-attachment: fixed;
 }
@@ -123,12 +128,10 @@ select {
 }
 
 .site-header {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 50;
-  background: rgba(247, 251, 251, 0.92);
-  border-bottom: 1px solid rgba(219, 232, 232, 0.8);
-  backdrop-filter: blur(18px);
+  background: rgba(255, 250, 241, 0.96);
+  border-bottom: 1px solid rgba(232, 222, 207, 0.9);
   overflow-x: clip;
 }
 
@@ -199,7 +202,7 @@ section {
   bottom: 5px;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(30, 154, 145, 0.72), transparent);
+  background: linear-gradient(90deg, transparent, rgba(173, 195, 149, 0.72), transparent);
   opacity: 0;
   transform: scaleX(0.42);
   transition: opacity var(--azimut-transition), transform var(--azimut-transition);
@@ -279,8 +282,8 @@ section {
   opacity: 0.24;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 38% 62%, transparent 0 50%, rgba(30, 154, 145, 0.46) 51% 52%, transparent 53%),
-    radial-gradient(ellipse at 60% 42%, rgba(30, 154, 145, 0.42) 0 8%, transparent 9%),
+    radial-gradient(ellipse at 38% 62%, transparent 0 50%, rgba(173, 195, 149, 0.46) 51% 52%, transparent 53%),
+    radial-gradient(ellipse at 60% 42%, rgba(173, 195, 149, 0.42) 0 8%, transparent 9%),
     radial-gradient(ellipse at 78% 58%, rgba(22, 78, 122, 0.22) 0 7%, transparent 8%);
 }
 
@@ -314,7 +317,7 @@ section {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(30, 154, 145, 0.72);
+  background: rgba(173, 195, 149, 0.72);
   transform: translateY(-50%) scale(0.7);
   opacity: 0.55;
   transition: opacity var(--azimut-transition), transform var(--azimut-transition);
@@ -382,7 +385,7 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 button:focus-visible {
-  outline: 3px solid rgba(30, 154, 145, 0.34);
+  outline: 3px solid rgba(173, 195, 149, 0.34);
   outline-offset: 3px;
 }
 
@@ -495,14 +498,14 @@ button:focus-visible {
   --needle-angle: -90deg;
   width: min(420px, 86vw);
   aspect-ratio: 1;
-  border: 1px solid rgba(22, 78, 122, 0.16);
+  border: 1px solid rgba(185, 144, 89, 0.34);
   border-radius: 50%;
   background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.96) 0 28%, transparent 29%),
-    repeating-conic-gradient(from -1deg, rgba(14, 54, 88, 0.22) 0 2deg, transparent 2deg 15deg),
-    conic-gradient(from -45deg, rgba(30, 154, 145, 0.10), rgba(22, 78, 122, 0.10), rgba(241, 230, 212, 0.42), rgba(30, 154, 145, 0.10)),
-    radial-gradient(circle, #fff 0 35%, #eef8f6 36% 68%, #f4ead9 69% 100%);
-  box-shadow: var(--shadow), inset 0 0 0 10px rgba(255, 255, 255, 0.58), inset 0 0 34px rgba(22, 78, 122, 0.08);
+    radial-gradient(circle at 50% 50%, rgba(255, 252, 246, 0.96) 0 25%, transparent 26%),
+    conic-gradient(from 45deg, transparent 0 10deg, rgba(185, 144, 89, 0.22) 10deg 20deg, transparent 20deg 45deg, rgba(92, 82, 70, 0.12) 45deg 55deg, transparent 55deg 90deg),
+    repeating-conic-gradient(from -1deg, rgba(185, 144, 89, 0.24) 0 2deg, transparent 2deg 15deg),
+    radial-gradient(circle, #fffaf2 0 34%, #f3ead9 35% 68%, #dec7a5 69% 100%);
+  box-shadow: var(--shadow), inset 0 0 0 10px rgba(255, 252, 246, 0.64), inset 0 0 34px rgba(113, 88, 54, 0.12);
   overflow: hidden;
 }
 
@@ -512,12 +515,12 @@ button:focus-visible {
   position: absolute;
   inset: 42px;
   border-radius: 50%;
-  border: 1px solid rgba(30, 154, 145, 0.22);
+  border: 1px solid rgba(185, 144, 89, 0.32);
 }
 
 .compass-card::after {
   inset: 88px;
-  border-color: rgba(22, 78, 122, 0.16);
+  border-color: rgba(92, 82, 70, 0.18);
 }
 
 .compass-ring {
@@ -525,8 +528,10 @@ button:focus-visible {
   inset: 18px;
   border-radius: 50%;
   background:
-    linear-gradient(90deg, transparent 49.8%, rgba(22, 78, 122, 0.16) 50%, transparent 50.2%),
-    linear-gradient(0deg, transparent 49.8%, rgba(22, 78, 122, 0.16) 50%, transparent 50.2%);
+    linear-gradient(90deg, transparent 49.8%, rgba(185, 144, 89, 0.24) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(185, 144, 89, 0.24) 50%, transparent 50.2%),
+    linear-gradient(45deg, transparent 49.8%, rgba(92, 82, 70, 0.12) 50%, transparent 50.2%),
+    linear-gradient(-45deg, transparent 49.8%, rgba(92, 82, 70, 0.12) 50%, transparent 50.2%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), inset 0 0 0 16px rgba(255, 255, 255, 0.22);
   pointer-events: none;
 }
@@ -542,8 +547,8 @@ button:focus-visible {
   background: rgba(255, 255, 255, 0.74);
   color: var(--blue-dark);
   font-size: 13px;
-  font-weight: 950;
-  box-shadow: 0 8px 20px rgba(22, 78, 122, 0.10);
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(113, 88, 54, 0.12);
 }
 
 .mark-n {
@@ -576,13 +581,13 @@ button:focus-visible {
   left: 50%;
   top: 50%;
   width: 39%;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(30, 154, 145, 0.18), var(--teal) 34%, var(--blue) 100%);
+  height: 12px;
+  border-radius: 999px 3px 3px 999px;
+  background: linear-gradient(90deg, rgba(255, 250, 241, 0.92), var(--gold) 42%, #6e5940 100%);
   transform: rotate(var(--needle-angle));
   transform-origin: left center;
   transition: transform 0.16s ease-out;
-  box-shadow: 0 10px 22px rgba(30, 154, 145, 0.26);
+  box-shadow: 0 10px 22px rgba(185, 144, 89, 0.28);
   z-index: 4;
 }
 
@@ -593,11 +598,11 @@ button:focus-visible {
   top: 50%;
   width: 26px;
   height: 26px;
-  border: 5px solid var(--blue);
+  border: 5px solid var(--gold);
   border-radius: 50%;
   background: #fff;
   transform: translateY(-50%);
-  box-shadow: 0 6px 18px rgba(22, 78, 122, 0.18);
+  box-shadow: 0 6px 18px rgba(113, 88, 54, 0.18);
 }
 
 .route-line::after {
@@ -607,20 +612,20 @@ button:focus-visible {
   top: 50%;
   border-top: 15px solid transparent;
   border-bottom: 15px solid transparent;
-  border-left: 26px solid var(--blue);
+  border-left: 26px solid #6e5940;
   transform: translateY(-50%);
   filter: drop-shadow(0 8px 12px rgba(22, 78, 122, 0.18));
 }
 
 .compass-card.is-following .route-line,
 .compass-card.is-orientation .route-line {
-  box-shadow: 0 12px 26px rgba(30, 154, 145, 0.34);
+  box-shadow: 0 12px 26px rgba(173, 195, 149, 0.34);
 }
 
 .compass-card.is-orientation .mark-n {
   background: var(--teal);
   color: #fff;
-  box-shadow: 0 10px 24px rgba(30, 154, 145, 0.24);
+  box-shadow: 0 10px 24px rgba(173, 195, 149, 0.24);
 }
 
 .compass-core {
@@ -634,11 +639,11 @@ button:focus-visible {
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background:
-    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.82) 42%, rgba(232, 246, 242, 0.96) 100%);
+    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.98), rgba(255, 250, 241, 0.86) 42%, rgba(238, 220, 187, 0.96) 100%);
   color: var(--blue-dark);
-  font-weight: 900;
-  border: 1px solid rgba(30, 154, 145, 0.18);
-  box-shadow: 0 16px 38px rgba(22, 78, 122, 0.16), inset 0 0 0 8px rgba(255, 255, 255, 0.55);
+  font-weight: 600;
+  border: 1px solid rgba(185, 144, 89, 0.24);
+  box-shadow: 0 16px 38px rgba(113, 88, 54, 0.16), inset 0 0 0 8px rgba(255, 255, 255, 0.55);
   z-index: 6;
 }
 
@@ -652,7 +657,9 @@ button:focus-visible {
 
 .specialists-section,
 .you-alone-section {
-  background: var(--emc-accent);
+  background:
+    linear-gradient(90deg, rgba(95, 91, 102, 0.78), rgba(124, 106, 85, 0.64)),
+    url("../assets/images/onyx-warm-bg.png") center / cover;
   color: #fff;
 }
 
@@ -677,6 +684,42 @@ button:focus-visible {
 .section-heading {
   max-width: 780px;
   margin-bottom: 34px;
+}
+
+.conditions-section {
+  background:
+    linear-gradient(180deg, rgba(255, 250, 241, 0.82), rgba(255, 255, 255, 0.92)),
+    url("../assets/images/onyx-warm-bg.png") center / cover fixed;
+}
+
+.condition-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.condition-card {
+  min-height: 210px;
+  padding: 24px;
+  border: 1px solid rgba(232, 222, 207, 0.92);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--azimut-card-shadow);
+}
+
+.condition-card h3 {
+  font-size: 20px;
+}
+
+.accordion-media-slot {
+  min-height: 138px;
+  margin: 16px 0 4px;
+  border: 1px solid rgba(185, 144, 89, 0.22);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 241, 0.82), rgba(236, 222, 198, 0.72)),
+    radial-gradient(circle at 24% 30%, rgba(173, 195, 149, 0.24), transparent 32%),
+    radial-gradient(circle at 82% 68%, rgba(185, 144, 89, 0.20), transparent 34%);
 }
 
 .card-grid,
@@ -780,7 +823,7 @@ button:focus-visible {
   inset: auto 16px 12px;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(30, 154, 145, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(173, 195, 149, 0.6), transparent);
   opacity: 0;
   transform: scaleX(0.5);
   transition: opacity var(--azimut-transition), transform var(--azimut-transition);
@@ -950,7 +993,7 @@ button:focus-visible {
 .page-hero {
   padding: 86px 0 62px;
   background:
-    radial-gradient(circle at 12% 20%, rgba(30, 154, 145, 0.13), transparent 28%),
+    radial-gradient(circle at 12% 20%, rgba(173, 195, 149, 0.13), transparent 28%),
     linear-gradient(135deg, #f7fbfb, #eef7f5 70%, #f6efe3);
 }
 
@@ -1165,7 +1208,7 @@ button:focus-visible {
 
 .notice {
   padding: 14px 16px;
-  border: 1px solid rgba(30, 154, 145, 0.24);
+  border: 1px solid rgba(173, 195, 149, 0.24);
   border-radius: var(--radius);
   background: rgba(223, 243, 240, 0.72);
   color: #315c59;
@@ -1236,9 +1279,10 @@ button:focus-visible {
 .price-card {
   display: grid;
   gap: 14px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(204, 219, 186, 0.72);
   border-radius: var(--radius);
-  background: var(--paper);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(204, 219, 186, 0.42));
   box-shadow: var(--azimut-card-shadow);
 }
 
@@ -1253,6 +1297,11 @@ button:focus-visible {
 
 .price-mini-card strong,
 .price-card strong {
+  display: inline-flex;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(204, 219, 186, 0.66);
   color: var(--blue-dark);
   font-size: 24px;
 }
@@ -1291,6 +1340,13 @@ button:focus-visible {
 
 .hero-grid-premium {
   display: block;
+  padding: clamp(24px, 4vw, 44px);
+  border: 1px solid rgba(185, 144, 89, 0.30);
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 246, 230, 0.72)),
+    radial-gradient(circle at 100% 0%, rgba(173, 195, 149, 0.16), transparent 36%);
+  box-shadow: 0 28px 80px rgba(74, 58, 35, 0.10);
 }
 
 .hero-headline-row {
@@ -1638,7 +1694,7 @@ button:focus-visible {
   gap: 8px;
   min-width: 0;
   padding: 10px;
-  border: 1px solid rgba(30, 154, 145, 0.13);
+  border: 1px solid rgba(173, 195, 149, 0.13);
   border-radius: 12px;
   background: #fff;
   color: var(--muted);
@@ -1661,10 +1717,32 @@ button:focus-visible {
   font-weight: 760;
 }
 
+h1,
+h2,
+h3,
+.brand,
+.button,
+.nav-link,
+.nav-dropdown-link,
+.round-badge,
+.badge-list span,
+.service-tag,
+.eyebrow,
+.accent-chip,
+.price-card strong,
+.price-mini-card strong,
+.premium-accordion summary,
+.accordion-icon,
+.compass-core,
+strong {
+  font-weight: 600;
+}
+
 .site-footer {
   padding: 48px 0;
-  background: #102a3d;
-  color: #e8f5f5;
+  background:
+    linear-gradient(135deg, rgba(219, 190, 143, 0.94), rgba(169, 134, 82, 0.96));
+  color: #fffaf1;
 }
 
 .footer-grid {
@@ -1690,7 +1768,7 @@ button:focus-visible {
 .site-footer a {
   display: block;
   margin-bottom: 9px;
-  color: #cfe1e4;
+  color: #fff7e9;
 }
 
 .site-footer a:hover {
@@ -1699,5 +1777,5 @@ button:focus-visible {
 
 .footer-note {
   font-size: 13px;
-  color: #a8c4c8 !important;
+  color: #fff0d8 !important;
 }

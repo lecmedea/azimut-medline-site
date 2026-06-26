@@ -11,7 +11,7 @@
       target.innerHTML = "<h1>Статья не найдена</h1><p>Вернитесь в блог и выберите материал из списка.</p>";
       return;
     }
-    document.title = `${article.title} — Азимут Медлайн`;
+    document.title = `${article.title} — Азимут Клиник`;
     target.innerHTML = `
       <p class="eyebrow">${article.category}</p>
       <h1>${article.title}</h1>

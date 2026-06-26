@@ -4,10 +4,10 @@
 const TELEGRAM_API = "https://api.telegram.org/bot";
 const DEEPSEEK_API_URL = process.env.DEEPSEEK_API_URL || "https://api.deepseek.com/chat/completions";
 const DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL || "deepseek-chat";
-const CLINIC_NAME = process.env.CLINIC_NAME || "Азимут Медлайн";
+const CLINIC_NAME = process.env.CLINIC_NAME || "Азимут Клиник";
 const CLINIC_PHONE = process.env.CLINIC_PHONE || "+79052727703";
 const CLINIC_SITE_URL = process.env.CLINIC_SITE_URL || "https://lecmedea.github.io/azimut-medline-site/";
-const BOT_LOGO_URL = process.env.BOT_LOGO_URL || `${CLINIC_SITE_URL.replace(/\/$/, "")}/assets/azimut_logo.jpg`;
+const BOT_LOGO_URL = process.env.BOT_LOGO_URL || `${CLINIC_SITE_URL.replace(/\/$/, "")}/assets/azimut-clinic-logo.png`;
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || "";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -26,7 +26,7 @@ const userState = new Map();
 let updateOffset = 0;
 
 const SYSTEM_PROMPT = `
-Ты круглосуточный онлайн-консультант центра ментального здоровья "Азимут Медлайн".
+Ты круглосуточный онлайн-консультант центра ментального здоровья "Азимут Клиник".
 Помогай пациентам и родственникам спокойно сориентироваться по услугам клиники: наркология,
 психиатрия, психология, психологическое тестирование, консультации онлайн, в клинике, на дому
 и по телефону.

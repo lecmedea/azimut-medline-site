@@ -62,7 +62,7 @@
     width: 36px;
     height: 36px;
     justify-self: center;
-    border: 1px solid rgba(30, 154, 145, 0.22);
+    border: 1px solid rgba(173, 195, 149, 0.22);
     border-radius: 50%;
     background: var(--paper);
     color: var(--teal);
@@ -212,6 +212,7 @@
   .four-col,
   .price-mini-grid,
   .price-card-grid,
+  .condition-grid,
   .test-grid,
   .order-panel {
     grid-template-columns: 1fr;
@@ -503,6 +504,16 @@
   .order-panel {
     padding: 20px;
     border-radius: 16px;
+  }
+
+  .hero-grid-premium {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .condition-card {
+    min-height: 0;
+    padding: 18px;
   }
 
   .order-actions,
