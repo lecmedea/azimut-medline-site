@@ -297,13 +297,11 @@
   }
 
   .brand {
-    grid-template-columns: 42px 1fr;
-    font-size: 13px;
+    max-width: 184px;
   }
 
-  .brand img {
-    width: 42px;
-    height: 42px;
+  .brand-logo-wide {
+    width: min(100%, 184px);
   }
 
   h1,

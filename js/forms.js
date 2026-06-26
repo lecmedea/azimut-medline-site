@@ -55,7 +55,7 @@
   async function handlePayment(form, status) {
     const order = serialize(form);
     await (window.AzimutPayment ? window.AzimutPayment.createPayment(order) : Promise.resolve());
-    status.textContent = "Тестовая оплата создана в режиме заготовки. Реального списания нет.";
+    status.textContent = "Заявка на оплату принята. Администратор согласует сумму и отправит ссылку после подтверждения записи.";
   }
 
   document.addEventListener("DOMContentLoaded", () => {

@@ -145,15 +145,14 @@ section {
   min-height: 82px;
   display: grid;
   width: min(1320px, calc(100% - 32px));
-  grid-template-columns: minmax(230px, 300px) minmax(520px, 1fr) auto;
+  grid-template-columns: minmax(250px, 320px) minmax(500px, 1fr) auto;
   gap: 14px;
   align-items: center;
 }
 
 .brand {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 12px;
+  position: relative;
+  display: inline-flex;
   align-items: center;
   font-weight: 800;
   color: var(--blue-dark);
@@ -161,10 +160,33 @@ section {
 }
 
 .brand img {
+  display: block;
+}
+
+.brand img:not(.brand-logo-wide) {
   width: 48px;
   height: 48px;
   border-radius: 8px;
   object-fit: cover;
+}
+
+.brand-logo-wide {
+  width: min(100%, 200px);
+  height: auto;
+  border-radius: 0;
+  object-fit: contain;
+}
+
+.brand-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .main-nav {
@@ -1752,11 +1774,13 @@ strong {
 }
 
 .footer-logo {
-  width: 64px;
-  height: 64px;
+  width: min(100%, 260px);
+  height: auto;
   margin-bottom: 16px;
-  border-radius: var(--radius);
-  object-fit: cover;
+  border-radius: 0;
+  object-fit: contain;
+  background: rgba(255, 250, 241, 0.86);
+  padding: 10px 12px;
 }
 
 .site-footer h3 {
