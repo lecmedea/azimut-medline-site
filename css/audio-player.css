@@ -2,9 +2,9 @@
 .azimut-mini-player {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(180, 218, 207, 0.82);
+  border: 1px solid rgba(213, 185, 139, 0.82);
   border-radius: 18px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(236,248,245,0.78));
+  background: linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,248,236,0.82));
   box-shadow: var(--azimut-card-shadow);
   backdrop-filter: blur(18px);
   transition: transform var(--azimut-transition), box-shadow var(--azimut-transition), border-color var(--azimut-transition);
@@ -23,8 +23,8 @@
   position: absolute;
   inset: -40%;
   background:
-    radial-gradient(circle at 25% 35%, rgba(114, 194, 171, 0.18), transparent 24%),
-    radial-gradient(circle at 80% 60%, rgba(172, 214, 230, 0.20), transparent 22%);
+    radial-gradient(circle at 25% 35%, rgba(139, 57, 31, 0.14), transparent 24%),
+    radial-gradient(circle at 80% 60%, rgba(213, 185, 139, 0.24), transparent 22%);
   animation: playerGlow 12s ease-in-out infinite alternate;
   pointer-events: none;
 }
@@ -41,9 +41,9 @@
   opacity: 0.28;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 42% 65%, transparent 0 52%, rgba(42, 132, 112, 0.48) 53% 54%, transparent 55%),
-    radial-gradient(ellipse at 56% 45%, rgba(42, 132, 112, 0.42) 0 9%, transparent 10%),
-    radial-gradient(ellipse at 72% 58%, rgba(42, 132, 112, 0.32) 0 8%, transparent 9%);
+    radial-gradient(ellipse at 42% 65%, transparent 0 52%, rgba(139, 57, 31, 0.34) 53% 54%, transparent 55%),
+    radial-gradient(ellipse at 56% 45%, rgba(213, 185, 139, 0.42) 0 9%, transparent 10%),
+    radial-gradient(ellipse at 72% 58%, rgba(139, 57, 31, 0.22) 0 8%, transparent 9%);
   animation: leafBreath 8s ease-in-out infinite alternate;
 }
 
@@ -84,7 +84,7 @@
   flex: 0 0 auto;
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(173, 195, 149, 0.24);
+  border: 1px solid rgba(139, 57, 31, 0.24);
   border-radius: 50%;
   background: rgba(255,255,255,0.8);
   color: var(--blue-dark);
@@ -105,7 +105,7 @@
   inset: 8px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.82);
-  box-shadow: inset 0 0 0 1px rgba(173, 195, 149, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(139, 57, 31, 0.12);
 }
 
 .player-icon {
@@ -154,7 +154,7 @@
 .player-btn:hover {
   transform: scale(1.08);
   background: var(--teal-soft);
-  box-shadow: 0 12px 28px rgba(173, 195, 149, 0.18);
+  box-shadow: 0 12px 28px rgba(139, 57, 31, 0.18);
 }
 
 .player-progress {
@@ -268,7 +268,7 @@
 }
 
 .mini-half + .mini-half {
-  border-left: 1px solid rgba(173, 195, 149, 0.22);
+  border-left: 1px solid rgba(139, 57, 31, 0.22);
 }
 
 .mini-half:hover,

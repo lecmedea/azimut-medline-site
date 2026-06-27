@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Гид по сайту и архитектуре Азимут Клиник</title>
+  <style>
+    @page { margin: 1in; }
+    body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; line-height: 1.25; color: #1f2933; }
+    h1 { font-size: 16pt; color: #2E74B5; margin: 18pt 0 10pt; }
+    h2 { font-size: 13pt; color: #2E74B5; margin: 14pt 0 7pt; }
+    h3 { font-size: 12pt; color: #1F4D78; margin: 10pt 0 5pt; }
+    p { margin: 0 0 6pt; }
+    ul, ol { margin-top: 0; margin-bottom: 6pt; }
+    li { margin-bottom: 4pt; }
+    .meta { color: #5c6570; }
+    .callout { border: 1px solid #d9e2ec; background: #f4f7fb; padding: 10pt 12pt; margin: 8pt 0 10pt; }
+    table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; }
+    th { background: #E8EEF5; color: #1F4D78; font-weight: bold; }
+    th, td { border: 1px solid #c9d4df; padding: 5pt 7pt; vertical-align: top; }
+    code { font-family: Consolas, monospace; font-size: 9.5pt; color: #8B391F; }
+  </style>
+</head>
+<body>
+  <h1>Гид по сайту и архитектуре Азимут Клиник</h1>
+  <p class="meta">Проект: <code>azimut-medline-site</code>. Формат: статический сайт с отдельными HTML-страницами, общими стилями, JS-модулями, локальными данными и дополнительным Telegram-ботом.</p>
+  <div class="callout">
+    <p><strong>Как читать этот документ.</strong> Сайт устроен просто: страницы лежат в корне проекта, визуальный стиль в <code>css/</code>, поведение в <code>js/</code>, контентные массивы в <code>data/</code>, изображения и аудио в <code>assets/</code>. Это удобно для GitHub Pages и быстрых правок без сборщика.</p>
+  </div>
+
+  <h2>1. Общая архитектура</h2>
+  <ul>
+    <li><strong>Страницы.</strong> HTML-файлы в корне отвечают за структуру разделов: главная, услуги, врачи, блог, контакты, документы, оплата и тесты.</li>
+    <li><strong>Единый стиль.</strong> Основной визуальный слой собран в <code>css/style.css</code>, адаптивность в <code>css/responsive.css</code>, отдельные интерфейсы вынесены в специальные CSS-файлы.</li>
+    <li><strong>Данные отдельно от разметки.</strong> Врачи, услуги, цены, отзывы, статьи и аудио хранятся в <code>data/*.js</code>, чтобы обновлять контент без переписывания страниц.</li>
+    <li><strong>Интерактивность.</strong> Модальные окна, аккордеоны, компас, формы, тесты, блог, аудиоплеер и AI-помощник подключаются из <code>js/</code>.</li>
+    <li><strong>Публикация.</strong> Наличие <code>.nojekyll</code> показывает, что проект готов к размещению на GitHub Pages как статический сайт.</li>
+  </ul>
+
+  <h2>2. Главные папки</h2>
+  <table>
+    <tr><th>Папка</th><th>Назначение</th></tr>
+    <tr><td><code>api/</code></td><td>Серверная точка для AI-чата. Сейчас содержит <code>chat.js</code>, который рассчитан на serverless-окружение.</td></tr>
+    <tr><td><code>assets/</code></td><td>Все медиа: логотипы, favicon, изображения интерьеров, фото врачей, аудио и иконки.</td></tr>
+    <tr><td><code>css/</code></td><td>Визуальная система сайта: базовая тема, адаптивность, анимации, аудиоплеер и AI-помощник.</td></tr>
+    <tr><td><code>data/</code></td><td>Контентные массивы, которые подставляются JavaScript-ом в карточки, списки, цены, блог и отзывы.</td></tr>
+    <tr><td><code>docs/</code></td><td>Техническая документация. Сейчас здесь инструкция по DeepSeek/AI-помощнику.</td></tr>
+    <tr><td><code>deliverables/</code></td><td>Рабочие документы проекта: расчеты, офферы, шпаргалки, шаблоны и этот гид.</td></tr>
+    <tr><td><code>js/</code></td><td>Логика интерфейса: меню, формы, аккордеоны, компас, тесты, блог, чат, аудиоплеер, интеграционные заглушки.</td></tr>
+    <tr><td><code>telegram-bot/</code></td><td>Отдельный Node.js-бот для заявок и уведомлений в Telegram.</td></tr>
+    <tr><td><code>icons/</code>, <code>images/</code></td><td>Пустые или резервные папки. Основные актуальные медиа лежат в <code>assets/</code>.</td></tr>
+  </table>
+
+  <h2>3. Страницы сайта</h2>
+  <table>
+    <tr><th>Файл</th><th>Роль на сайте</th></tr>
+    <tr><td><code>index.html</code></td><td>Главная страница: первый экран, компас на desktop, баннеры, аккордеоны направлений, команда, пространство помощи, форматы обращения, блок доверия и модальные окна.</td></tr>
+    <tr><td><code>about.html</code></td><td>О клинике: позиционирование, документы, лицензии, принципы работы.</td></tr>
+    <tr><td><code>services.html</code></td><td>Услуги и направления помощи. Использует контент из <code>data/services.js</code>.</td></tr>
+    <tr><td><code>doctors.html</code></td><td>Страница направлений и врачей. Карточки берут данные из <code>data/doctors.js</code>.</td></tr>
+    <tr><td><code>prices.html</code></td><td>Стоимость услуг. Таблицы и группы цен связаны с <code>data/prices.js</code>.</td></tr>
+    <tr><td><code>blog.html</code></td><td>Лента полезных материалов. Статьи подставляются из <code>data/articles.js</code>.</td></tr>
+    <tr><td><code>article.html</code></td><td>Шаблон отдельной статьи блога.</td></tr>
+    <tr><td><code>tests.html</code></td><td>Психологические тесты, подключенные через <code>js/tests.js</code>.</td></tr>
+    <tr><td><code>contacts.html</code></td><td>Контакты, форма записи, телефон, почта и реквизиты.</td></tr>
+    <tr><td><code>payment.html</code></td><td>Раздел оплаты: компактные аккордеоны и форма запроса ссылки на оплату.</td></tr>
+    <tr><td><code>partnership.html</code></td><td>Страница сотрудничества и партнерских обращений.</td></tr>
+    <tr><td><code>privacy.html</code></td><td>Политика конфиденциальности.</td></tr>
+    <tr><td><code>personal-data.html</code></td><td>Согласие на обработку персональных данных.</td></tr>
+    <tr><td><code>terms.html</code></td><td>Пользовательское соглашение.</td></tr>
+  </table>
+
+  <h2>4. Стили</h2>
+  <table>
+    <tr><th>Файл</th><th>Что регулирует</th></tr>
+    <tr><td><code>css/style.css</code></td><td>Основная тема: цвета, типографика, сетки, шапка, герой-блок, карточки, аккордеоны, модальные окна, компас, баннеры, блоки главной и юридические страницы.</td></tr>
+    <tr><td><code>css/responsive.css</code></td><td>Адаптивность: мобильное меню, перестройка сеток, скрытие тяжелых desktop-элементов, размеры логотипа, отступы и мобильные состояния.</td></tr>
+    <tr><td><code>css/animations.css</code></td><td>Декоративные анимации и эффекты появления.</td></tr>
+    <tr><td><code>css/audio-player.css</code></td><td>Оформление аудиоплеера, кнопок, прогресса и компактных состояний на mobile.</td></tr>
+    <tr><td><code>css/chatbot.css</code></td><td>Оформление AI-помощника: кнопка запуска, раскрытая панель, скролл, поля ввода, быстрые кнопки и кнопка свернуть.</td></tr>
+  </table>
+
+  <h2>5. JavaScript</h2>
+  <table>
+    <tr><th>Файл</th><th>Функционал</th></tr>
+    <tr><td><code>js/main.js</code></td><td>Главная логика интерфейса: меню, модальные окна, аккордеоны, компас, плавные действия и общие обработчики.</td></tr>
+    <tr><td><code>js/forms.js</code></td><td>Обработка форм записи и заявок, подготовка данных к отправке.</td></tr>
+    <tr><td><code>js/chatbot.js</code></td><td>AI-помощник: диалоговая панель, быстрые сценарии, отправка сообщений и свертывание.</td></tr>
+    <tr><td><code>js/blog.js</code></td><td>Вывод статей, карточек блога и страниц материалов.</td></tr>
+    <tr><td><code>js/tests.js</code></td><td>Логика психологических тестов: вопросы, ответы, подсчет результата и вывод рекомендации.</td></tr>
+    <tr><td><code>js/audio-player.js</code></td><td>Воспроизведение аудио, кнопки, прогресс, длительность и состояние плеера.</td></tr>
+    <tr><td><code>js/azimut-animations.js</code></td><td>Дополнительные визуальные эффекты сайта.</td></tr>
+    <tr><td><code>js/bitrix24-placeholder.js</code></td><td>Заглушка под будущую интеграцию Bitrix24.</td></tr>
+    <tr><td><code>js/payment-placeholder.js</code></td><td>Заглушка под будущую платежную интеграцию.</td></tr>
+  </table>
+
+  <h2>6. Контентные данные</h2>
+  <table>
+    <tr><th>Файл</th><th>Что хранит</th></tr>
+    <tr><td><code>data/doctors.js</code></td><td>ФИО, роли, стаж, специализация, описания и фотографии врачей.</td></tr>
+    <tr><td><code>data/services.js</code></td><td>Услуги и направления клиники.</td></tr>
+    <tr><td><code>data/prices.js</code></td><td>Цены и группы услуг.</td></tr>
+    <tr><td><code>data/articles.js</code></td><td>Материалы блога и данные для отдельных статей.</td></tr>
+    <tr><td><code>data/reviews.js</code></td><td>Отзывы и короткие доверительные сообщения.</td></tr>
+    <tr><td><code>data/audio.js</code></td><td>Список аудиофайлов для плеера.</td></tr>
+  </table>
+
+  <h2>7. Медиа и ассеты</h2>
+  <ul>
+    <li><code>assets/logo.jpg</code> - актуальный логотип, favicon и знак в шапке сайта.</li>
+    <li><code>assets/azimut-clinic-header-logo.jpg</code> - широкий логотип, сейчас используется в футере.</li>
+    <li><code>assets/azimut-clinic-logo.png</code> - прежний логотип, оставлен как резервный файл.</li>
+    <li><code>assets/icons/play-button.png</code> - иконка Play для аудиоплеера.</li>
+    <li><code>assets/audio/*.mp3</code> - аудиозаписи для сайта.</li>
+    <li><code>assets/images/azimut-reception.png</code>, <code>azimut-consultation-room.jpg</code>, <code>onyx-warm-bg.png</code> - интерьерные и фоновые изображения.</li>
+    <li><code>assets/images/director-clinic.jpg</code>, <code>doctors-grid.png</code> - изображения команды и клиники.</li>
+    <li><code>assets/images/doctors-crops/doctor one.jpg</code> и <code>doctor two.jpg</code> - новые фото врачей для раздела «Наша команда».</li>
+    <li><code>assets/images/doctors-crops/*.png</code> - старые/резервные фото врачей.</li>
+  </ul>
+
+  <h2>8. Формы, модальные окна и заявки</h2>
+  <ul>
+    <li>Кнопки записи открывают модальное окно с формой консультации.</li>
+    <li>Кнопка в блоке «Доверьтесь нам» открывает звонковое модальное окно с предложением позвонить в клинику.</li>
+    <li>Формы пока работают как frontend-слой и подготовлены для подключения CRM, почты, Telegram или Bitrix24.</li>
+    <li>Раздел оплаты содержит форму запроса ссылки на оплату и может быть подключен к платежному провайдеру через <code>js/payment-placeholder.js</code>.</li>
+  </ul>
+
+  <h2>9. AI-помощник</h2>
+  <p>AI-помощник состоит из трех частей: стили в <code>css/chatbot.css</code>, клиентская логика в <code>js/chatbot.js</code> и serverless-точка <code>api/chat.js</code>. Документация по подключению вынесена в <code>docs/deepseek-chatbot.md</code>.</p>
+  <ul>
+    <li>Панель открывается отдельной кнопкой и умеет сворачиваться обратно.</li>
+    <li>Внутри панели включен скролл, чтобы текст и быстрые кнопки не упирались в края.</li>
+    <li>Для полноценной работы нужен API-ключ в окружении хостинга.</li>
+  </ul>
+
+  <h2>10. Telegram-бот</h2>
+  <table>
+    <tr><th>Файл</th><th>Назначение</th></tr>
+    <tr><td><code>telegram-bot/bot.js</code></td><td>Основная логика бота.</td></tr>
+    <tr><td><code>telegram-bot/package.json</code></td><td>Зависимости и команды запуска Node.js-проекта.</td></tr>
+    <tr><td><code>telegram-bot/.env.example</code></td><td>Пример переменных окружения.</td></tr>
+    <tr><td><code>telegram-bot/.env</code></td><td>Локальные секреты. Этот файл не следует публиковать и пересылать.</td></tr>
+    <tr><td><code>telegram-bot/README.md</code></td><td>Инструкция по запуску и настройке бота.</td></tr>
+  </table>
+
+  <h2>11. Служебные и рабочие документы</h2>
+  <ul>
+    <li><code>README.md</code> - краткое описание проекта и заметки по обновлениям.</li>
+    <li><code>.gitignore</code> - список файлов, которые Git не должен отслеживать.</li>
+    <li><code>.env.example</code> - пример переменных окружения для сайта/API.</li>
+    <li><code>.nojekyll</code> - отключает Jekyll на GitHub Pages, чтобы статические файлы отдавались напрямую.</li>
+    <li><code>.DS_Store</code> - служебные файлы macOS, не относятся к логике сайта.</li>
+    <li><code>deliverables/*.docx</code>, <code>*.html</code>, <code>*.md</code> - коммерческие и рабочие материалы: калькуляция, оффер, шпаргалка, шаблон протокола и текущий гид.</li>
+  </ul>
+
+  <h2>12. Что важно помнить при следующих правках</h2>
+  <ol>
+    <li>Не переписывать сайт с нуля: сначала искать нужный блок в HTML, затем стили в CSS и данные в <code>data/</code>.</li>
+    <li>Фото, логотипы и аудио добавлять в <code>assets/</code>, а пути к ним прописывать в HTML или <code>data/*.js</code>.</li>
+    <li>Новые повторяющиеся карточки лучше делать через массивы данных, а не копировать много HTML.</li>
+    <li>Перед публикацией проверять главную страницу, мобильную версию, формы, аккордеоны, AI-помощника, оплату и отсутствие горизонтальной прокрутки.</li>
+    <li>Секреты хранить только в переменных окружения или локальном <code>.env</code>, не в публичных HTML/JS-файлах.</li>
+  </ol>
+</body>
+</html>

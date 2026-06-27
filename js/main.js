@@ -113,9 +113,16 @@
     if (!compass) return;
     if (matchMedia("(max-width: 860px)").matches) return;
     let usesDeviceOrientation = false;
+    let currentNeedleAngle = -90;
 
     const setNeedleAngle = (angle, mode) => {
-      compass.style.setProperty("--needle-angle", `${angle}deg`);
+      const normalizedAngle = ((angle % 360) + 360) % 360;
+      const normalizedCurrent = ((currentNeedleAngle % 360) + 360) % 360;
+      let delta = normalizedAngle - normalizedCurrent;
+      if (delta > 180) delta -= 360;
+      if (delta < -180) delta += 360;
+      currentNeedleAngle += delta * 0.22;
+      compass.style.setProperty("--needle-angle", `${currentNeedleAngle}deg`);
       compass.classList.toggle("is-orientation", mode === "orientation");
       compass.classList.toggle("is-following", mode === "pointer");
     };

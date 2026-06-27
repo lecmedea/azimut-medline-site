@@ -10,15 +10,15 @@
   --line: #e8decf;
   --blue: #a98652;
   --blue-dark: #4a4036;
-  --teal: #ADC395;
-  --teal-soft: #eef4e7;
+  --teal: #8B391F;
+  --teal-soft: #f4e6df;
   --sand: #ead8bd;
   --emc-accent: #7c6a55;
   --gold: #b99059;
   --onyx: #5f5b66;
   --shadow: 0 18px 45px rgba(62, 46, 26, 0.10);
   --radius: 8px;
-  --azimut-glow: rgba(173, 195, 149, 0.28);
+  --azimut-glow: rgba(139, 57, 31, 0.22);
   --azimut-glow-strong: rgba(185, 144, 89, 0.34);
   --azimut-card-shadow: 0 18px 45px rgba(74, 58, 35, 0.11);
   --azimut-card-shadow-hover: 0 28px 75px rgba(80, 60, 34, 0.18);
@@ -56,7 +56,7 @@ body::before {
   z-index: -3;
   pointer-events: none;
   background:
-    linear-gradient(115deg, transparent 0 18%, rgba(173, 195, 149, 0.12) 18% 30%, transparent 30% 58%, rgba(185, 144, 89, 0.08) 58% 70%, transparent 70% 100%),
+    linear-gradient(115deg, transparent 0 18%, rgba(139, 57, 31, 0.08) 18% 30%, transparent 30% 58%, rgba(185, 144, 89, 0.08) 58% 70%, transparent 70% 100%),
     linear-gradient(180deg, #fffaf1 0%, #f7efe1 48%, #fbf7ee 100%);
   background-size: 100% 118vh, 100% 100%;
   background-attachment: fixed;
@@ -99,7 +99,9 @@ h3 {
 }
 
 h1 {
+  font-family: Bosanova, Montserrat, Inter, "Segoe UI", Arial, sans-serif;
   font-size: clamp(42px, 6vw, 72px);
+  font-weight: 500;
 }
 
 h2 {
@@ -128,11 +130,13 @@ select {
 }
 
 .site-header {
-  position: relative;
-  z-index: 50;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   background: rgba(255, 250, 241, 0.96);
   border-bottom: 1px solid rgba(232, 222, 207, 0.9);
-  overflow-x: clip;
+  overflow: visible;
+  backdrop-filter: blur(18px);
 }
 
 main,
@@ -168,6 +172,14 @@ section {
   height: 48px;
   border-radius: 8px;
   object-fit: cover;
+}
+
+.brand-logo-mark {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 10px 28px rgba(74, 58, 35, 0.12);
 }
 
 .brand-logo-wide {
@@ -224,7 +236,7 @@ section {
   bottom: 5px;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(173, 195, 149, 0.72), transparent);
+  background: linear-gradient(90deg, transparent, rgba(185, 144, 89, 0.72), transparent);
   opacity: 0;
   transform: scaleX(0.42);
   transition: opacity var(--azimut-transition), transform var(--azimut-transition);
@@ -270,13 +282,13 @@ section {
   min-width: 260px;
   max-width: min(340px, calc(100vw - 40px));
   padding: 14px;
-  border: 1px solid rgba(168, 209, 198, 0.9);
+  border: 1px solid rgba(213, 185, 139, 0.92);
   border-radius: 16px;
   background:
-    radial-gradient(circle at 12% 12%, rgba(209, 239, 230, 0.88), transparent 34%),
-    radial-gradient(circle at 92% 86%, rgba(222, 241, 244, 0.9), transparent 32%),
-    linear-gradient(135deg, #fbfdfc 0%, #eef8f4 52%, #f8f3e9 100%);
-  box-shadow: 0 26px 68px rgba(29, 77, 87, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    radial-gradient(circle at 12% 12%, rgba(255, 244, 222, 0.92), transparent 34%),
+    radial-gradient(circle at 92% 86%, rgba(230, 203, 159, 0.58), transparent 32%),
+    linear-gradient(135deg, #fffaf1 0%, #f2e3ca 56%, #f8f0e1 100%);
+  box-shadow: 0 26px 68px rgba(113, 83, 47, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.92);
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, 10px);
@@ -304,9 +316,9 @@ section {
   opacity: 0.24;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 38% 62%, transparent 0 50%, rgba(173, 195, 149, 0.46) 51% 52%, transparent 53%),
-    radial-gradient(ellipse at 60% 42%, rgba(173, 195, 149, 0.42) 0 8%, transparent 9%),
-    radial-gradient(ellipse at 78% 58%, rgba(22, 78, 122, 0.22) 0 7%, transparent 8%);
+    radial-gradient(ellipse at 38% 62%, transparent 0 50%, rgba(185, 144, 89, 0.38) 51% 52%, transparent 53%),
+    radial-gradient(ellipse at 60% 42%, rgba(139, 57, 31, 0.24) 0 8%, transparent 9%),
+    radial-gradient(ellipse at 78% 58%, rgba(185, 144, 89, 0.26) 0 7%, transparent 8%);
 }
 
 .nav-item:hover > .nav-dropdown,
@@ -339,7 +351,7 @@ section {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(173, 195, 149, 0.72);
+  background: rgba(139, 57, 31, 0.72);
   transform: translateY(-50%) scale(0.7);
   opacity: 0.55;
   transition: opacity var(--azimut-transition), transform var(--azimut-transition);
@@ -347,7 +359,7 @@ section {
 
 .nav-dropdown-link:hover,
 .nav-dropdown-link:focus-visible {
-  background: rgba(223, 243, 240, 0.96);
+  background: rgba(255, 250, 241, 0.88);
   color: var(--blue-dark);
   transform: translateX(5px);
 }
@@ -407,7 +419,7 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 button:focus-visible {
-  outline: 3px solid rgba(173, 195, 149, 0.34);
+  outline: 3px solid rgba(139, 57, 31, 0.34);
   outline-offset: 3px;
 }
 
@@ -491,7 +503,7 @@ button:focus-visible {
 }
 
 .support-text {
-  font-weight: 750;
+  font-weight: 500;
   color: var(--blue-dark);
 }
 
@@ -608,7 +620,7 @@ button:focus-visible {
   background: linear-gradient(90deg, rgba(255, 250, 241, 0.92), var(--gold) 42%, #6e5940 100%);
   transform: rotate(var(--needle-angle));
   transform-origin: left center;
-  transition: transform 0.16s ease-out;
+  transition: transform 0.72s cubic-bezier(.22,.8,.24,1);
   box-shadow: 0 10px 22px rgba(185, 144, 89, 0.28);
   z-index: 4;
 }
@@ -641,13 +653,13 @@ button:focus-visible {
 
 .compass-card.is-following .route-line,
 .compass-card.is-orientation .route-line {
-  box-shadow: 0 12px 26px rgba(173, 195, 149, 0.34);
+  box-shadow: 0 12px 26px rgba(139, 57, 31, 0.34);
 }
 
 .compass-card.is-orientation .mark-n {
   background: var(--teal);
   color: #fff;
-  box-shadow: 0 10px 24px rgba(173, 195, 149, 0.24);
+  box-shadow: 0 10px 24px rgba(139, 57, 31, 0.24);
 }
 
 .compass-core {
@@ -740,7 +752,7 @@ button:focus-visible {
   border-radius: 16px;
   background:
     linear-gradient(135deg, rgba(255, 250, 241, 0.82), rgba(236, 222, 198, 0.72)),
-    radial-gradient(circle at 24% 30%, rgba(173, 195, 149, 0.24), transparent 32%),
+    radial-gradient(circle at 24% 30%, rgba(139, 57, 31, 0.24), transparent 32%),
     radial-gradient(circle at 82% 68%, rgba(185, 144, 89, 0.20), transparent 34%);
 }
 
@@ -845,7 +857,7 @@ button:focus-visible {
   inset: auto 16px 12px;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(173, 195, 149, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(139, 57, 31, 0.6), transparent);
   opacity: 0;
   transform: scaleX(0.5);
   transition: opacity var(--azimut-transition), transform var(--azimut-transition);
@@ -1015,7 +1027,7 @@ button:focus-visible {
 .page-hero {
   padding: 86px 0 62px;
   background:
-    radial-gradient(circle at 12% 20%, rgba(173, 195, 149, 0.13), transparent 28%),
+    radial-gradient(circle at 12% 20%, rgba(139, 57, 31, 0.13), transparent 28%),
     linear-gradient(135deg, #f7fbfb, #eef7f5 70%, #f6efe3);
 }
 
@@ -1230,10 +1242,10 @@ button:focus-visible {
 
 .notice {
   padding: 14px 16px;
-  border: 1px solid rgba(173, 195, 149, 0.24);
+  border: 1px solid rgba(139, 57, 31, 0.24);
   border-radius: var(--radius);
-  background: rgba(223, 243, 240, 0.72);
-  color: #315c59;
+  background: rgba(255, 246, 229, 0.82);
+  color: #6c412a;
   font-weight: 700;
 }
 
@@ -1367,7 +1379,7 @@ button:focus-visible {
   border-radius: 28px;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 246, 230, 0.72)),
-    radial-gradient(circle at 100% 0%, rgba(173, 195, 149, 0.16), transparent 36%);
+    radial-gradient(circle at 100% 0%, rgba(139, 57, 31, 0.16), transparent 36%);
   box-shadow: 0 28px 80px rgba(74, 58, 35, 0.10);
 }
 
@@ -1388,7 +1400,7 @@ button:focus-visible {
 .hero-copy h1 {
   max-width: 690px;
   font-size: clamp(46px, 5vw, 68px);
-  font-weight: 850;
+  font-weight: 500;
 }
 
 .hero-copy .lead {
@@ -1402,6 +1414,74 @@ button:focus-visible {
   align-self: start;
   transform: none;
   justify-items: center;
+}
+
+.hero-banners-section {
+  padding-top: 28px;
+}
+
+.banner-rotator {
+  position: relative;
+  min-height: 172px;
+  border: 1px solid rgba(213, 185, 139, 0.72);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(255, 250, 241, 0.94), rgba(239, 222, 194, 0.88));
+  box-shadow: 0 20px 56px rgba(113, 83, 47, 0.10);
+  overflow: hidden;
+}
+
+.demo-banner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: clamp(22px, 4vw, 36px);
+  opacity: 0;
+  transform: translateX(18px);
+  animation: bannerRotate 15s infinite;
+}
+
+.demo-banner-two {
+  animation-delay: 5s;
+}
+
+.demo-banner-three {
+  animation-delay: 10s;
+}
+
+.demo-banner span {
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.demo-banner h2 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+.demo-banner p {
+  max-width: 660px;
+  margin: 0;
+}
+
+@keyframes bannerRotate {
+  0%, 6% {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  10%, 30% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  36%, 100% {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
 }
 
 .hero-visual .compass-card {
@@ -1422,7 +1502,7 @@ button:focus-visible {
   position: relative;
   padding-left: 22px;
   color: #404957;
-  font-weight: 720;
+  font-weight: 500;
 }
 
 .hero-proof-list li::before {
@@ -1630,6 +1710,16 @@ button:focus-visible {
   width: 100%;
 }
 
+.call-dialog {
+  max-width: 520px;
+}
+
+.call-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .header-appointment {
   white-space: nowrap;
 }
@@ -1660,6 +1750,18 @@ button:focus-visible {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: flex-end;
+}
+
+.payment-accordion-section .contact-form {
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.payment-request-content {
+  padding-right: 22px;
 }
 
 .test-grid {
@@ -1716,7 +1818,7 @@ button:focus-visible {
   gap: 8px;
   min-width: 0;
   padding: 10px;
-  border: 1px solid rgba(173, 195, 149, 0.13);
+  border: 1px solid rgba(139, 57, 31, 0.13);
   border-radius: 12px;
   background: #fff;
   color: var(--muted);
@@ -1739,7 +1841,6 @@ button:focus-visible {
   font-weight: 760;
 }
 
-h1,
 h2,
 h3,
 .brand,
@@ -1758,6 +1859,10 @@ h3,
 .compass-core,
 strong {
   font-weight: 600;
+}
+
+h1 {
+  font-weight: 500;
 }
 
 .site-footer {
