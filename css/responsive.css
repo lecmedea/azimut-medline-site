@@ -553,6 +553,13 @@
     padding: 18px;
   }
 
+  .condition-icon {
+    width: 62px;
+    height: 62px;
+    margin-bottom: 14px;
+    border-radius: 14px;
+  }
+
   .order-actions,
   .order-actions .button {
     width: 100%;
