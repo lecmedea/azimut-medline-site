@@ -62,7 +62,7 @@
 .player-title span {
   color: var(--teal);
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 300;
   text-transform: uppercase;
 }
 
@@ -89,7 +89,7 @@
   background: rgba(255,255,255,0.8);
   color: var(--blue-dark);
   cursor: pointer;
-  font-weight: 900;
+  font-weight: 300;
   transition: transform var(--azimut-transition), background var(--azimut-transition), box-shadow var(--azimut-transition);
 }
 
@@ -173,7 +173,7 @@
   justify-content: space-between;
   color: var(--muted);
   font-size: 13px;
-  font-weight: 750;
+  font-weight: 300;
 }
 
 .player-playlist {
@@ -194,7 +194,7 @@
   background: rgba(255,255,255,0.62);
   color: var(--blue-dark);
   cursor: pointer;
-  font-weight: 750;
+  font-weight: 300;
 }
 
 .track-item.active {
@@ -248,7 +248,7 @@
   color: var(--blue-dark);
   cursor: pointer;
   font-size: 19px;
-  font-weight: 950;
+  font-weight: 300;
   transition: background var(--azimut-transition), color var(--azimut-transition), transform var(--azimut-transition);
 }
 
@@ -309,7 +309,7 @@
 .mini-title span {
   color: var(--teal);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 300;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -317,7 +317,7 @@
 .mini-track {
   min-width: 0;
   color: var(--blue-dark);
-  font-weight: 850;
+  font-weight: 300;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

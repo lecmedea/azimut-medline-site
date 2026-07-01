@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300&display=swap");
 
 :root {
   --bg: #fbf7ee;
@@ -45,7 +45,7 @@ body {
   color: var(--ink);
   font-family: Montserrat, Inter, "Segoe UI", Arial, sans-serif;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 300;
   line-height: 1.6;
 }
 
@@ -99,9 +99,9 @@ h3 {
 }
 
 h1 {
-  font-family: Bosanova, Montserrat, Inter, "Segoe UI", Arial, sans-serif;
+  font-family: Montserrat, Inter, "Segoe UI", Arial, sans-serif;
   font-size: clamp(42px, 6vw, 72px);
-  font-weight: 500;
+  font-weight: 200;
 }
 
 h2 {
@@ -110,6 +110,13 @@ h2 {
 
 h3 {
   font-size: 21px;
+}
+
+h2,
+h3,
+strong,
+b {
+  font-weight: 300;
 }
 
 button,
@@ -165,7 +172,7 @@ section {
   position: relative;
   display: inline-flex;
   align-items: center;
-  font-weight: 800;
+  font-weight: 300;
   color: var(--blue-dark);
   line-height: 1.15;
 }
@@ -223,7 +230,7 @@ section {
   justify-content: center;
   gap: 6px;
   color: #314a59;
-  font-weight: 650;
+  font-weight: 300;
   font-size: 13px;
 }
 
@@ -353,7 +360,7 @@ section {
   padding: 10px 12px 10px 28px;
   border-radius: 10px;
   color: #314a59;
-  font-weight: 750;
+  font-weight: 300;
   line-height: 1.25;
   white-space: normal;
   z-index: 1;
@@ -405,13 +412,13 @@ section {
   background: var(--teal-soft);
   color: #116a64;
   font-size: 13px;
-  font-weight: 750;
+  font-weight: 300;
   white-space: nowrap;
 }
 
 .phone-link {
   color: var(--blue-dark);
-  font-weight: 800;
+  font-weight: 300;
   white-space: nowrap;
 }
 
@@ -424,7 +431,7 @@ section {
   border: 1px solid transparent;
   border-radius: var(--radius);
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 300;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   text-align: center;
   overflow-wrap: break-word;
@@ -509,7 +516,7 @@ button:focus-visible {
   margin-bottom: 12px;
   color: var(--teal);
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 300;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -520,7 +527,7 @@ button:focus-visible {
 }
 
 .support-text {
-  font-weight: 500;
+  font-weight: 300;
   color: var(--blue-dark);
 }
 
@@ -598,7 +605,7 @@ button:focus-visible {
   background: rgba(255, 255, 255, 0.74);
   color: var(--blue-dark);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 300;
   box-shadow: 0 8px 20px rgba(113, 88, 54, 0.12);
 }
 
@@ -692,7 +699,7 @@ button:focus-visible {
   background:
     radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.98), rgba(255, 250, 241, 0.86) 42%, rgba(238, 220, 187, 0.96) 100%);
   color: var(--blue-dark);
-  font-weight: 600;
+  font-weight: 300;
   border: 1px solid rgba(185, 144, 89, 0.24);
   box-shadow: 0 16px 38px rgba(113, 88, 54, 0.16), inset 0 0 0 8px rgba(255, 255, 255, 0.55);
   z-index: 6;
@@ -814,7 +821,7 @@ button:focus-visible {
 .mini-card {
   min-height: 92px;
   padding: 18px;
-  font-weight: 800;
+  font-weight: 300;
   color: var(--blue-dark);
 }
 
@@ -839,7 +846,7 @@ button:focus-visible {
 .info-card a,
 .article-card a {
   color: var(--teal);
-  font-weight: 850;
+  font-weight: 300;
 }
 
 .mini-card,
@@ -917,7 +924,7 @@ button:focus-visible {
   border-radius: 50%;
   background: var(--teal-soft);
   color: var(--teal);
-  font-weight: 900;
+  font-weight: 300;
 }
 
 .benefits-grid {
@@ -939,7 +946,7 @@ button:focus-visible {
   border-radius: var(--radius);
   background: var(--paper);
   border: 1px solid var(--line);
-  font-weight: 750;
+  font-weight: 300;
 }
 
 .steps span {
@@ -1026,7 +1033,7 @@ button:focus-visible {
   margin-bottom: 14px;
   color: var(--teal);
   font-size: 13px;
-  font-weight: 850;
+  font-weight: 300;
 }
 
 .article-card a {
@@ -1063,7 +1070,7 @@ button:focus-visible {
   background: var(--paper);
   color: var(--blue-dark);
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 300;
 }
 
 .tabs a:hover,
@@ -1077,7 +1084,7 @@ button:focus-visible {
 .article-layout .article-meta {
   margin-bottom: 26px;
   color: var(--teal);
-  font-weight: 850;
+  font-weight: 300;
 }
 
 .article-layout p {
@@ -1143,7 +1150,7 @@ button:focus-visible {
   display: grid;
   gap: 6px;
   color: var(--blue-dark);
-  font-weight: 800;
+  font-weight: 300;
 }
 
 .hero-form input,
@@ -1165,7 +1172,7 @@ button:focus-visible {
   display: grid;
   gap: 7px;
   color: var(--blue-dark);
-  font-weight: 800;
+  font-weight: 300;
 }
 
 .contact-form input,
@@ -1191,7 +1198,7 @@ button:focus-visible {
   align-items: start;
   color: var(--muted) !important;
   font-size: 14px;
-  font-weight: 650 !important;
+  font-weight: 300 !important;
 }
 
 .contact-form label.checkbox,
@@ -1210,7 +1217,7 @@ button:focus-visible {
   min-height: 22px;
   margin: 0;
   color: var(--teal);
-  font-weight: 800;
+  font-weight: 300;
 }
 
 .contact-logo {
@@ -1256,7 +1263,7 @@ button:focus-visible {
   background-size: 34px 34px;
   color: var(--blue-dark);
   font-size: 24px;
-  font-weight: 900;
+  font-weight: 300;
 }
 
 .price-table {
@@ -1272,7 +1279,7 @@ button:focus-visible {
   border-radius: var(--radius);
   background: rgba(255, 246, 229, 0.82);
   color: #6c412a;
-  font-weight: 700;
+  font-weight: 300;
 }
 
 .route-summary {
@@ -1283,7 +1290,7 @@ button:focus-visible {
   border-radius: var(--radius);
   background: var(--paper);
   color: #31505e;
-  font-weight: 750;
+  font-weight: 300;
   box-shadow: var(--azimut-card-shadow);
 }
 
@@ -1320,7 +1327,7 @@ button:focus-visible {
   display: block;
   color: var(--teal);
   font-size: 13px;
-  font-weight: 850;
+  font-weight: 300;
 }
 
 .service-row p {
@@ -1352,7 +1359,7 @@ button:focus-visible {
 
 .price-mini-card span {
   color: var(--muted);
-  font-weight: 750;
+  font-weight: 300;
 }
 
 .price-mini-card strong,
@@ -1391,7 +1398,7 @@ button:focus-visible {
 .price-row.heading {
   background: var(--blue);
   color: #fff;
-  font-weight: 900;
+  font-weight: 300;
 }
 
 .price-row strong {
@@ -1426,7 +1433,7 @@ button:focus-visible {
 .hero-copy h1 {
   max-width: 690px;
   font-size: clamp(46px, 5vw, 68px);
-  font-weight: 500;
+  font-weight: 300;
 }
 
 .hero-copy .lead {
@@ -1497,7 +1504,7 @@ button:focus-visible {
 .demo-banner span {
   color: var(--teal);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 300;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -1546,7 +1553,7 @@ button:focus-visible {
   position: relative;
   padding-left: 22px;
   color: #404957;
-  font-weight: 500;
+  font-weight: 300;
 }
 
 .hero-proof-list li::before {
@@ -1572,7 +1579,7 @@ button:focus-visible {
   background: var(--teal);
   color: #fff;
   font-size: 12px;
-  font-weight: 850;
+  font-weight: 300;
 }
 
 .premium-accordion-section .section-heading {
@@ -1603,7 +1610,7 @@ button:focus-visible {
   color: var(--ink);
   cursor: pointer;
   font-size: 21px;
-  font-weight: 850;
+  font-weight: 300;
   list-style: none;
 }
 
@@ -1621,7 +1628,7 @@ button:focus-visible {
   border-radius: 50%;
   color: var(--teal);
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 300;
   transition: transform var(--azimut-transition), background-color var(--azimut-transition);
 }
 
@@ -1639,7 +1646,7 @@ button:focus-visible {
   background: var(--teal);
   color: #fff;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 300;
 }
 
 .accordion-content {
@@ -1672,7 +1679,7 @@ button:focus-visible {
 .price-note-card p {
   margin-bottom: 8px;
   color: #394554;
-  font-weight: 720;
+  font-weight: 300;
 }
 
 .premium-notice {
@@ -1844,7 +1851,7 @@ button:focus-visible {
   max-width: 100%;
   padding: 0 8px;
   color: var(--ink);
-  font-weight: 850;
+  font-weight: 300;
   line-height: 1.35;
   white-space: normal;
 }
@@ -1882,7 +1889,7 @@ button:focus-visible {
   border-radius: 14px;
   background: var(--teal-soft);
   color: var(--blue-dark);
-  font-weight: 760;
+  font-weight: 300;
 }
 
 h2,
@@ -1902,11 +1909,11 @@ h3,
 .accordion-icon,
 .compass-core,
 strong {
-  font-weight: 600;
+  font-weight: 300;
 }
 
 h1 {
-  font-weight: 500;
+  font-weight: 200;
 }
 
 .site-footer {
