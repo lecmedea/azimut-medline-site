@@ -367,6 +367,44 @@
     });
   }
 
+  function initRevealMotion() {
+    const candidates = $$([
+      ".section-heading",
+      ".premium-accordion",
+      ".banner-rotator",
+      ".doctor-card",
+      ".condition-card",
+      ".photo-frame",
+      ".contact-form",
+      ".order-panel",
+      ".you-alone-card"
+    ].join(","));
+
+    if (!candidates.length) return;
+
+    const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    candidates.forEach((item, index) => {
+      item.classList.add("reveal-on-scroll");
+      item.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 70}ms`);
+      if (prefersReducedMotion) item.classList.add("is-visible");
+    });
+
+    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+      candidates.forEach((item) => item.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -10% 0px", threshold: 0.12 });
+
+    candidates.forEach((item) => observer.observe(item));
+  }
+
   window.AzimutRender = {
     renderArticles
   };
@@ -379,5 +417,6 @@
     initModals();
     initAccordions();
     renderBlocks();
+    initRevealMotion();
   });
 })();

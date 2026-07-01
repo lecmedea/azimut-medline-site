@@ -378,6 +378,32 @@
     inset: 58px;
   }
 
+  .compass-mark-diagonal {
+    width: 26px;
+    height: 26px;
+    font-size: 9px;
+  }
+
+  .mark-ne {
+    right: 50px;
+    top: 50px;
+  }
+
+  .mark-se {
+    right: 50px;
+    bottom: 50px;
+  }
+
+  .mark-sw {
+    left: 50px;
+    bottom: 50px;
+  }
+
+  .mark-nw {
+    left: 50px;
+    top: 50px;
+  }
+
   .compass-card::before {
     inset: 32px;
   }
