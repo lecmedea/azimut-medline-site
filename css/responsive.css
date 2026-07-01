@@ -114,10 +114,11 @@
   }
 
   .nav-item.dropdown-open > .nav-dropdown {
-    max-height: 520px;
+    max-height: 720px;
     padding-top: 8px;
     padding-bottom: 10px;
     border-color: rgba(219, 232, 232, 0.9);
+    overflow: visible;
     pointer-events: auto;
   }
 
@@ -372,36 +373,6 @@
 
   .compass-card {
     width: min(310px, 88vw);
-  }
-
-  .wind-rose {
-    inset: 58px;
-  }
-
-  .compass-mark-diagonal {
-    width: 26px;
-    height: 26px;
-    font-size: 9px;
-  }
-
-  .mark-ne {
-    right: 50px;
-    top: 50px;
-  }
-
-  .mark-se {
-    right: 50px;
-    bottom: 50px;
-  }
-
-  .mark-sw {
-    left: 50px;
-    bottom: 50px;
-  }
-
-  .mark-nw {
-    left: 50px;
-    top: 50px;
   }
 
   .compass-card::before {

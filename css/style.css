@@ -137,13 +137,18 @@ select {
 }
 
 .site-header {
-  position: static !important;
+  position: relative !important;
   top: auto !important;
-  z-index: auto;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  z-index: 120;
   background: rgba(255, 250, 241, 0.96);
   border-bottom: 1px solid rgba(232, 222, 207, 0.9);
   overflow: visible;
   backdrop-filter: blur(18px);
+  transform: none !important;
+  isolation: isolate;
   transition: opacity var(--azimut-transition), visibility var(--azimut-transition);
 }
 
@@ -160,6 +165,8 @@ section {
 }
 
 .header-inner {
+  position: relative;
+  z-index: 2;
   min-height: 82px;
   display: grid;
   width: min(1320px, calc(100% - 32px));
@@ -226,6 +233,8 @@ section {
 }
 
 .main-nav {
+  position: relative;
+  z-index: 3;
   display: flex;
   justify-content: center;
   gap: 6px;
@@ -236,8 +245,15 @@ section {
 
 .nav-item {
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
+}
+
+.nav-item.has-dropdown:hover,
+.nav-item.has-dropdown:focus-within,
+.nav-item.dropdown-open {
+  z-index: 40;
 }
 
 .nav-link {
@@ -301,8 +317,9 @@ section {
 
 .nav-dropdown {
   position: absolute;
-  left: 50%;
-  top: calc(100% + 6px);
+  left: 0;
+  top: calc(100% + 10px);
+  z-index: 1000;
   min-width: 260px;
   max-width: min(340px, calc(100vw - 40px));
   padding: 14px;
@@ -315,10 +332,15 @@ section {
   box-shadow: 0 26px 68px rgba(113, 83, 47, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.92);
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, 10px);
+  transform: translateY(10px);
   transition: opacity 300ms cubic-bezier(.2,.8,.2,1), transform 300ms cubic-bezier(.2,.8,.2,1), visibility 300ms;
   visibility: hidden;
-  overflow: hidden;
+  overflow: visible;
+}
+
+.nav-item:nth-last-child(-n + 2) .nav-dropdown {
+  right: 0;
+  left: auto;
 }
 
 .nav-dropdown::before {
@@ -350,7 +372,7 @@ section {
 .nav-item.dropdown-open > .nav-dropdown {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, 0);
+  transform: translateY(0);
   visibility: visible;
 }
 
@@ -579,12 +601,6 @@ button:focus-visible {
   overflow: hidden;
 }
 
-.compass-card .compass-mark,
-.compass-card .route-line,
-.compass-card .compass-core {
-  animation: compassSettle 900ms cubic-bezier(.2,.8,.2,1) both;
-}
-
 .compass-card::before,
 .compass-card::after {
   content: "";
@@ -607,37 +623,9 @@ button:focus-visible {
     linear-gradient(90deg, transparent 49.8%, rgba(185, 144, 89, 0.24) 50%, transparent 50.2%),
     linear-gradient(0deg, transparent 49.8%, rgba(185, 144, 89, 0.24) 50%, transparent 50.2%),
     linear-gradient(45deg, transparent 49.8%, rgba(92, 82, 70, 0.12) 50%, transparent 50.2%),
-    linear-gradient(-45deg, transparent 49.8%, rgba(92, 82, 70, 0.12) 50%, transparent 50.2%),
-    repeating-conic-gradient(from -0.5deg, rgba(74, 64, 54, 0.25) 0 1deg, transparent 1deg 6deg);
+    linear-gradient(-45deg, transparent 49.8%, rgba(92, 82, 70, 0.12) 50%, transparent 50.2%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), inset 0 0 0 16px rgba(255, 255, 255, 0.22);
   pointer-events: none;
-}
-
-.wind-rose {
-  position: absolute;
-  inset: 72px;
-  z-index: 2;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.wind-rose::before,
-.wind-rose::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background:
-    conic-gradient(from -18deg, transparent 0 7deg, rgba(74, 64, 54, 0.30) 7deg 13deg, transparent 13deg 45deg, rgba(185, 144, 89, 0.26) 45deg 51deg, transparent 51deg 90deg);
-  clip-path: polygon(50% 0, 57% 39%, 100% 50%, 57% 61%, 50% 100%, 43% 61%, 0 50%, 43% 39%);
-}
-
-.wind-rose::after {
-  inset: 18px;
-  opacity: 0.72;
-  transform: rotate(45deg);
-  background:
-    conic-gradient(from -18deg, transparent 0 7deg, rgba(139, 57, 31, 0.22) 7deg 13deg, transparent 13deg 45deg, rgba(185, 144, 89, 0.22) 45deg 51deg, transparent 51deg 90deg);
 }
 
 .compass-mark {
@@ -655,15 +643,6 @@ button:focus-visible {
   box-shadow: 0 8px 20px rgba(113, 88, 54, 0.12);
 }
 
-.compass-mark-diagonal {
-  width: 30px;
-  height: 30px;
-  background: rgba(255, 250, 241, 0.54);
-  color: rgba(74, 64, 54, 0.76);
-  font-size: 10px;
-  box-shadow: 0 6px 14px rgba(113, 88, 54, 0.08);
-}
-
 .mark-n {
   left: 50%;
   top: 18px;
@@ -677,16 +656,6 @@ button:focus-visible {
   transform: translateY(-50%);
 }
 
-.mark-ne {
-  right: 70px;
-  top: 70px;
-}
-
-.mark-se {
-  right: 70px;
-  bottom: 70px;
-}
-
 .mark-s {
   left: 50%;
   bottom: 18px;
@@ -697,16 +666,6 @@ button:focus-visible {
   left: 18px;
   top: 50%;
   transform: translateY(-50%);
-}
-
-.mark-sw {
-  left: 70px;
-  bottom: 70px;
-}
-
-.mark-nw {
-  left: 70px;
-  top: 70px;
 }
 
 .route-line {
@@ -1746,17 +1705,6 @@ button:focus-visible {
   }
   50% {
     transform: translateY(-5px);
-  }
-}
-
-@keyframes compassSettle {
-  from {
-    opacity: 0;
-    filter: blur(5px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
   }
 }
 
