@@ -147,6 +147,7 @@
   function setOpen(root, nextOpen) {
     isOpen = nextOpen;
     root.classList.toggle("is-open", isOpen);
+    document.body.classList.toggle("ai-chatbot-open", isOpen);
     root.querySelector(".ai-chatbot-toggle").setAttribute("aria-expanded", String(isOpen));
     if (isOpen) {
       setTimeout(() => root.querySelector("textarea")?.focus(), 140);

@@ -130,12 +130,20 @@ select {
 }
 
 .site-header {
-  position: relative;
-  z-index: 1000;
+  position: static !important;
+  top: auto !important;
+  z-index: auto;
   background: rgba(255, 250, 241, 0.96);
   border-bottom: 1px solid rgba(232, 222, 207, 0.9);
   overflow: visible;
   backdrop-filter: blur(18px);
+  transition: opacity var(--azimut-transition), visibility var(--azimut-transition);
+}
+
+body.ai-chatbot-open .site-header {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 main,
@@ -166,11 +174,21 @@ section {
   display: block;
 }
 
-.brand img:not(.brand-logo-wide) {
+.brand img:not(.brand-logo-wide):not(.brand-logo-main) {
   width: 48px;
   height: 48px;
   border-radius: 8px;
   object-fit: cover;
+}
+
+.brand-logo-main {
+  width: min(300px, 30vw);
+  max-width: 100%;
+  height: auto;
+  max-height: 76px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: contrast(1.04) saturate(0.96);
 }
 
 .brand-logo-mark {
@@ -1167,16 +1185,25 @@ button:focus-visible {
 }
 
 .checkbox {
-  grid-template-columns: 20px 1fr;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 7px 14px !important;
+  column-gap: 14px !important;
   align-items: start;
   color: var(--muted) !important;
   font-size: 14px;
   font-weight: 650 !important;
 }
 
+.contact-form label.checkbox,
+.hero-form label.checkbox {
+  gap: 7px 14px !important;
+  column-gap: 14px !important;
+}
+
 .checkbox input {
   min-height: 18px;
   margin-top: 3px;
+  justify-self: start;
 }
 
 .form-status {
@@ -1433,12 +1460,30 @@ button:focus-visible {
   position: absolute;
   inset: 0;
   display: grid;
+  grid-template-columns: minmax(72px, 108px) minmax(0, 1fr);
   align-content: center;
-  gap: 8px;
+  align-items: center;
+  gap: clamp(16px, 3vw, 30px);
   padding: clamp(22px, 4vw, 36px);
   opacity: 0;
   transform: translateX(18px);
   animation: bannerRotate 15s infinite;
+}
+
+.banner-icon {
+  width: clamp(68px, 8vw, 108px);
+  height: clamp(68px, 8vw, 108px);
+  padding: 10px;
+  border: 1px solid rgba(185, 144, 89, 0.28);
+  border-radius: 22px;
+  background: rgba(255, 250, 241, 0.76);
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.banner-copy {
+  display: grid;
+  gap: 8px;
 }
 
 .demo-banner-two {
@@ -1883,8 +1928,9 @@ h1 {
   margin-bottom: 16px;
   border-radius: 0;
   object-fit: contain;
-  background: rgba(255, 250, 241, 0.86);
-  padding: 10px 12px;
+  background: transparent;
+  padding: 0;
+  mix-blend-mode: multiply;
 }
 
 .site-footer h3 {

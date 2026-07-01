@@ -302,8 +302,26 @@
     max-width: 184px;
   }
 
-  .brand-logo-wide {
+  .brand-logo-wide,
+  .brand-logo-main {
     width: min(100%, 184px);
+  }
+
+  .banner-rotator {
+    min-height: 250px;
+  }
+
+  .demo-banner {
+    grid-template-columns: 1fr;
+    align-content: center;
+    justify-items: start;
+    gap: 14px;
+  }
+
+  .banner-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 18px;
   }
 
   .brand-logo-mark {
