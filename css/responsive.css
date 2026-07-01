@@ -220,6 +220,14 @@
     grid-template-columns: 1fr;
   }
 
+  .specialists-section {
+    padding: 46px 0;
+  }
+
+  .specialists-section .doctor-card {
+    min-height: 280px;
+  }
+
   .order-actions {
     justify-content: flex-start;
   }
@@ -364,6 +372,10 @@
 
   .compass-card {
     width: min(310px, 88vw);
+  }
+
+  .wind-rose {
+    inset: 58px;
   }
 
   .compass-card::before {

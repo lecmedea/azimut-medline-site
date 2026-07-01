@@ -309,6 +309,7 @@
 
   function renderDoctors(target) {
     const limit = Number(target.dataset.limit || 0);
+    const hideActions = target.dataset.hideActions === "true";
     const items = (window.AZIMUT_DOCTORS || []).slice(0, limit || undefined);
     target.innerHTML = items.map((item) => `
       <article class="doctor-card">
@@ -317,7 +318,7 @@
         <h3>${item.name}</h3>
         <p><strong>${item.experience}</strong></p>
         <p>${item.focus}</p>
-        <a class="button button-secondary" href="contacts.html#appointment" data-select-service="${item.role}" data-select-price="">Записаться</a>
+        ${hideActions ? "" : `<a class="button button-secondary" href="contacts.html#appointment" data-select-service="${item.role}" data-select-price="">Записаться</a>`}
       </article>
     `).join("");
   }

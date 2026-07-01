@@ -499,6 +499,18 @@ button:focus-visible {
     linear-gradient(180deg, #ffffff 0%, #f7f9fb 100%);
 }
 
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(112deg, transparent 0 34%, rgba(255, 255, 255, 0.42) 44%, rgba(185, 144, 89, 0.10) 49%, transparent 62% 100%);
+  transform: translateX(-74%);
+  animation: heroLightSweep 13s ease-in-out infinite;
+}
+
 .hero-grid,
 .split-layout,
 .contact-grid {
@@ -592,6 +604,33 @@ button:focus-visible {
     linear-gradient(-45deg, transparent 49.8%, rgba(92, 82, 70, 0.12) 50%, transparent 50.2%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), inset 0 0 0 16px rgba(255, 255, 255, 0.22);
   pointer-events: none;
+}
+
+.wind-rose {
+  position: absolute;
+  inset: 72px;
+  z-index: 2;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.wind-rose::before,
+.wind-rose::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    conic-gradient(from -18deg, transparent 0 7deg, rgba(74, 64, 54, 0.30) 7deg 13deg, transparent 13deg 45deg, rgba(185, 144, 89, 0.26) 45deg 51deg, transparent 51deg 90deg);
+  clip-path: polygon(50% 0, 57% 39%, 100% 50%, 57% 61%, 50% 100%, 43% 61%, 0 50%, 43% 39%);
+}
+
+.wind-rose::after {
+  inset: 18px;
+  opacity: 0.72;
+  transform: rotate(45deg);
+  background:
+    conic-gradient(from -18deg, transparent 0 7deg, rgba(139, 57, 31, 0.22) 7deg 13deg, transparent 13deg 45deg, rgba(185, 144, 89, 0.22) 45deg 51deg, transparent 51deg 90deg);
 }
 
 .compass-mark {
@@ -737,6 +776,88 @@ button:focus-visible {
   color: var(--emc-accent);
   border-color: rgba(255, 255, 255, 0.72);
   box-shadow: none;
+}
+
+.specialists-section {
+  padding: 58px 0;
+}
+
+.specialists-section .split-layout {
+  gap: 30px;
+  align-items: center;
+}
+
+.specialists-section .card-grid {
+  gap: 12px;
+}
+
+.specialists-section .doctor-card {
+  min-height: 340px;
+  justify-content: flex-end;
+  padding: 20px;
+  border: 1px solid rgba(255, 250, 241, 0.20);
+  border-radius: 22px;
+  background: rgba(255, 250, 241, 0.08);
+  box-shadow: 0 22px 54px rgba(24, 22, 20, 0.20);
+}
+
+.specialists-section .doctor-card::before {
+  content: "";
+  position: absolute;
+  inset: 34% 0 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, transparent, rgba(31, 27, 24, 0.38) 36%, rgba(31, 27, 24, 0.82) 100%);
+  pointer-events: none;
+}
+
+.specialists-section .doctor-card::after {
+  inset: auto 20px 16px;
+  z-index: 2;
+  opacity: 0.36;
+  transform: scaleX(1);
+}
+
+.specialists-section .doctor-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  border-radius: inherit;
+  aspect-ratio: auto;
+  filter: saturate(0.92) contrast(1.04);
+}
+
+.specialists-section .doctor-card .eyebrow,
+.specialists-section .doctor-card h3,
+.specialists-section .doctor-card p {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  color: #fffaf1;
+}
+
+.specialists-section .doctor-card .eyebrow {
+  max-width: 100%;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+
+.specialists-section .doctor-card h3 {
+  margin-bottom: 6px;
+  font-size: 22px;
+}
+
+.specialists-section .doctor-card p:not(.eyebrow):last-of-type,
+.specialists-section .doctor-card .button {
+  display: none;
+}
+
+.specialists-section .doctor-card p:not(.eyebrow) {
+  font-size: 13px;
+  color: rgba(255, 250, 241, 0.84);
 }
 
 .section-heading {
@@ -1463,6 +1584,17 @@ button:focus-visible {
   overflow: hidden;
 }
 
+.banner-rotator::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 0 38%, rgba(255, 255, 255, 0.34) 48%, transparent 60% 100%);
+  transform: translateX(-82%);
+  animation: bannerSheen 9s ease-in-out infinite;
+}
+
 .demo-banner {
   position: absolute;
   inset: 0;
@@ -1486,6 +1618,7 @@ button:focus-visible {
   background: rgba(255, 250, 241, 0.76);
   object-fit: contain;
   mix-blend-mode: multiply;
+  animation: iconFloat 6s ease-in-out infinite;
 }
 
 .banner-copy {
@@ -1532,6 +1665,33 @@ button:focus-visible {
   36%, 100% {
     opacity: 0;
     transform: translateX(-18px);
+  }
+}
+
+@keyframes heroLightSweep {
+  0%, 42% {
+    transform: translateX(-74%);
+  }
+  58%, 100% {
+    transform: translateX(74%);
+  }
+}
+
+@keyframes bannerSheen {
+  0%, 48% {
+    transform: translateX(-82%);
+  }
+  66%, 100% {
+    transform: translateX(82%);
+  }
+}
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
   }
 }
 
