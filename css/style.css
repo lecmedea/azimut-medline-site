@@ -204,8 +204,8 @@ section {
   max-height: 76px;
   object-fit: contain;
   background: transparent;
-  mix-blend-mode: darken;
-  filter: contrast(1.08) saturate(0.96);
+  mix-blend-mode: normal;
+  filter: contrast(1.04) saturate(0.96);
 }
 
 .brand-logo-mark {
