@@ -337,7 +337,10 @@
   function renderDoctors(target) {
     const limit = Number(target.dataset.limit || 0);
     const hideActions = target.dataset.hideActions === "true";
-    const items = (window.AZIMUT_DOCTORS || []).slice(0, limit || undefined);
+    const excludedDoctors = (target.dataset.exclude || "").split(",").map((item) => item.trim()).filter(Boolean);
+    const items = (window.AZIMUT_DOCTORS || [])
+      .filter((item) => !excludedDoctors.includes(item.name))
+      .slice(0, limit || undefined);
     target.innerHTML = items.map((item) => `
       <article class="doctor-card">
         ${item.photo ? `<div class="doctor-photo" role="img" aria-label="${item.role}" style="background-image: url('${item.photo}'); background-position: ${item.photoPosition || "50% 50%"}"></div>` : ""}

@@ -7,10 +7,6 @@
     ["Узнать стоимость", "Расскажите, пожалуйста, сколько стоят основные услуги"],
     ["Вызвать специалиста", "Хочу вызвать специалиста на дом"],
     ["Онлайн-консультация", "Хочу записаться на онлайн-консультацию"],
-    ["Нужен психолог", "Мне нужна консультация психолога"],
-    ["Нужен психиатр", "Мне нужна консультация психиатра"],
-    ["Нужен нарколог", "Мне нужна консультация нарколога"],
-    ["Связаться с администратором", "Подскажите, как связаться с администратором"],
     ["Позвонить", "Подскажите, как позвонить в центр"]
   ];
 
@@ -111,8 +107,6 @@
             <p>Помогу сориентироваться по услугам, ценам и записи</p>
           </div>
           <div class="ai-chatbot-actions">
-            <button class="ai-chatbot-collapse" type="button" data-chat-close>Свернуть</button>
-            <button class="ai-chatbot-icon-btn" type="button" data-chat-clear aria-label="Очистить историю">↺</button>
             <button class="ai-chatbot-icon-btn" type="button" data-chat-close aria-label="Закрыть чат">×</button>
           </div>
         </header>
@@ -249,13 +243,6 @@
     root.querySelectorAll("[data-chat-close]").forEach((button) => {
       button.addEventListener("click", () => setOpen(root, false));
     });
-    root.querySelector("[data-chat-clear]").addEventListener("click", () => {
-      history = [];
-      saveHistory();
-      renderMessages(root);
-      textarea.focus();
-    });
-
     root.querySelectorAll("[data-chat-quick]").forEach((button) => {
       button.addEventListener("click", () => sendMessage(root, button.dataset.chatQuick || button.textContent));
     });
