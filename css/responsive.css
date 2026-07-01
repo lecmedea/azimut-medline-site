@@ -302,6 +302,10 @@
 }
 
 @media (max-width: 560px) {
+  body {
+    padding-top: 72px;
+  }
+
   .header-inner {
     min-height: 72px;
     gap: 12px;

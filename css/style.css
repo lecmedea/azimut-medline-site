@@ -38,6 +38,7 @@ html {
 
 body {
   margin: 0;
+  padding-top: 82px;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
@@ -137,13 +138,14 @@ select {
 }
 
 .site-header {
-  position: relative !important;
-  top: auto !important;
+  position: fixed !important;
+  top: 0 !important;
   bottom: auto !important;
-  left: auto !important;
-  right: auto !important;
-  z-index: 120;
-  background: rgba(255, 250, 241, 0.96);
+  left: 0 !important;
+  right: 0 !important;
+  width: 100%;
+  z-index: 900;
+  background: #fffaf1;
   border-bottom: 1px solid rgba(232, 222, 207, 0.9);
   overflow: visible;
   backdrop-filter: blur(18px);
@@ -201,8 +203,9 @@ section {
   height: auto;
   max-height: 76px;
   object-fit: contain;
-  mix-blend-mode: multiply;
-  filter: contrast(1.04) saturate(0.96);
+  background: transparent;
+  mix-blend-mode: darken;
+  filter: contrast(1.08) saturate(0.96);
 }
 
 .brand-logo-mark {
@@ -1863,7 +1866,7 @@ button:focus-visible {
 .appointment-modal {
   position: fixed;
   inset: 0;
-  z-index: 120;
+  z-index: 1500;
   display: grid;
   place-items: center;
   padding: 22px;
