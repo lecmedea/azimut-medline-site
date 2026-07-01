@@ -2,6 +2,15 @@
   const $ = (selector, parent = document) => parent.querySelector(selector);
   const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
 
+  function pluralize(value, forms) {
+    const number = Math.abs(value) % 100;
+    const lastDigit = number % 10;
+    if (number > 10 && number < 20) return forms[2];
+    if (lastDigit > 1 && lastDigit < 5) return forms[1];
+    if (lastDigit === 1) return forms[0];
+    return forms[2];
+  }
+
   function setActiveNav() {
     const current = location.pathname.split("/").pop() || "index.html";
     $$(".main-nav a").forEach((link) => {
@@ -275,6 +284,33 @@
     `).join("");
   }
 
+  function renderServicePriceAccordion(target) {
+    const sections = (window.AZIMUT_PRICE_SECTIONS || []).filter((section) => section.type !== "notes");
+    target.innerHTML = sections.map((section, index) => `
+      <details class="service-price-item" ${index === 0 ? "open" : ""}>
+        <summary>
+          <span>${section.title}</span>
+          <small>${section.items.length} ${pluralize(section.items.length, ["услуга", "услуги", "услуг"])}</small>
+        </summary>
+        ${section.disclaimer ? `<p class="notice">${section.disclaimer}</p>` : ""}
+        <div class="service-price-grid">
+          ${section.items.map(([title, description, price]) => `
+            <article class="service-price-card">
+              <div>
+                <h3>${title}</h3>
+                <p>${description}</p>
+              </div>
+              <div class="service-price-footer">
+                <strong>${price}</strong>
+                <button class="button button-secondary" type="button" data-select-service="${title}" data-select-price="${price}" onclick="location.hash='service-form'">Выбрать</button>
+              </div>
+            </article>
+          `).join("")}
+        </div>
+      </details>
+    `).join("");
+  }
+
   function renderPrices(target) {
     const sections = window.AZIMUT_PRICE_SECTIONS || [];
     const notice = window.AZIMUT_PRICE_NOTICE || "";
@@ -358,6 +394,7 @@
       if (type === "help-topics") renderHelpTopics(target);
       if (type === "formats") renderFormats(target);
       if (type === "popular-prices") renderPopularPrices(target);
+      if (type === "service-price-accordion") renderServicePriceAccordion(target);
       if (type === "prices") renderPrices(target);
       if (type === "price-faq") renderPriceFaq(target);
       if (type === "doctors") renderDoctors(target);
