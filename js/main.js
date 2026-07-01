@@ -284,9 +284,9 @@
     `).join("");
   }
 
-  function renderServicePriceAccordion(target) {
+  function getPriceAccordionHtml(formHash) {
     const sections = (window.AZIMUT_PRICE_SECTIONS || []).filter((section) => section.type !== "notes");
-    target.innerHTML = sections.map((section, index) => `
+    return sections.map((section, index) => `
       <details class="service-price-item" ${index === 0 ? "open" : ""}>
         <summary>
           <span>${section.title}</span>
@@ -302,7 +302,7 @@
               </div>
               <div class="service-price-footer">
                 <strong>${price}</strong>
-                <button class="button button-secondary" type="button" data-select-service="${title}" data-select-price="${price}" onclick="location.hash='service-form'">Выбрать</button>
+                <button class="button button-secondary" type="button" data-select-service="${title}" data-select-price="${price}" onclick="location.hash='${formHash}'">Выбрать</button>
               </div>
             </article>
           `).join("")}
@@ -311,32 +311,23 @@
     `).join("");
   }
 
+  function renderServicePriceAccordion(target) {
+    target.innerHTML = getPriceAccordionHtml("service-form");
+  }
+
   function renderPrices(target) {
     const sections = window.AZIMUT_PRICE_SECTIONS || [];
     const notice = window.AZIMUT_PRICE_NOTICE || "";
-    target.innerHTML = `<p class="notice">${notice}</p>` + sections.map((section) => {
-      if (section.type === "notes") {
-        return `<section class="price-section"><h2>${section.title}</h2><ul class="clean-list">${section.items.map((item) => `<li>${item}</li>`).join("")}</ul></section>`;
-      }
-      return `
-        <section class="price-section">
-          <h2>${section.title}</h2>
-          ${section.disclaimer ? `<p class="notice">${section.disclaimer}</p>` : ""}
-          <div class="price-card-grid">
-            ${section.items.map(([title, description, price]) => `
-              <article class="price-card">
-                <div>
-                  <h3>${title}</h3>
-                  <p>${description}</p>
-                </div>
-                <strong>${price}</strong>
-                <button class="button button-secondary" type="button" data-select-service="${title}" data-select-price="${price}" onclick="location.hash='price-form'">Выбрать услугу</button>
-              </article>
-            `).join("")}
-          </div>
-        </section>
-      `;
-    }).join("");
+    const notes = sections.filter((section) => section.type === "notes");
+    target.innerHTML = `
+      <div class="section-heading">
+        <p class="eyebrow">Прайс-лист</p>
+        <h2>Выберите раздел услуг</h2>
+        <p class="notice">${notice}</p>
+      </div>
+      <div class="service-price-accordion">${getPriceAccordionHtml("price-form")}</div>
+      ${notes.map((section) => `<section class="price-section"><h2>${section.title}</h2><ul class="clean-list">${section.items.map((item) => `<li>${item}</li>`).join("")}</ul></section>`).join("")}
+    `;
   }
 
   function renderPriceFaq(target) {
