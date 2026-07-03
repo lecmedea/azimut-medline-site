@@ -62,7 +62,7 @@
     width: 36px;
     height: 36px;
     justify-self: center;
-    border: 1px solid rgba(154, 76, 57, 0.22);
+    border: 1px solid rgba(185, 144, 89, 0.22);
     border-radius: 50%;
     background: var(--paper);
     color: var(--teal);
@@ -216,7 +216,7 @@
   .price-mini-grid,
   .price-card-grid,
   .condition-grid,
-  .test-grid,
+  .screening-test-card summary,
   .order-panel {
     grid-template-columns: 1fr;
   }
@@ -589,8 +589,13 @@
     width: 100%;
   }
 
-  .test-card {
+  .screening-test-card summary,
+  .test-form {
     padding: 18px;
+  }
+
+  .test-toggle {
+    width: 100%;
   }
 
   .test-question {

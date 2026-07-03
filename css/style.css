@@ -18,11 +18,12 @@
   --onyx: #5f5b66;
   --shadow: 0 18px 45px rgba(62, 46, 26, 0.10);
   --radius: 8px;
-  --azimut-glow: rgba(154, 76, 57, 0.20);
+  --azimut-glow: rgba(185, 144, 89, 0.20);
   --azimut-glow-strong: rgba(185, 144, 89, 0.34);
   --azimut-card-shadow: 0 18px 45px rgba(74, 58, 35, 0.11);
   --azimut-card-shadow-hover: 0 28px 75px rgba(80, 60, 34, 0.18);
   --azimut-transition: 320ms cubic-bezier(.2,.8,.2,1);
+  --azimut-gold-gradient: linear-gradient(145deg, #d5b375 0%, #b99059 48%, #986b42 100%);
 }
 
 * {
@@ -57,7 +58,7 @@ body::before {
   z-index: -3;
   pointer-events: none;
   background:
-    linear-gradient(115deg, transparent 0 18%, rgba(154, 76, 57, 0.08) 18% 30%, transparent 30% 58%, rgba(185, 144, 89, 0.08) 58% 70%, transparent 70% 100%),
+    linear-gradient(115deg, transparent 0 18%, rgba(185, 144, 89, 0.10) 18% 30%, transparent 30% 58%, rgba(185, 144, 89, 0.08) 58% 70%, transparent 70% 100%),
     linear-gradient(180deg, #fffaf1 0%, #f7efe1 48%, #fbf7ee 100%);
   background-size: 100% 118vh, 100% 100%;
   background-attachment: fixed;
@@ -366,7 +367,7 @@ section {
   pointer-events: none;
   background:
     radial-gradient(ellipse at 38% 62%, transparent 0 50%, rgba(185, 144, 89, 0.38) 51% 52%, transparent 53%),
-    radial-gradient(ellipse at 60% 42%, rgba(154, 76, 57, 0.24) 0 8%, transparent 9%),
+    radial-gradient(ellipse at 60% 42%, rgba(185, 144, 89, 0.24) 0 8%, transparent 9%),
     radial-gradient(ellipse at 78% 58%, rgba(185, 144, 89, 0.26) 0 7%, transparent 8%);
 }
 
@@ -400,7 +401,7 @@ section {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(154, 76, 57, 0.72);
+  background: var(--azimut-gold-gradient);
   transform: translateY(-50%) scale(0.7);
   opacity: 0.55;
   transition: opacity var(--azimut-transition), transform var(--azimut-transition);
@@ -468,7 +469,7 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 button:focus-visible {
-  outline: 3px solid rgba(154, 76, 57, 0.34);
+  outline: 3px solid rgba(185, 144, 89, 0.34);
   outline-offset: 3px;
 }
 
@@ -521,7 +522,8 @@ button:focus-visible {
   overflow: hidden;
   padding: 70px 0 64px;
   background:
-    linear-gradient(180deg, #ffffff 0%, #f7f9fb 100%);
+    linear-gradient(110deg, rgba(255, 250, 241, 0.93) 0%, rgba(255, 255, 255, 0.78) 52%, rgba(255, 250, 241, 0.66) 100%),
+    url("../assets/images/onyx-warm-bg.png") center / cover;
 }
 
 .hero::after {
@@ -714,13 +716,13 @@ button:focus-visible {
 
 .compass-card.is-following .route-line,
 .compass-card.is-orientation .route-line {
-  box-shadow: 0 12px 26px rgba(154, 76, 57, 0.34);
+  box-shadow: 0 12px 26px rgba(185, 144, 89, 0.34);
 }
 
 .compass-card.is-orientation .mark-n {
-  background: var(--teal);
+  background: var(--azimut-gold-gradient);
   color: #fff;
-  box-shadow: 0 10px 24px rgba(154, 76, 57, 0.24);
+  box-shadow: 0 10px 24px rgba(185, 144, 89, 0.24);
 }
 
 .compass-core {
@@ -929,7 +931,7 @@ button:focus-visible {
   border-radius: 16px;
   background:
     linear-gradient(135deg, rgba(255, 250, 241, 0.82), rgba(236, 222, 198, 0.72)),
-    radial-gradient(circle at 24% 30%, rgba(154, 76, 57, 0.24), transparent 32%),
+    radial-gradient(circle at 24% 30%, rgba(185, 144, 89, 0.24), transparent 32%),
     radial-gradient(circle at 82% 68%, rgba(185, 144, 89, 0.20), transparent 34%);
 }
 
@@ -1034,7 +1036,7 @@ button:focus-visible {
   inset: auto 16px 12px;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(154, 76, 57, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(185, 144, 89, 0.6), transparent);
   opacity: 0;
   transform: scaleX(0.5);
   transition: opacity var(--azimut-transition), transform var(--azimut-transition);
@@ -1204,7 +1206,7 @@ button:focus-visible {
 .page-hero {
   padding: 86px 0 62px;
   background:
-    radial-gradient(circle at 12% 20%, rgba(154, 76, 57, 0.13), transparent 28%),
+    radial-gradient(circle at 12% 20%, rgba(185, 144, 89, 0.13), transparent 28%),
     linear-gradient(135deg, #f7fbfb, #eef7f5 70%, #f6efe3);
 }
 
@@ -1446,7 +1448,7 @@ button:focus-visible {
 
 .notice {
   padding: 14px 16px;
-  border: 1px solid rgba(154, 76, 57, 0.24);
+  border: 1px solid rgba(185, 144, 89, 0.24);
   border-radius: var(--radius);
   background: rgba(255, 246, 229, 0.82);
   color: #6c412a;
@@ -1686,7 +1688,7 @@ button:focus-visible {
   border-radius: 28px;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 246, 230, 0.72)),
-    radial-gradient(circle at 100% 0%, rgba(154, 76, 57, 0.16), transparent 36%);
+    radial-gradient(circle at 100% 0%, rgba(185, 144, 89, 0.16), transparent 36%);
   box-shadow: 0 28px 80px rgba(74, 58, 35, 0.10);
 }
 
@@ -1877,7 +1879,7 @@ button:focus-visible {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--teal);
+  background: var(--azimut-gold-gradient);
   transform: translateY(-50%);
 }
 
@@ -1889,7 +1891,7 @@ button:focus-visible {
   margin: 0 0 14px;
   padding: 6px 12px;
   border-radius: 999px;
-  background: var(--teal);
+  background: var(--azimut-gold-gradient);
   color: #fff;
   font-size: 12px;
   font-weight: 300;
@@ -1939,7 +1941,7 @@ button:focus-visible {
   height: 34px;
   border: 1px solid var(--line);
   border-radius: 50%;
-  color: var(--teal);
+  color: var(--gold);
   font-size: 20px;
   font-weight: 300;
   transition: transform var(--azimut-transition), background-color var(--azimut-transition);
@@ -1956,7 +1958,7 @@ button:focus-visible {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: var(--teal);
+  background: var(--azimut-gold-gradient);
   color: #fff;
   font-size: 14px;
   font-weight: 300;
@@ -2128,32 +2130,76 @@ button:focus-visible {
   padding-right: 22px;
 }
 
-.test-grid {
+.screening-tests {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-  align-items: start;
+  gap: 14px;
 }
 
-.test-card {
-  display: grid;
-  gap: 18px;
-  min-width: 0;
-  padding: clamp(22px, 3vw, 32px);
+.screening-test-card {
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 20px 54px rgba(21, 31, 45, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 46px rgba(21, 31, 45, 0.07);
+  overflow: hidden;
 }
 
-.test-card h2,
-.test-card p {
+.screening-test-card summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: clamp(20px, 3vw, 28px);
+  cursor: pointer;
+  list-style: none;
+}
+
+.screening-test-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.screening-test-card h2,
+.screening-test-card p {
   margin-bottom: 0;
+}
+
+.screening-test-card h2 {
+  font-size: clamp(22px, 3vw, 32px);
+}
+
+.test-direction {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 8px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.test-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 148px;
+  min-height: 46px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--azimut-gold-gradient);
+  color: #fff;
+  font-weight: 300;
+  box-shadow: 0 14px 28px rgba(185, 144, 89, 0.20);
+}
+
+.test-form {
+  display: grid;
+  gap: 14px;
+  padding: 0 clamp(20px, 3vw, 28px) clamp(22px, 3vw, 30px);
 }
 
 .test-question {
   min-width: 0;
-  margin: 0 0 14px;
+  margin: 0;
   padding: 16px;
   border: 1px solid rgba(219, 232, 232, 0.9);
   border-radius: 14px;
@@ -2182,7 +2228,7 @@ button:focus-visible {
   gap: 8px;
   min-width: 0;
   padding: 10px;
-  border: 1px solid rgba(154, 76, 57, 0.13);
+  border: 1px solid rgba(185, 144, 89, 0.18);
   border-radius: 12px;
   background: #fff;
   color: var(--muted);
@@ -2193,16 +2239,25 @@ button:focus-visible {
 .test-options input {
   flex: 0 0 auto;
   margin-top: 3px;
-  accent-color: var(--teal);
+  accent-color: var(--gold);
 }
 
 .test-result {
+  display: none;
   min-height: 54px;
   padding: 14px;
   border-radius: 14px;
-  background: var(--teal-soft);
+  background: rgba(185, 144, 89, 0.12);
   color: var(--blue-dark);
   font-weight: 300;
+}
+
+.test-result.is-visible {
+  display: block;
+}
+
+.you-alone-section .button-primary {
+  margin-top: 18px;
 }
 
 h2,
