@@ -345,7 +345,7 @@
       <article class="doctor-card">
         ${item.photo ? `<div class="doctor-photo" role="img" aria-label="${item.role}" style="background-image: url('${item.photo}'); background-position: ${item.photoPosition || "50% 50%"}"></div>` : ""}
         <p class="eyebrow">${item.role}</p>
-        <h3>${item.name}</h3>
+        <h3 class="${item.compactName ? "doctor-name-compact" : ""}">${item.name}</h3>
         <p><strong>${item.experience}</strong></p>
         <p>${item.focus}</p>
         ${hideActions ? "" : `<a class="button button-secondary" href="contacts.html#appointment" data-select-service="${item.role}" data-select-price="">Записаться</a>`}

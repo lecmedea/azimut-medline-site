@@ -850,6 +850,13 @@ button:focus-visible {
   font-size: 22px;
 }
 
+@media (min-width: 901px) {
+  .specialists-section .doctor-card h3.doctor-name-compact {
+    font-size: 16px;
+    white-space: nowrap;
+  }
+}
+
 .specialists-section .doctor-card p:not(.eyebrow):last-of-type,
 .specialists-section .doctor-card .button {
   display: none;

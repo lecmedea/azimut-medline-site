@@ -29,7 +29,8 @@ window.AZIMUT_DOCTORS = [
     experience: "Стаж: 14 лет",
     focus: "Помогает при тревоге, выгорании, кризисах идентичности и сложных семейных ситуациях. Его сильная сторона — точная клиническая диагностика и спокойная работа с человеком без давления и лишней драматизации.",
     photo: "assets/images/doctors-crops/viktor-gennadievich.png",
-    photoPosition: "50% 20%"
+    photoPosition: "50% 20%",
+    compactName: true
   },
   {
     name: "Клинический психолог",

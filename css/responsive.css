@@ -226,7 +226,14 @@
   }
 
   .specialists-section .doctor-card {
-    min-height: 280px;
+    min-height: 0;
+    width: min(100%, 340px);
+    aspect-ratio: 4 / 5;
+    justify-self: center;
+  }
+
+  .specialists-section .card-grid {
+    justify-items: center;
   }
 
   .order-actions {
