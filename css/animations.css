@@ -25,9 +25,9 @@
   min-width: 360px;
   min-height: 360px;
   border-radius: 48% 52% 42% 58%;
-  background: radial-gradient(circle, rgba(190, 232, 218, 0.45), rgba(230, 248, 244, 0.1) 58%, transparent 72%);
-  filter: blur(18px);
-  animation: azimutBlob 22s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(235, 207, 162, 0.36), rgba(255, 250, 241, 0.12) 58%, transparent 72%);
+  filter: blur(22px);
+  animation: azimutBlob 26s ease-in-out infinite alternate;
 }
 
 .purification-layer::before {
@@ -38,8 +38,8 @@
 .purification-layer::after {
   right: -18%;
   bottom: -24%;
-  background: radial-gradient(circle, rgba(176, 214, 232, 0.36), rgba(250, 246, 238, 0.16) 62%, transparent 74%);
-  animation-duration: 28s;
+  background: radial-gradient(circle, rgba(154, 76, 57, 0.18), rgba(250, 246, 238, 0.16) 62%, transparent 74%);
+  animation-duration: 32s;
 }
 
 .purification-mist {
@@ -60,7 +60,7 @@
 
 .azimut-clear-path path {
   fill: none;
-  stroke: rgba(42, 146, 136, 0.34);
+  stroke: rgba(185, 144, 89, 0.30);
   stroke-width: 2;
   stroke-dasharray: 8 16;
   animation: azimutDash 18s linear infinite;
@@ -76,14 +76,14 @@
   bottom: -10px;
   width: min(360px, 42vw);
   height: min(360px, 42vw);
-  opacity: 0.22;
+  opacity: 0.18;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 40% 70%, transparent 0 54%, rgba(52, 132, 112, 0.38) 55% 56%, transparent 57%),
-    radial-gradient(ellipse at 63% 43%, rgba(52, 132, 112, 0.34) 0 8%, transparent 9%),
-    radial-gradient(ellipse at 45% 52%, rgba(52, 132, 112, 0.28) 0 7%, transparent 8%),
-    radial-gradient(ellipse at 70% 62%, rgba(52, 132, 112, 0.24) 0 8%, transparent 9%);
-  animation: leafBreath 9s ease-in-out infinite alternate;
+    radial-gradient(ellipse at 40% 70%, transparent 0 54%, rgba(185, 144, 89, 0.34) 55% 56%, transparent 57%),
+    radial-gradient(ellipse at 63% 43%, rgba(154, 76, 57, 0.22) 0 8%, transparent 9%),
+    radial-gradient(ellipse at 45% 52%, rgba(185, 144, 89, 0.24) 0 7%, transparent 8%),
+    radial-gradient(ellipse at 70% 62%, rgba(154, 76, 57, 0.16) 0 8%, transparent 9%);
+  animation: leafBreath 11s ease-in-out infinite alternate;
 }
 
 .clarity-section,
