@@ -1,6 +1,6 @@
 (function () {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const targets = ".hero, .page-hero, .hero-banners-section, .premium-accordion-section, .specialists-section, .conditions-section, .formats-section, .directions-section, .you-alone-section, .order-panel-section, .audio-section, .cta-band, .site-footer";
+  const targets = ".hero, .page-hero, .formats-section, .directions-section, .you-alone-section, .audio-section, .cta-band, .site-footer";
 
   function createPathLayer() {
     return `
@@ -45,7 +45,7 @@
     if (reduceMotion) return;
     document.querySelectorAll(".purification-particles").forEach((canvas) => {
       const ctx = canvas.getContext("2d");
-      const particles = Array.from({ length: 14 }, () => ({
+      const particles = Array.from({ length: 18 }, () => ({
         x: Math.random(),
         y: Math.random(),
         r: 1 + Math.random() * 2.2,
@@ -63,7 +63,7 @@
           p.y -= p.s;
           if (p.y < -0.05) p.y = 1.05;
           ctx.beginPath();
-          ctx.fillStyle = `rgba(185, 144, 89, ${p.a})`;
+          ctx.fillStyle = `rgba(80, 164, 148, ${p.a})`;
           ctx.arc(p.x * canvas.width, p.y * canvas.height, p.r * devicePixelRatio, 0, Math.PI * 2);
           ctx.fill();
         });
