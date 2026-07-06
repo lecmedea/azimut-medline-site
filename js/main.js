@@ -287,7 +287,7 @@
   function getPriceAccordionHtml(formHash) {
     const sections = (window.AZIMUT_PRICE_SECTIONS || []).filter((section) => section.type !== "notes");
     return sections.map((section, index) => `
-      <details class="service-price-item" ${index === 0 ? "open" : ""}>
+      <details class="service-price-item">
         <summary>
           <span>${section.title}</span>
           <small>${section.items.length} ${pluralize(section.items.length, ["услуга", "услуги", "услуг"])}</small>

@@ -18,12 +18,12 @@
   --onyx: #5f5b66;
   --shadow: 0 18px 45px rgba(62, 46, 26, 0.10);
   --radius: 8px;
-  --azimut-glow: rgba(185, 144, 89, 0.20);
-  --azimut-glow-strong: rgba(185, 144, 89, 0.34);
+  --azimut-glow: rgba(139, 57, 31, 0.20);
+  --azimut-glow-strong: rgba(139, 57, 31, 0.34);
   --azimut-card-shadow: 0 18px 45px rgba(74, 58, 35, 0.11);
   --azimut-card-shadow-hover: 0 28px 75px rgba(80, 60, 34, 0.18);
   --azimut-transition: 320ms cubic-bezier(.2,.8,.2,1);
-  --azimut-gold-gradient: linear-gradient(145deg, #d5b375 0%, #b99059 48%, #986b42 100%);
+  --azimut-gold-gradient: linear-gradient(145deg, #b46a55 0%, #8B391F 52%, #5f2417 100%);
 }
 
 * {
@@ -794,8 +794,8 @@ button:focus-visible {
 .specialists-section .doctor-card {
   min-height: 340px;
   justify-content: flex-end;
-  padding: 20px;
-  border: 1px solid rgba(255, 250, 241, 0.20);
+  padding: 16px;
+  border: 1px solid transparent;
   border-radius: 22px;
   background: rgba(255, 250, 241, 0.08);
   box-shadow: 0 22px 54px rgba(24, 22, 20, 0.20);
@@ -848,12 +848,16 @@ button:focus-visible {
 .specialists-section .doctor-card h3 {
   margin-bottom: 6px;
   font-size: 22px;
+  line-height: 1.08;
 }
 
 @media (min-width: 901px) {
   .specialists-section .doctor-card h3.doctor-name-compact {
-    font-size: 16px;
+    font-size: clamp(12px, 0.8vw, 14px);
     white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    text-wrap: nowrap;
   }
 }
 
@@ -1733,16 +1737,36 @@ button:focus-visible {
 }
 
 .hero-banners-section {
-  padding-top: 28px;
+  position: relative;
+  padding: 48px 0 62px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 241, 0.84), rgba(244, 238, 226, 0.92)),
+    repeating-linear-gradient(135deg, rgba(139, 57, 31, 0.055) 0 1px, transparent 1px 22px);
+}
+
+.hero-banners-section::before {
+  content: "";
+  position: absolute;
+  inset: 16px 0 auto;
+  height: 180px;
+  pointer-events: none;
+  opacity: 0.46;
+  background:
+    linear-gradient(90deg, transparent 0 12%, rgba(139, 57, 31, 0.08) 12% 12.4%, transparent 12.4% 100%),
+    linear-gradient(90deg, transparent 0 74%, rgba(185, 144, 89, 0.12) 74% 74.35%, transparent 74.35% 100%);
 }
 
 .banner-rotator {
   position: relative;
-  min-height: 172px;
-  border: 1px solid rgba(213, 185, 139, 0.72);
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(255, 250, 241, 0.94), rgba(239, 222, 194, 0.88));
-  box-shadow: 0 20px 56px rgba(113, 83, 47, 0.10);
+  z-index: 1;
+  min-height: 238px;
+  border: 0;
+  border-radius: 26px;
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, 0.86), rgba(255, 250, 241, 0.58)),
+    repeating-linear-gradient(90deg, rgba(139, 57, 31, 0.07) 0 1px, transparent 1px 32px);
+  box-shadow: 0 28px 76px rgba(90, 60, 33, 0.12);
   overflow: hidden;
 }
 
@@ -1765,7 +1789,7 @@ button:focus-visible {
   align-content: center;
   align-items: center;
   gap: clamp(16px, 3vw, 30px);
-  padding: clamp(22px, 4vw, 36px);
+  padding: clamp(30px, 5vw, 52px);
   opacity: 0;
   transform: translateX(18px);
   animation: bannerRotate 15s infinite;
@@ -1775,7 +1799,7 @@ button:focus-visible {
   width: clamp(68px, 8vw, 108px);
   height: clamp(68px, 8vw, 108px);
   padding: 10px;
-  border: 1px solid rgba(185, 144, 89, 0.28);
+  border: 0;
   border-radius: 22px;
   background: rgba(255, 250, 241, 0.76);
   object-fit: contain;
@@ -2195,7 +2219,7 @@ button:focus-visible {
   background: var(--azimut-gold-gradient);
   color: #fff;
   font-weight: 300;
-  box-shadow: 0 14px 28px rgba(185, 144, 89, 0.20);
+  box-shadow: 0 14px 28px rgba(139, 57, 31, 0.20);
 }
 
 .test-form {
@@ -2265,6 +2289,31 @@ button:focus-visible {
 
 .you-alone-section .button-primary {
   margin-top: 18px;
+}
+
+.mini-card,
+.info-card,
+.feature-card,
+.article-card,
+.doctor-card,
+.service-card,
+.service-group-card,
+.price-card,
+.price-mini-card,
+.service-price-item,
+.service-price-card,
+.review-card,
+.photo-frame,
+.contact-form,
+.info-panel,
+.condition-card,
+.premium-accordion,
+.screening-test-card,
+.order-panel,
+.price-note-card,
+.notice,
+.map-placeholder {
+  border-color: transparent;
 }
 
 h2,
