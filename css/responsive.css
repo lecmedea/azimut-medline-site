@@ -412,10 +412,9 @@
   }
 
   .route-line::before {
-    left: -13px;
-    width: 22px;
-    height: 22px;
-    border-width: 4px;
+    width: 28px;
+    height: 28px;
+    border-width: 5px;
   }
 
   .route-line::after {
