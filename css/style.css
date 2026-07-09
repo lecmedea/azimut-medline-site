@@ -1,4 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&display=swap");
+@font-face {
+  font-family: "Gilroy-Light";
+  src: url("../assets/fonts/Gilroy-Light.otf") format("opentype");
+  font-weight: 300 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --bg: #fbf7ee;
@@ -45,7 +51,7 @@ body {
   overflow-x: hidden;
   background: var(--bg);
   color: var(--ink);
-  font-family: Raleway, Inter, "Segoe UI", Arial, sans-serif;
+  font-family: "Gilroy-Light", Inter, "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.6;
@@ -101,7 +107,7 @@ h3 {
 }
 
 h1 {
-  font-family: Raleway, Inter, "Segoe UI", Arial, sans-serif;
+  font-family: "Gilroy-Light", Inter, "Segoe UI", Arial, sans-serif;
   font-size: clamp(42px, 6vw, 72px);
   font-weight: 400;
   color: #977959;
