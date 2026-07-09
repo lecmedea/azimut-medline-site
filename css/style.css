@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap");
 
 :root {
   --bg: #fbf7ee;
@@ -14,7 +14,7 @@
   --teal-soft: #f6e9e4;
   --sand: #ead8bd;
   --emc-accent: #7c6a55;
-  --gold: #b99059;
+  --gold: #AE8B66;
   --onyx: #5f5b66;
   --shadow: 0 18px 45px rgba(62, 46, 26, 0.10);
   --radius: 8px;
@@ -23,7 +23,7 @@
   --azimut-card-shadow: 0 18px 45px rgba(74, 58, 35, 0.11);
   --azimut-card-shadow-hover: 0 28px 75px rgba(80, 60, 34, 0.18);
   --azimut-transition: 320ms cubic-bezier(.2,.8,.2,1);
-  --azimut-gold-gradient: linear-gradient(145deg, #b46a55 0%, #8B391F 52%, #5f2417 100%);
+  --azimut-gold-gradient: linear-gradient(145deg, #c6a27a 0%, #AE8B66 54%, #876845 100%);
 }
 
 * {
@@ -104,6 +104,7 @@ h1 {
   font-family: Montserrat, Inter, "Segoe UI", Arial, sans-serif;
   font-size: clamp(42px, 6vw, 72px);
   font-weight: 200;
+  color: #584021;
 }
 
 h2 {
@@ -478,13 +479,13 @@ button:focus-visible {
 }
 
 .button-primary {
-  background: #b99059;
+  background: #AE8B66;
   color: #fff;
   box-shadow: 0 12px 24px rgba(113, 83, 47, 0.18);
 }
 
 .button-primary:hover {
-  background: #a7804f;
+  background: #987553;
 }
 
 .button-secondary {
@@ -593,99 +594,36 @@ button:focus-visible {
 .compass-card {
   position: relative;
   --needle-angle: -90deg;
-  width: min(420px, 86vw);
+  width: min(520px, 88vw);
   aspect-ratio: 1;
-  border: 1px solid rgba(185, 144, 89, 0.34);
+  border: 0;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 252, 246, 0.96) 0 25%, transparent 26%),
-    conic-gradient(from 45deg, transparent 0 10deg, rgba(185, 144, 89, 0.22) 10deg 20deg, transparent 20deg 45deg, rgba(92, 82, 70, 0.12) 45deg 55deg, transparent 55deg 90deg),
-    repeating-conic-gradient(from -1deg, rgba(185, 144, 89, 0.24) 0 2deg, transparent 2deg 15deg),
-    radial-gradient(circle, #fffaf2 0 34%, #f3ead9 35% 68%, #dec7a5 69% 100%);
-  box-shadow: var(--shadow), inset 0 0 0 10px rgba(255, 252, 246, 0.64), inset 0 0 34px rgba(113, 88, 54, 0.12);
-  overflow: hidden;
+  background: transparent;
+  filter: drop-shadow(0 28px 45px rgba(113, 83, 47, 0.12));
+  overflow: visible;
 }
 
-.compass-card::before,
-.compass-card::after {
-  content: "";
-  position: absolute;
-  inset: 42px;
-  border-radius: 50%;
-  border: 1px solid rgba(185, 144, 89, 0.32);
-}
-
-.compass-card::after {
-  inset: 88px;
-  border-color: rgba(92, 82, 70, 0.18);
-}
-
-.compass-ring {
-  position: absolute;
-  inset: 18px;
-  border-radius: 50%;
-  background:
-    linear-gradient(90deg, transparent 49.8%, rgba(185, 144, 89, 0.24) 50%, transparent 50.2%),
-    linear-gradient(0deg, transparent 49.8%, rgba(185, 144, 89, 0.24) 50%, transparent 50.2%),
-    linear-gradient(45deg, transparent 49.8%, rgba(92, 82, 70, 0.12) 50%, transparent 50.2%),
-    linear-gradient(-45deg, transparent 49.8%, rgba(92, 82, 70, 0.12) 50%, transparent 50.2%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), inset 0 0 0 16px rgba(255, 255, 255, 0.22);
-  pointer-events: none;
-}
-
-.compass-mark {
-  position: absolute;
-  z-index: 5;
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.74);
-  color: var(--blue-dark);
-  font-size: 13px;
-  font-weight: 300;
-  box-shadow: 0 8px 20px rgba(113, 88, 54, 0.12);
-}
-
-.mark-n {
-  left: 50%;
-  top: 18px;
-  color: var(--teal);
-  transform: translateX(-50%);
-}
-
-.mark-e {
-  right: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.mark-s {
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-}
-
-.mark-w {
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
+.compass-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.94;
 }
 
 .route-line {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 39%;
-  height: 12px;
+  width: 32%;
+  height: 10px;
   border-radius: 999px 3px 3px 999px;
-  background: linear-gradient(90deg, rgba(255, 250, 241, 0.92), var(--gold) 42%, #6e5940 100%);
-  transform: rotate(var(--needle-angle));
+  background: linear-gradient(90deg, rgba(255, 250, 241, 0.86), var(--gold) 42%, #6d5437 100%);
+  transform: rotate(-35deg);
   transform-origin: left center;
   transition: transform 0.72s cubic-bezier(.22,.8,.24,1);
-  box-shadow: 0 10px 22px rgba(185, 144, 89, 0.28);
+  box-shadow: 0 10px 22px rgba(174, 139, 102, 0.28);
   z-index: 4;
+  opacity: 0.92;
 }
 
 .route-line::before {
@@ -709,39 +647,14 @@ button:focus-visible {
   top: 50%;
   border-top: 15px solid transparent;
   border-bottom: 15px solid transparent;
-  border-left: 26px solid #6e5940;
+  border-left: 26px solid #6d5437;
   transform: translateY(-50%);
   filter: drop-shadow(0 8px 12px rgba(22, 78, 122, 0.18));
 }
 
 .compass-card.is-following .route-line,
 .compass-card.is-orientation .route-line {
-  box-shadow: 0 12px 26px rgba(185, 144, 89, 0.34);
-}
-
-.compass-card.is-orientation .mark-n {
-  background: var(--azimut-gold-gradient);
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(185, 144, 89, 0.24);
-}
-
-.compass-core {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 116px;
-  height: 116px;
-  display: grid;
-  place-items: center;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.98), rgba(255, 250, 241, 0.86) 42%, rgba(238, 220, 187, 0.96) 100%);
-  color: var(--blue-dark);
-  font-weight: 300;
-  border: 1px solid rgba(185, 144, 89, 0.24);
-  box-shadow: 0 16px 38px rgba(113, 88, 54, 0.16), inset 0 0 0 8px rgba(255, 255, 255, 0.55);
-  z-index: 6;
+  box-shadow: 0 12px 26px rgba(174, 139, 102, 0.34);
 }
 
 .section {
@@ -1219,6 +1132,15 @@ button:focus-visible {
   background:
     radial-gradient(circle at 12% 20%, rgba(185, 144, 89, 0.13), transparent 28%),
     linear-gradient(135deg, #f7fbfb, #eef7f5 70%, #f6efe3);
+}
+
+.blog-hero {
+  min-height: 430px;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(255, 249, 238, 0.96) 0%, rgba(255, 249, 238, 0.78) 44%, rgba(255, 249, 238, 0.18) 100%),
+    url("../assets/generated/blog-hero-bg-wide.jpg") center / cover no-repeat;
 }
 
 .tabs {
@@ -2331,7 +2253,6 @@ h3,
 .price-mini-card strong,
 .premium-accordion summary,
 .accordion-icon,
-.compass-core,
 strong {
   font-weight: 300;
 }
@@ -2341,46 +2262,108 @@ h1 {
 }
 
 .site-footer {
-  padding: 48px 0;
+  padding: 54px 0;
   background:
-    linear-gradient(135deg, rgba(219, 190, 143, 0.94), rgba(169, 134, 82, 0.96));
-  color: #fffaf1;
+    linear-gradient(180deg, rgba(255, 250, 242, 0.92), rgba(248, 241, 229, 0.94)),
+    url("../assets/images/onyx-warm-bg.png") center / cover;
+  color: #51483f;
 }
 
-.footer-grid {
+.footer-shell {
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: 0.62fr 1.42fr 1fr 1fr;
+  gap: 0;
+  min-height: 420px;
+  padding: 48px 40px;
+  border: 1px solid rgba(174, 139, 102, 0.38);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 242, 0.72), rgba(246, 236, 220, 0.62)),
+    url("../assets/images/onyx-warm-bg.png") center / cover;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.70);
+  overflow: hidden;
 }
 
-.footer-logo {
-  width: min(100%, 260px);
+.footer-brand-panel,
+.footer-info,
+.footer-column {
+  min-width: 0;
+  padding: 0 34px;
+}
+
+.footer-brand-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0;
+  text-align: center;
+}
+
+.footer-logo-watermark {
+  width: min(148px, 100%);
   height: auto;
-  margin-bottom: 16px;
-  border-radius: 0;
+  opacity: 0.70;
   object-fit: contain;
-  background: transparent;
-  padding: 0;
-  mix-blend-mode: multiply;
+  filter: saturate(0.92);
+}
+
+.footer-brand-line {
+  width: 46px;
+  height: 1px;
+  margin: 28px 0 18px;
+  background: rgba(174, 139, 102, 0.56);
+}
+
+.footer-brand-panel p {
+  margin: 0;
+  color: #AE8B66;
+  text-align: center;
+}
+
+.footer-info,
+.footer-column {
+  border-left: 1px solid rgba(174, 139, 102, 0.34);
+}
+
+.footer-info p,
+.footer-info a,
+.footer-column a {
+  color: #5e5a55;
+  font-size: 15px;
+  line-height: 1.62;
 }
 
 .site-footer h3 {
-  color: #fff;
-  font-size: 17px;
+  margin-bottom: 28px;
+  color: #AE8B66;
+  font-size: 19px;
+  font-weight: 300;
 }
 
-.site-footer p,
+.site-footer h3::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 1px;
+  margin-top: 10px;
+  background: rgba(174, 139, 102, 0.62);
+}
+
+.site-footer p {
+  margin-bottom: 18px;
+}
+
 .site-footer a {
   display: block;
-  margin-bottom: 9px;
-  color: #fff7e9;
+  margin-bottom: 16px;
 }
 
 .site-footer a:hover {
-  color: #fff;
+  color: #AE8B66;
 }
 
 .footer-note {
   font-size: 13px;
-  color: #fff0d8 !important;
+  color: #7c6a55 !important;
 }

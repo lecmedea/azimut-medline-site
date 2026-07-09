@@ -265,8 +265,25 @@
     gap: 6px;
   }
 
-  .footer-grid {
-    grid-template-columns: 1fr;
+  .footer-shell {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 34px;
+    padding: 36px 28px;
+  }
+
+  .footer-brand-panel,
+  .footer-info,
+  .footer-column {
+    padding: 0 22px;
+  }
+
+  .footer-brand-panel {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .footer-brand-panel p {
+    text-align: left;
   }
 
   .section-heading,
@@ -390,40 +407,6 @@
     width: min(310px, 88vw);
   }
 
-  .compass-card::before {
-    inset: 32px;
-  }
-
-  .compass-card::after {
-    inset: 68px;
-  }
-
-  .compass-ring {
-    inset: 14px;
-  }
-
-  .compass-mark {
-    width: 30px;
-    height: 30px;
-    font-size: 11px;
-  }
-
-  .mark-n {
-    top: 12px;
-  }
-
-  .mark-e {
-    right: 12px;
-  }
-
-  .mark-s {
-    bottom: 12px;
-  }
-
-  .mark-w {
-    left: 12px;
-  }
-
   .route-line {
     height: 8px;
   }
@@ -440,12 +423,6 @@
     border-top-width: 12px;
     border-bottom-width: 12px;
     border-left-width: 22px;
-  }
-
-  .compass-core {
-    width: 96px;
-    height: 96px;
-    font-size: 14px;
   }
 
   .mini-card,
@@ -496,10 +473,6 @@
     min-height: auto;
   }
 
-  .hero-visual .compass-card {
-    display: none;
-  }
-
   .hero-proof-list {
     margin-top: 8px;
   }
@@ -536,6 +509,31 @@
 
   .hero-copy .lead {
     font-size: 17px;
+  }
+
+  .footer-shell {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding: 30px 22px;
+    border-radius: 16px;
+  }
+
+  .footer-brand-panel,
+  .footer-info,
+  .footer-column {
+    padding: 22px 0;
+    border-left: 0;
+    border-top: 1px solid rgba(174, 139, 102, 0.28);
+  }
+
+  .footer-brand-panel {
+    padding-top: 0;
+    border-top: 0;
+    align-items: center;
+  }
+
+  .footer-brand-panel p {
+    text-align: center;
   }
 
   .premium-accordion-section .section-heading {
