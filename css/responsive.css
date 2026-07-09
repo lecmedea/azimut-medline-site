@@ -408,20 +408,20 @@
   }
 
   .route-line {
-    height: 8px;
+    height: 4px;
   }
 
   .route-line::before {
-    width: 28px;
-    height: 28px;
-    border-width: 5px;
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
   }
 
   .route-line::after {
-    right: -14px;
-    border-top-width: 12px;
-    border-bottom-width: 12px;
-    border-left-width: 22px;
+    right: -8px;
+    border-top-width: 7px;
+    border-bottom-width: 7px;
+    border-left-width: 14px;
   }
 
   .mini-card,
@@ -514,7 +514,7 @@
     grid-template-columns: 1fr;
     min-height: 0;
     padding: 30px 22px;
-    border-radius: 16px;
+    border-radius: 0;
   }
 
   .footer-brand-panel,
