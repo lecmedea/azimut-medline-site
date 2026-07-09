@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&display=swap");
 
 :root {
   --bg: #fbf7ee;
@@ -103,7 +103,7 @@ h3 {
 h1 {
   font-family: Raleway, Inter, "Segoe UI", Arial, sans-serif;
   font-size: clamp(42px, 6vw, 72px);
-  font-weight: 300;
+  font-weight: 400;
   color: #977959;
 }
 
@@ -523,8 +523,8 @@ button:focus-visible {
   overflow: hidden;
   padding: 70px 0 64px;
   background:
-    linear-gradient(110deg, rgba(255, 250, 241, 0.93) 0%, rgba(255, 255, 255, 0.78) 52%, rgba(255, 250, 241, 0.66) 100%),
-    url("../assets/images/onyx-warm-bg.png") center / cover;
+    linear-gradient(90deg, rgba(255, 249, 238, 0.96) 0%, rgba(255, 249, 238, 0.78) 44%, rgba(255, 249, 238, 0.18) 100%),
+    url("../assets/generated/blog-hero-bg-wide.jpg") center / cover;
 }
 
 .hero::after {
@@ -627,17 +627,7 @@ button:focus-visible {
 }
 
 .route-line::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(174, 139, 102, 0.92);
-  border-radius: 50%;
-  background: transparent;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 5px 14px rgba(113, 88, 54, 0.12);
+  content: none;
 }
 
 .route-line::after {
@@ -2258,7 +2248,7 @@ strong {
 }
 
 h1 {
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .site-footer {
@@ -2293,7 +2283,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-left: 0;
+  padding: 0 34px;
   text-align: center;
 }
 

@@ -278,12 +278,12 @@
   }
 
   .footer-brand-panel {
-    align-items: flex-start;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center;
   }
 
   .footer-brand-panel p {
-    text-align: left;
+    text-align: center;
   }
 
   .section-heading,
@@ -409,12 +409,6 @@
 
   .route-line {
     height: 4px;
-  }
-
-  .route-line::before {
-    width: 16px;
-    height: 16px;
-    border-width: 2px;
   }
 
   .route-line::after {
