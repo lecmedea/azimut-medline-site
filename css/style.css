@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap");
+
 @font-face {
   font-family: "Gilroy-Light";
   src: url("../assets/fonts/Gilroy-Light.otf") format("opentype");
@@ -107,8 +109,8 @@ h3 {
 }
 
 h1 {
-  font-family: "Gilroy-Light", Inter, "Segoe UI", Arial, sans-serif;
-  font-size: clamp(42px, 6vw, 72px);
+  font-family: Montserrat, "Gilroy-Light", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: clamp(36px, 5vw, 62px);
   font-weight: 400;
   color: #977959;
 }
@@ -531,6 +533,83 @@ button:focus-visible {
   background:
     linear-gradient(90deg, rgba(255, 249, 238, 0.96) 0%, rgba(255, 249, 238, 0.78) 44%, rgba(255, 249, 238, 0.18) 100%),
     url("../assets/generated/blog-hero-bg-wide.jpg") center / cover;
+}
+
+.home-depth-bg {
+  --home-bg-y: 0px;
+  --home-bg-drift: 0px;
+  --home-depth-soft: 0px;
+  --home-depth-visual: 0px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: #fff6e9;
+}
+
+.home-depth-bg::before {
+  content: "";
+  position: absolute;
+  inset: -10vh 0 -16vh;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 249, 238, 0.96) 0%, rgba(255, 249, 238, 0.78) 42%, rgba(255, 249, 238, 0.14) 100%),
+    url("../assets/generated/home-flow-bg-tall.jpg") center calc(0% + var(--home-bg-y)) / cover no-repeat;
+  transform: translate3d(0, var(--home-bg-drift), 0) scale(1.04);
+  transform-origin: center top;
+  will-change: transform, background-position;
+}
+
+.home-depth-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 74% 16%, rgba(255, 255, 255, 0.48), transparent 32%),
+    linear-gradient(180deg, transparent 0 78%, rgba(251, 247, 238, 0.92) 100%);
+}
+
+.home-depth-bg > .hero,
+.home-depth-bg > .section {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+.home-depth-bg .hero-banners-section,
+.home-depth-bg .premium-accordion-section {
+  background: transparent;
+}
+
+.home-depth-bg .hero-grid-premium,
+.home-depth-bg .banner-rotator,
+.home-depth-bg .premium-accordion {
+  transform: translate3d(0, var(--home-depth-soft), 0);
+  transition: transform 120ms linear;
+  will-change: transform;
+}
+
+.home-depth-bg .hero-visual {
+  transform: translate3d(0, var(--home-depth-visual), 0);
+  transition: transform 120ms linear;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-depth-bg::before {
+    background-position: center top;
+    transform: none;
+  }
+
+  .home-depth-bg .hero-grid-premium,
+  .home-depth-bg .banner-rotator,
+  .home-depth-bg .premium-accordion,
+  .home-depth-bg .hero-visual {
+    transform: none;
+    transition: none;
+  }
 }
 
 .hero::after {
@@ -1637,8 +1716,8 @@ button:focus-visible {
 
 .hero-copy h1 {
   max-width: 690px;
-  font-size: clamp(46px, 5vw, 68px);
-  font-weight: 300;
+  font-size: clamp(38px, 4.6vw, 58px);
+  font-weight: 400;
 }
 
 .hero-copy .lead {

@@ -183,6 +183,40 @@
     compass.addEventListener("touchstart", startOrientationCompass, { passive: true, once: true });
   }
 
+  function initHomeDepthParallax() {
+    const section = $("[data-parallax-bg]");
+    if (!section) return;
+
+    const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    let ticking = false;
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    const update = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height), 0, 1);
+      const centered = progress - 0.5;
+
+      section.style.setProperty("--home-bg-y", `${(centered * 140).toFixed(1)}px`);
+      section.style.setProperty("--home-bg-drift", `${(centered * -42).toFixed(1)}px`);
+      section.style.setProperty("--home-depth-soft", `${(centered * -16).toFixed(1)}px`);
+      section.style.setProperty("--home-depth-visual", `${(centered * 26).toFixed(1)}px`);
+      ticking = false;
+    };
+
+    const requestUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+  }
+
   function initModals() {
     const openers = $$("[data-modal-open]");
     if (!openers.length) return;
@@ -445,6 +479,7 @@
     initMenu();
     initDropdowns();
     initCompass();
+    initHomeDepthParallax();
     initModals();
     initAccordions();
     renderBlocks();
