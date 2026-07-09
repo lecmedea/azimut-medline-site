@@ -618,7 +618,7 @@ button:focus-visible {
   height: 10px;
   border-radius: 999px 3px 3px 999px;
   background: linear-gradient(90deg, rgba(255, 250, 241, 0.86), var(--gold) 42%, #6d5437 100%);
-  transform: rotate(-35deg);
+  transform: rotate(var(--needle-angle));
   transform-origin: left center;
   transition: transform 0.72s cubic-bezier(.22,.8,.24,1);
   box-shadow: 0 10px 22px rgba(174, 139, 102, 0.28);
