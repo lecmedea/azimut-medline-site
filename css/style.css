@@ -2513,18 +2513,18 @@ h1 {
 .footer-brand-panel {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 0;
   height: 100%;
-  padding: 0 18px;
-  text-align: center;
+  padding: 0 18px 0 0;
+  text-align: left;
 }
 
 .footer-logo-watermark {
   width: min(148px, 100%);
   height: auto;
-  margin: 0 auto;
+  margin: 0;
   opacity: 0.70;
   object-fit: contain;
   filter: saturate(0.92);
@@ -2533,14 +2533,14 @@ h1 {
 .footer-brand-line {
   width: 46px;
   height: 1px;
-  margin: 28px auto 18px;
+  margin: 28px 0 18px;
   background: rgba(174, 139, 102, 0.56);
 }
 
 .footer-brand-panel p {
   margin: 0;
   color: #AE8B66;
-  text-align: center;
+  text-align: left;
 }
 
 .footer-info,
