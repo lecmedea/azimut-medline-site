@@ -1,26 +1,4 @@
-@font-face {
-  font-family: "Farabee";
-  src: url("../assets/fonts/farabee/Farabee-Light.ttf") format("truetype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Farabee";
-  src: url("../assets/fonts/farabee/Farabee-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Farabee";
-  src: url("../assets/fonts/farabee/Farabee-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap");
 
 :root {
   --bg: #fbf7ee;
@@ -67,10 +45,11 @@ body {
   overflow-x: hidden;
   background: var(--bg);
   color: var(--ink);
-  font-family: "Farabee", Inter, "Segoe UI", Arial, sans-serif;
+  font-family: "Montserrat", Inter, "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.6;
+  letter-spacing: 0;
 }
 
 body::before {
@@ -123,10 +102,11 @@ h3 {
 }
 
 h1 {
-  font-family: "Farabee", Inter, "Segoe UI", Arial, sans-serif;
+  font-family: "Montserrat", Inter, "Segoe UI", Arial, sans-serif;
   font-size: clamp(36px, 5vw, 62px);
   font-weight: 400;
   color: #584021;
+  letter-spacing: 0;
 }
 
 h2 {
@@ -726,7 +706,7 @@ button:focus-visible {
   color: var(--teal);
   font-size: 13px;
   font-weight: 300;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
@@ -1930,7 +1910,7 @@ button:focus-visible {
   color: var(--teal);
   font-size: 12px;
   font-weight: 300;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
@@ -2341,7 +2321,7 @@ button:focus-visible {
   color: var(--teal);
   font-size: 12px;
   font-weight: 300;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
