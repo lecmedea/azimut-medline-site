@@ -184,8 +184,8 @@
   }
 
   function initHomeDepthParallax() {
-    const section = $("[data-parallax-bg]");
-    if (!section) return;
+    const sections = $$("[data-parallax-bg], [data-parallax-bg-secondary]");
+    if (!sections.length) return;
 
     const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
@@ -194,15 +194,22 @@
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
     const update = () => {
-      const rect = section.getBoundingClientRect();
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height), 0, 1);
-      const centered = progress - 0.5;
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height), 0, 1);
+        const centered = progress - 0.5;
+        const isSecondary = section.hasAttribute("data-parallax-bg-secondary");
+        const bgRange = isSecondary ? 104 : 140;
+        const driftRange = isSecondary ? -30 : -42;
+        const softRange = isSecondary ? -12 : -16;
+        const visualRange = isSecondary ? 16 : 26;
 
-      section.style.setProperty("--home-bg-y", `${(centered * 140).toFixed(1)}px`);
-      section.style.setProperty("--home-bg-drift", `${(centered * -42).toFixed(1)}px`);
-      section.style.setProperty("--home-depth-soft", `${(centered * -16).toFixed(1)}px`);
-      section.style.setProperty("--home-depth-visual", `${(centered * 26).toFixed(1)}px`);
+        section.style.setProperty("--home-bg-y", `${(centered * bgRange).toFixed(1)}px`);
+        section.style.setProperty("--home-bg-drift", `${(centered * driftRange).toFixed(1)}px`);
+        section.style.setProperty("--home-depth-soft", `${(centered * softRange).toFixed(1)}px`);
+        section.style.setProperty("--home-depth-visual", `${(centered * visualRange).toFixed(1)}px`);
+      });
       ticking = false;
     };
 
