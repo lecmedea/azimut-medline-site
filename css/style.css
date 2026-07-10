@@ -824,26 +824,38 @@ button:focus-visible {
   background: var(--soft);
 }
 
-.specialists-section,
-.you-alone-section {
+.specialists-section {
   background:
     linear-gradient(90deg, rgba(95, 91, 102, 0.78), rgba(124, 106, 85, 0.64)),
     url("../assets/images/onyx-warm-bg.png") center / cover;
   color: #fff;
 }
 
+.you-alone-section {
+  background: transparent;
+  color: var(--ink);
+}
+
 .specialists-section h2,
 .specialists-section p,
-.specialists-section .eyebrow,
-.you-alone-section h2,
-.you-alone-section p,
-.you-alone-section .eyebrow,
-.you-alone-section li {
+.specialists-section .eyebrow {
   color: #fff;
 }
 
-.specialists-section .button-secondary,
-.you-alone-section .button-primary {
+.you-alone-section h2 {
+  color: #977959;
+}
+
+.you-alone-section p,
+.you-alone-section li {
+  color: var(--muted);
+}
+
+.you-alone-section .eyebrow {
+  color: var(--teal);
+}
+
+.specialists-section .button-secondary {
   background: #fff;
   color: var(--emc-accent);
   border-color: rgba(255, 255, 255, 0.72);
