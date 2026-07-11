@@ -1,5 +1,7 @@
+const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 const DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions";
-const MODEL = "deepseek-v4-flash";
+const DEFAULT_OPENAI_MODEL = "gpt-4.1-nano";
+const DEFAULT_DEEPSEEK_MODEL = "deepseek-v4-flash";
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_HISTORY_MESSAGES = 10;
 
@@ -141,7 +143,7 @@ async function readJsonBody(request) {
 
 async function requestDeepSeek(apiKey, body, allowThinking = true) {
   const payload = {
-    model: MODEL,
+    model: process.env.DEEPSEEK_MODEL || DEFAULT_DEEPSEEK_MODEL,
     messages: body.messages,
     temperature: 0.35,
     max_tokens: 700,
@@ -174,15 +176,53 @@ async function requestDeepSeek(apiKey, body, allowThinking = true) {
   return data;
 }
 
+async function requestOpenAI(apiKey, body) {
+  const payload = {
+    model: process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL,
+    messages: body.messages,
+    temperature: 0.35,
+    max_tokens: 700
+  };
+
+  const response = await fetch(OPENAI_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    const message = data?.error?.message || `OpenAI API error: ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
+}
+
+function getAiProvider() {
+  const configuredProvider = String(process.env.AI_PROVIDER || "").trim().toLowerCase();
+  if (configuredProvider === "openai" || configuredProvider === "deepseek") {
+    return configuredProvider;
+  }
+  return process.env.OPENAI_API_KEY ? "openai" : "deepseek";
+}
+
 module.exports = async function chatHandler(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
     return sendJson(response, 405, { error: "Метод не поддерживается. Используйте POST-запрос." });
   }
 
-  const apiKey = process.env.DEEPSEEK_API_KEY;
+  const provider = getAiProvider();
+  const apiKey = provider === "openai" ? process.env.OPENAI_API_KEY : process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
-    return sendJson(response, 500, { error: "AI-помощник пока не настроен. Администратору нужно добавить DEEPSEEK_API_KEY." });
+    return sendJson(response, 500, { error: `AI-помощник пока не настроен. Администратору нужно добавить ${provider === "openai" ? "OPENAI_API_KEY" : "DEEPSEEK_API_KEY"}.` });
   }
 
   try {
@@ -202,13 +242,17 @@ module.exports = async function chatHandler(request, response) {
     };
 
     let completion;
-    try {
-      completion = await requestDeepSeek(apiKey, requestBody, true);
-    } catch (error) {
-      const isThinkingError = /thinking/i.test(error.message || "");
-      if (!isThinkingError) throw error;
-      console.error("DeepSeek thinking option failed, retrying without thinking:", error);
-      completion = await requestDeepSeek(apiKey, requestBody, false);
+    if (provider === "openai") {
+      completion = await requestOpenAI(apiKey, requestBody);
+    } else {
+      try {
+        completion = await requestDeepSeek(apiKey, requestBody, true);
+      } catch (error) {
+        const isThinkingError = /thinking/i.test(error.message || "");
+        if (!isThinkingError) throw error;
+        console.error("DeepSeek thinking option failed, retrying without thinking:", error);
+        completion = await requestDeepSeek(apiKey, requestBody, false);
+      }
     }
 
     const answer = completion?.choices?.[0]?.message?.content?.trim();

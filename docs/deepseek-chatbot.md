@@ -1,15 +1,15 @@
-# DeepSeek AI-бот для сайта
+# AI-бот для сайта: OpenAI или DeepSeek
 
 ## 1. Что делает AI-бот
 
 AI-бот помогает посетителю сайта «Центр ментального здоровья Азимут Клиник» сориентироваться по услугам, ценам, форматам помощи, записи и контактам. Он не заменяет врача, не ставит диагнозы и не назначает лечение.
 
-## 2. Почему DeepSeek API нельзя вызывать из браузера
+## 2. Почему API-ключ нельзя вызывать из браузера
 
-DeepSeek API key нельзя хранить в HTML, frontend JS, CSS, виджете или публичном репозитории. Любой код браузера доступен посетителю сайта, поэтому прямой вызов DeepSeek из frontend раскроет ключ. Правильная схема:
+OpenAI/DeepSeek API key нельзя хранить в HTML, frontend JS, CSS, виджете или публичном репозитории. Любой код браузера доступен посетителю сайта, поэтому прямой вызов API из frontend раскроет ключ. Правильная схема:
 
 ```text
-Пользователь на сайте -> чат-виджет -> /api/chat -> DeepSeek API -> чат-виджет
+Пользователь на сайте -> чат-виджет -> /api/chat -> OpenAI/DeepSeek API -> чат-виджет
 ```
 
 ## 3. Где находится backend endpoint
@@ -20,7 +20,7 @@ Backend endpoint находится в:
 api/chat.js
 ```
 
-Он принимает только `POST`-запросы на `/api/chat`, проверяет `DEEPSEEK_API_KEY`, валидирует сообщение, ограничивает длину входа и отправляет запрос в DeepSeek.
+Он принимает только `POST`-запросы на `/api/chat`, проверяет API-ключ, валидирует сообщение, ограничивает длину входа и отправляет запрос выбранному провайдеру.
 
 ## 4. Где находится frontend-виджет
 
@@ -68,22 +68,32 @@ css/chatbot.css
 
 Там описаны закрытая кнопка, стеклянная панель, сообщения, быстрые кнопки, мобильная версия, фокус-состояния и `prefers-reduced-motion`.
 
-## 8. Где менять модель DeepSeek
+## 8. Где менять провайдера и модель
 
-Модель задаётся в `api/chat.js`:
+Провайдер и модель задаются переменными окружения:
 
-```js
-const MODEL = "deepseek-v4-flash";
+```text
+AI_PROVIDER=openai
+OPENAI_MODEL=gpt-4.1-nano
 ```
 
-Параметры запроса там же: `thinking`, `temperature`, `max_tokens`, `stream`.
+Если `AI_PROVIDER` не задан, код сам выберет OpenAI при наличии `OPENAI_API_KEY`, иначе DeepSeek.
+
+Для DeepSeek можно использовать:
+
+```text
+AI_PROVIDER=deepseek
+DEEPSEEK_MODEL=deepseek-v4-flash
+```
 
 ## 9. Как добавить API-ключ локально
 
 Создать файл `.env.local` в корне проекта:
 
 ```text
-DEEPSEEK_API_KEY=сюда_вставить_свой_новый_deepseek_api_key
+AI_PROVIDER=openai
+OPENAI_API_KEY=сюда_вставить_новый_openai_api_key
+OPENAI_MODEL=gpt-4.1-nano
 ```
 
 Файл `.env.local` не должен попадать в GitHub. Он добавлен в `.gitignore`.
@@ -94,18 +104,34 @@ DEEPSEEK_API_KEY=сюда_вставить_свой_новый_deepseek_api_key
 .env.example
 ```
 
-## 10. Как добавить API-ключ на Vercel
+## 10. Как оплатить и добавить API-ключ OpenAI
+
+1. Открыть OpenAI Platform: https://platform.openai.com/
+2. Добавить оплату в Billing: https://platform.openai.com/settings/organization/billing/overview
+3. Создать новый API key: https://platform.openai.com/api-keys
+4. Посмотреть доступные модели в Models: https://platform.openai.com/docs/models
+5. Проверить стоимость модели в Pricing: https://platform.openai.com/docs/pricing
+
+Важно: если ключ был отправлен в чат, письмо или публичный документ, его нужно удалить/отозвать и создать новый.
+
+## 11. Как добавить API-ключ на Vercel
 
 В настройках проекта Vercel добавить Environment Variable:
 
 ```text
-Name: DEEPSEEK_API_KEY
-Value: реальный DeepSeek API key
+Name: AI_PROVIDER
+Value: openai
+
+Name: OPENAI_API_KEY
+Value: реальный OpenAI API key
+
+Name: OPENAI_MODEL
+Value: gpt-4.1-nano
 ```
 
 Не указывать значение ключа в коде или документации. После добавления переменной выполнить redeploy.
 
-## 11. Как проверить работу бота
+## 12. Как проверить работу бота
 
 Для обычного `python3 -m http.server` frontend откроется, но `/api/chat` работать не будет. Нужен Vercel dev или другой сервер, который поддерживает `/api/chat`.
 
@@ -130,9 +156,9 @@ curl -i -X POST http://localhost:3000/api/chat \
   -d '{"message":"Сколько стоит онлайн-консультация психолога?","history":[],"pageUrl":"http://localhost:3000","utm":{}}'
 ```
 
-`GET /api/chat` должен вернуть ошибку метода. При отсутствии `DEEPSEEK_API_KEY` endpoint возвращает понятное сообщение, что AI-помощник не настроен.
+`GET /api/chat` должен вернуть ошибку метода. При отсутствии API-ключа endpoint возвращает понятное сообщение, что AI-помощник не настроен.
 
-## 12. Как подключить Битрикс24 позже
+## 13. Как подключить Битрикс24 позже
 
 В `js/chatbot.js` при обнаружении телефона формируется `leadData`:
 
@@ -165,7 +191,7 @@ window.AzimutBitrix.sendChatLeadToBitrix24(leadData)
 
 Позже внутри этой функции можно подключить webhook или backend-прокси для Битрикс24.
 
-## 13. Какие медицинские ограничения встроены
+## 14. Какие медицинские ограничения встроены
 
 Бот не должен:
 
