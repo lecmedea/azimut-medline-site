@@ -2517,7 +2517,7 @@ h1 {
   width: min(156px, 100%);
   gap: 0;
   text-align: center;
-  transform: translateX(-20%);
+  transform: translateX(-35%);
 }
 
 .footer-logo-watermark {
