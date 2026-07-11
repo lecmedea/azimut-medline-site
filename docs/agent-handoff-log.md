@@ -2,6 +2,19 @@
 
 Этот файл нужен для синхронизации Codex, Grok и других агентов. README не использовать для оперативных заметок.
 
+## 2026-07-12
+
+- Начато подключение проекта к Vercel:
+  - добавлен `vercel.json` с `Cache-Control: no-store` для `/api/*`, чтобы ответы AI-чата не кэшировались;
+  - Vercel должен деплоить статические страницы из корня проекта и serverless endpoint `api/chat.js`;
+  - реальные API-ключи по-прежнему не хранить в репозитории.
+- Для работы «Филиппа Филипповича» на Vercel после создания/claim проекта нужны Environment Variables:
+  - `AI_PROVIDER=artemox`;
+  - `OPENAI_BASE_URL=https://api.artemox.com/v1`;
+  - `OPENAI_API_KEY=<реальный ключ только в Vercel Environment Variables>`;
+  - `OPENAI_MODEL=gpt-4o-mini`.
+- Черновики `font-sample-index.html` и `assets/fonts/samples/` не публиковать без отдельного запроса владельца.
+
 ## 2026-07-11
 
 - Шапка сайта переделана по архитектуре EMC, но в стилистике Азимут Клиник:
