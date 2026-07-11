@@ -69,7 +69,7 @@
         <p class="pin-gate-text">Сайт временно открыт только для команды. Введите PIN-код, чтобы продолжить.</p>
         <form class="pin-gate-form">
           <label class="visually-hidden" for="pin-gate-input">PIN-код</label>
-          <input class="pin-gate-input" id="pin-gate-input" name="pin" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="4" placeholder="2206" aria-describedby="pin-gate-error">
+          <input class="pin-gate-input" id="pin-gate-input" name="pin" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="4" placeholder="PIN-код" aria-describedby="pin-gate-error">
           <button class="pin-gate-button" type="submit">Войти на сайт</button>
           <p class="pin-gate-error" id="pin-gate-error" aria-live="polite"></p>
         </form>
