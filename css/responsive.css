@@ -553,6 +553,7 @@
     width: min(148px, 72vw);
     margin: 0 auto;
     align-items: center;
+    transform: none;
   }
 
   .footer-info {
