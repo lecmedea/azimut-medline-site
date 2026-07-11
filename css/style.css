@@ -750,6 +750,7 @@ button:focus-visible {
   background: transparent;
   filter: drop-shadow(0 28px 45px rgba(113, 83, 47, 0.12));
   overflow: visible;
+  cursor: pointer;
 }
 
 .compass-image {
@@ -792,8 +793,14 @@ button:focus-visible {
 }
 
 .compass-card.is-following .route-line,
-.compass-card.is-orientation .route-line {
+.compass-card.is-orientation .route-line,
+.compass-card.is-routing .route-line {
   box-shadow: 0 12px 26px rgba(174, 139, 102, 0.34);
+}
+
+.compass-invite,
+.compass-status {
+  display: none;
 }
 
 .section {
@@ -959,10 +966,6 @@ button:focus-visible {
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.88);
   box-shadow: var(--azimut-card-shadow);
-}
-
-.conditions-section .condition-icon {
-  display: none;
 }
 
 .condition-icon {

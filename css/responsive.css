@@ -412,6 +412,19 @@
     width: 100%;
   }
 
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-copy,
+  .hero-content,
+  .hero-copy .lead,
+  .hero-copy .support-text {
+    min-width: 0;
+    max-width: 100%;
+  }
+
   .hero-form {
     grid-template-columns: 1fr;
   }
@@ -427,6 +440,25 @@
 
   .compass-card {
     width: min(310px, 88vw);
+  }
+
+  .compass-invite,
+  .compass-status {
+    display: block;
+    max-width: 310px;
+    margin: 10px auto 0;
+    color: #6f665b;
+    font-size: 14px;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  .compass-invite {
+    color: #977959;
+  }
+
+  .compass-status:empty {
+    display: none;
   }
 
   .route-line {
@@ -565,6 +597,11 @@
   .footer-column:nth-of-type(2) {
     grid-column: auto;
     grid-row: auto;
+  }
+
+  .footer-column[aria-label="Разделы"] {
+    padding-left: 0;
+    border-left: 0;
   }
 
   .footer-contact {

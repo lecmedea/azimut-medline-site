@@ -120,9 +120,17 @@
   function initCompass() {
     const compass = $(".compass-card");
     if (!compass) return;
-    if (matchMedia("(max-width: 860px)").matches) return;
+    const mobileCompass = matchMedia("(max-width: 860px)").matches;
+    const status = $(".compass-status");
+    const clinic = {
+      lat: Number(compass.dataset.clinicLat || 55.660607),
+      lon: Number(compass.dataset.clinicLon || 37.538170)
+    };
     let usesDeviceOrientation = false;
     let currentNeedleAngle = -90;
+    let deviceHeading = 0;
+    let targetBearing = null;
+    let geoWatchId = null;
 
     const setNeedleAngle = (angle, mode) => {
       const normalizedAngle = ((angle % 360) + 360) % 360;
@@ -134,6 +142,24 @@
       compass.style.setProperty("--needle-angle", `${currentNeedleAngle}deg`);
       compass.classList.toggle("is-orientation", mode === "orientation");
       compass.classList.toggle("is-following", mode === "pointer");
+      compass.classList.toggle("is-routing", mode === "route");
+    };
+
+    const toRad = (value) => value * Math.PI / 180;
+    const toDeg = (value) => value * 180 / Math.PI;
+    const bearingToClinic = (position) => {
+      const lat1 = toRad(position.coords.latitude);
+      const lat2 = toRad(clinic.lat);
+      const deltaLon = toRad(clinic.lon - position.coords.longitude);
+      const y = Math.sin(deltaLon) * Math.cos(lat2);
+      const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLon);
+      return (toDeg(Math.atan2(y, x)) + 360) % 360;
+    };
+
+    const updateRouteNeedle = () => {
+      if (targetBearing === null) return;
+      const screenAngle = screen.orientation?.angle || window.orientation || 0;
+      setNeedleAngle(targetBearing - deviceHeading - 90 + screenAngle, "route");
     };
 
     const normalizeHeading = (event) => {
@@ -150,6 +176,11 @@
       const heading = normalizeHeading(event);
       if (heading === null) return;
       usesDeviceOrientation = true;
+      deviceHeading = heading;
+      if (mobileCompass && targetBearing !== null) {
+        updateRouteNeedle();
+        return;
+      }
       const screenAngle = screen.orientation?.angle || window.orientation || 0;
       setNeedleAngle(-heading - 90 + screenAngle, "orientation");
     };
@@ -167,6 +198,40 @@
       window.addEventListener("deviceorientation", updateNorthNeedle, true);
     };
 
+    const setCompassStatus = (message) => {
+      if (status) status.textContent = message;
+    };
+
+    const startClinicCompass = async () => {
+      if (!mobileCompass) {
+        startOrientationCompass();
+        return;
+      }
+      if (!navigator.geolocation) {
+        setCompassStatus("Ваш браузер не передает геопозицию. Позвоните нам, и администратор подскажет маршрут.");
+        return;
+      }
+      setCompassStatus("Запросим геопозицию только для направления стрелки к клинике.");
+      await startOrientationCompass();
+      if (geoWatchId !== null) {
+        updateRouteNeedle();
+        return;
+      }
+      geoWatchId = navigator.geolocation.watchPosition(
+        (position) => {
+          targetBearing = bearingToClinic(position);
+          updateRouteNeedle();
+          setCompassStatus("Стрелка показывает направление к Азимут Клиник на Старокалужском шоссе.");
+        },
+        () => {
+          if (geoWatchId !== null) navigator.geolocation.clearWatch(geoWatchId);
+          geoWatchId = null;
+          setCompassStatus("Геопозиция не включилась. Компас останется декоративным, а маршрут можно уточнить по телефону.");
+        },
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+      );
+    };
+
     const updateNeedle = (event) => {
       if (usesDeviceOrientation) return;
       const rect = compass.getBoundingClientRect();
@@ -175,12 +240,17 @@
       const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * 180 / Math.PI;
       setNeedleAngle(angle, "pointer");
     };
-    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    if (!mobileCompass && matchMedia("(hover: hover) and (pointer: fine)").matches) {
       window.addEventListener("mousemove", updateNeedle);
     }
-    startOrientationCompass();
-    compass.addEventListener("click", startOrientationCompass);
-    compass.addEventListener("touchstart", startOrientationCompass, { passive: true, once: true });
+    if (!mobileCompass) startOrientationCompass();
+    compass.addEventListener("click", startClinicCompass);
+    compass.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        startClinicCompass();
+      }
+    });
   }
 
   function initHomeDepthParallax() {

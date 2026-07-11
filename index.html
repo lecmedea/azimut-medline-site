@@ -6,11 +6,35 @@
   <meta name="description" content="Центр ментального здоровья Азимут Клиник: психиатрия, наркология, психологическая помощь и диагностика. Анонимно, круглосуточно, в клинике, на дому и онлайн.">
   <title>Центр ментального здоровья Азимут Клиник</title>
   <link rel="icon" href="assets/logo-main.jpg">
-  <link rel="stylesheet" href="css/style.css?v=20260711-footer-logo-shift-more">
-  <link rel="stylesheet" href="css/responsive.css?v=20260711-footer-logo-shift-more">
+  <link rel="stylesheet" href="css/style.css?v=20260711-mobile-compass-route">
+  <link rel="stylesheet" href="css/responsive.css?v=20260711-mobile-compass-route">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/audio-player.css?v=20260710-montserrat">
   <link rel="stylesheet" href="css/chatbot.css?v=20260710-montserrat">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    "name": "Азимут Клиник",
+    "url": "https://azimutclinic.ru/",
+    "telephone": "+7-925-112-77-99",
+    "email": "info@azimutmedline.ru",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Старокалужское шоссе, 62, стр. 1",
+      "addressLocality": "Москва",
+      "postalCode": "117630",
+      "addressCountry": "RU"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 55.660607,
+      "longitude": 37.538170
+    },
+    "openingHours": "Mo-Su 00:00-23:59",
+    "medicalSpecialty": ["Psychiatric", "PsychologicalTreatment", "AddictionMedicine"]
+  }
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -117,10 +141,12 @@
               </div>
             </div>
             <div class="hero-visual" aria-label="Компас Азимут Клиник">
-              <div class="compass-card">
+              <div class="compass-card" role="button" tabindex="0" data-mobile-compass data-clinic-lat="55.660607" data-clinic-lon="37.538170" aria-label="Включить компас до Азимут Клиник">
                 <img class="compass-image" src="assets/generated/hero-compass-cutout.png" alt="Компас Азимут">
                 <div class="route-line" aria-hidden="true"></div>
               </div>
+              <p class="compass-invite">Коснитесь компаса — он мягко покажет путь к Азимут Клиник.</p>
+              <p class="compass-status" aria-live="polite"></p>
               <ul class="hero-proof-list">
                 <li>Анонимно</li>
                 <li>Круглосуточно</li>
@@ -497,7 +523,7 @@
 
   <script src="data/doctors.js?v=20260710-montserrat"></script>
   <script src="js/bitrix24-placeholder.js"></script>
-  <script src="js/main.js?v=20260710-montserrat"></script>
+  <script src="js/main.js?v=20260711-mobile-compass-route"></script>
   <script src="js/azimut-animations.js"></script>
   <script src="js/forms.js"></script>
   <script src="js/chatbot.js?v=20260710-montserrat"></script>
