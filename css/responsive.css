@@ -488,7 +488,12 @@
     width: calc(100% + 36px);
     height: 210px;
     margin: -18px -18px 18px;
-    background-size: 200% 200%;
+    background-size: cover;
+  }
+
+  .yandex-map,
+  .yandex-map iframe {
+    min-height: 360px;
   }
 
   .article-image {
