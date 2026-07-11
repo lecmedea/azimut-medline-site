@@ -377,7 +377,9 @@
   function renderFormats(target) {
     target.innerHTML = (window.AZIMUT_FORMATS || []).map((item, index) => `
       <article class="feature-card">
-        <span class="icon-dot">${String(index + 1).padStart(2, "0")}</span>
+        ${item.icon
+          ? `<img class="page-icon page-icon--feature" src="${item.icon}" alt="" aria-hidden="true" loading="lazy">`
+          : `<span class="icon-dot">${String(index + 1).padStart(2, "0")}</span>`}
         <h3>${item.title}</h3>
         <p>${item.text}</p>
         <a href="services.html#service-form">Получить консультацию</a>
@@ -474,16 +476,27 @@
     `).join("");
   }
 
+  function renderArticleCardImage(item) {
+    if (item.image && !item.imagePending) {
+      return `<div class="article-image" role="img" aria-label="${item.title}" style="background-image: url('${item.image}'); background-position: ${item.imagePosition || "center"}"></div>`;
+    }
+    if (item.imageSlot || item.imagePending) {
+      const slot = item.imageSlot || `${item.slug}-hero`;
+      return `<div class="article-card-image-slot" data-image-slot="${slot}" data-image-pending="true" aria-label="Иллюстрация скоро"><span>Иллюстрация: ${slot}</span></div>`;
+    }
+    return "";
+  }
+
   function renderArticles(target, category = "all") {
     const limit = Number(target.dataset.limit || 0);
-    let items = window.AZIMUT_ARTICLES || [];
+    let items = window.AZIMUT_ARTICLES_INDEX || window.AZIMUT_ARTICLES || [];
     if (category !== "all") {
       items = items.filter((item) => item.category === category);
     }
     items = items.slice(0, limit || undefined);
     target.innerHTML = items.map((item) => `
       <article class="article-card" data-category="${item.category}">
-        ${item.image ? `<div class="article-image" role="img" aria-label="${item.title}" style="background-image: url('${item.image}'); background-position: ${item.imagePosition || "center"}"></div>` : ""}
+        ${renderArticleCardImage(item)}
         <div class="meta"><span>${item.category}</span><span>${item.readTime}</span></div>
         <h3>${item.title}</h3>
         <p>${item.excerpt}</p>

@@ -1,0 +1,207 @@
+html {
+  scroll-padding-top: 148px;
+}
+
+.page-enhanced .page-hero .container {
+  animation: pageHeroIn 0.82s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.page-enhanced .section-heading,
+.page-enhanced .info-card,
+.page-enhanced .feature-card,
+.page-enhanced .contact-details,
+.page-enhanced .photo-stack,
+.page-enhanced .yandex-map {
+  animation: pageBlockIn 0.76s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.page-enhanced .card-grid .info-card:nth-child(1),
+.page-enhanced .three-col .info-card:nth-child(1) { animation-delay: 0ms; }
+.page-enhanced .card-grid .info-card:nth-child(2),
+.page-enhanced .three-col .info-card:nth-child(2) { animation-delay: 70ms; }
+.page-enhanced .card-grid .info-card:nth-child(3),
+.page-enhanced .three-col .info-card:nth-child(3) { animation-delay: 140ms; }
+.page-enhanced .feature-grid .feature-card:nth-child(1) { animation-delay: 0ms; }
+.page-enhanced .feature-grid .feature-card:nth-child(2) { animation-delay: 80ms; }
+.page-enhanced .feature-grid .feature-card:nth-child(3) { animation-delay: 160ms; }
+.page-enhanced .feature-grid .feature-card:nth-child(4) { animation-delay: 240ms; }
+
+@keyframes pageHeroIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes pageBlockIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-icon {
+  display: block;
+  width: 52px;
+  height: 52px;
+  padding: 10px;
+  border: 1px solid rgba(185, 144, 89, 0.24);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 78% 20%, rgba(174, 139, 102, 0.16), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 246, 232, 0.62));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88), 0 10px 24px rgba(113, 83, 47, 0.08);
+  box-sizing: border-box;
+  object-fit: contain;
+}
+
+.page-icon--feature {
+  width: 58px;
+  height: 58px;
+  margin-bottom: 18px;
+}
+
+.page-icon--inline {
+  width: 44px;
+  height: 44px;
+  padding: 8px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+
+.hero-icon-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.hero-icon-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 14px 8px 10px;
+  border: 1px solid rgba(185, 144, 89, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--blue-dark);
+  font-size: 14px;
+}
+
+.hero-icon-chip img {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.info-card--icon,
+.feature-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-card--icon h3 {
+  margin-top: 0;
+}
+
+.condition-card:hover,
+.page-enhanced .info-card:hover,
+.page-enhanced .feature-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(185, 144, 89, 0.42);
+  box-shadow: var(--azimut-card-shadow-hover);
+}
+
+.page-enhanced .contact-details dl > div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 8px 16px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(232, 222, 207, 0.7);
+}
+
+.page-enhanced .contact-details dl > div:last-child {
+  border-bottom: 0;
+}
+
+.page-enhanced .contact-details dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.page-enhanced .contact-details dt img {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.page-enhanced .blog-hero .tabs {
+  margin-top: 8px;
+}
+
+.page-enhanced .tabs button {
+  transition: transform var(--azimut-transition), border-color var(--azimut-transition), background var(--azimut-transition);
+}
+
+.page-enhanced .tabs button:hover,
+.page-enhanced .tabs button.active {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 860px) {
+  html {
+    scroll-padding-top: 112px;
+  }
+
+  .conditions-section {
+    background-attachment: scroll;
+  }
+
+  .page-enhanced .contact-details dl > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enhanced .page-hero .container,
+  .page-enhanced .section-heading,
+  .page-enhanced .info-card,
+  .page-enhanced .feature-card,
+  .page-enhanced .contact-details,
+  .page-enhanced .photo-stack,
+  .page-enhanced .yandex-map {
+    animation: none;
+  }
+
+  .condition-card:hover,
+  .page-enhanced .info-card:hover,
+  .page-enhanced .feature-card:hover,
+  .page-enhanced .tabs button:hover,
+  .page-enhanced .tabs button.active {
+    transform: none;
+  }
+}

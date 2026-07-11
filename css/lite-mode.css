@@ -1,0 +1,61 @@
+/* Упрощённый режим для слабых и старых мобильных устройств */
+
+html.lite-mode *,
+html.lite-mode *::before,
+html.lite-mode *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.lite-mode .article-card:hover,
+html.lite-mode .doctor-card:hover,
+html.lite-mode .service-card:hover,
+html.lite-mode .info-card:hover,
+html.lite-mode .feature-card:hover,
+html.lite-mode .mini-card:hover,
+html.lite-mode .review-card:hover,
+html.lite-mode .photo-frame:hover {
+  transform: none;
+  box-shadow: 0 10px 26px rgba(21, 70, 95, 0.06);
+}
+
+html.lite-mode .article-card:hover .article-image,
+html.lite-mode .doctor-card:hover .doctor-photo {
+  transform: none;
+  filter: none;
+}
+
+html.lite-mode .conditions-section,
+html.lite-mode .page-hero,
+html.lite-mode .blog-hero {
+  background-attachment: scroll !important;
+}
+
+html.lite-mode .site-header,
+html.lite-mode .chatbot-panel,
+html.lite-mode .access-gate-overlay {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.lite-mode .reveal-on-scroll,
+html.lite-mode [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+html.lite-mode .particle-layer,
+html.lite-mode .hero-particles,
+html.lite-mode [data-particles] {
+  display: none !important;
+}
+
+html.lite-mode .article-image-slot__frame {
+  background-image: none !important;
+}
+
+html.lite-mode img[loading="lazy"] {
+  content-visibility: auto;
+}

@@ -1,6 +1,6 @@
-const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+const DEFAULT_OPENAI_BASE_URL = "https://api.openai.com/v1";
 const DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions";
-const DEFAULT_OPENAI_MODEL = "gpt-4.1-nano";
+const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
 const DEFAULT_DEEPSEEK_MODEL = "deepseek-v4-flash";
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_HISTORY_MESSAGES = 10;
@@ -40,14 +40,16 @@ const SITE_CONTEXT = `
 `;
 
 const SYSTEM_PROMPT = `
-Ты виртуальный помощник сайта «Центр ментального здоровья Азимут Клиник».
+Ты Филипп Филиппович — виртуальный консультант сайта «Центр ментального здоровья Азимут Клиник».
 
 Твоя задача:
 - спокойно отвечать на вопросы о центре, услугах, форматах помощи, ценах, записи и контактах;
 - помогать пользователю сориентироваться, какое направление может подойти: психиатрия, психология, наркология, психологическое тестирование;
 - объяснять разницу между форматами: в клинике, на дому, онлайн, по телефону;
 - рассказывать о предварительных ценах, если они есть на сайте;
-- предлагать оставить заявку или позвонить по телефону 8 (925) 112 77 99;
+- быть внимательным онлайн-консультантом: быстро понять ситуацию, убрать тревогу, объяснить ближайший безопасный шаг и мягко подвести к заявке или звонку;
+- задавать не больше 1-2 уточняющих вопросов за раз, если без них нельзя выбрать формат помощи;
+- предлагать оставить заявку или позвонить по телефону 8 (925) 112 77 99, особенно если пользователь описывает срочную, сложную или эмоционально тяжёлую ситуацию;
 - при необходимости направлять пользователя к администратору;
 - помогать родственникам понять, с чего начать обращение.
 
@@ -59,6 +61,13 @@ const SYSTEM_PROMPT = `
 - без давления;
 - без запугивания;
 - без агрессивных продаж.
+
+Коммерческое поведение:
+- не спорь с пользователем и не обесценивай его сомнения;
+- если человек колеблется, предложи самый простой первый шаг: бесплатный телефонный разговор или короткую заявку;
+- если пользователь спрашивает «сколько стоит», дай цену и сразу объясни, что администратор уточнит итоговую стоимость;
+- если пользователь описывает проблему близкого, предложи формат для родственников и аккуратно объясни, что начать можно с консультации без присутствия пациента;
+- не используй манипуляции, медицинские гарантии, страх и обещания результата.
 
 Строгие ограничения:
 - не ставь диагнозы;
@@ -177,6 +186,8 @@ async function requestDeepSeek(apiKey, body, allowThinking = true) {
 }
 
 async function requestOpenAI(apiKey, body) {
+  const baseUrl = String(process.env.OPENAI_BASE_URL || process.env.OPENAI_API_BASE_URL || DEFAULT_OPENAI_BASE_URL).trim().replace(/\/+$/, "");
+  const apiUrl = /\/chat\/completions$/.test(baseUrl) ? baseUrl : `${baseUrl}/chat/completions`;
   const payload = {
     model: process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL,
     messages: body.messages,
@@ -184,7 +195,7 @@ async function requestOpenAI(apiKey, body) {
     max_tokens: 700
   };
 
-  const response = await fetch(OPENAI_API_URL, {
+  const response = await fetch(apiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -207,8 +218,11 @@ async function requestOpenAI(apiKey, body) {
 
 function getAiProvider() {
   const configuredProvider = String(process.env.AI_PROVIDER || "").trim().toLowerCase();
-  if (configuredProvider === "openai" || configuredProvider === "deepseek") {
-    return configuredProvider;
+  if (configuredProvider === "openai" || configuredProvider === "openai-compatible" || configuredProvider === "artemox") {
+    return "openai";
+  }
+  if (configuredProvider === "deepseek") {
+    return "deepseek";
   }
   return process.env.OPENAI_API_KEY ? "openai" : "deepseek";
 }
@@ -222,7 +236,7 @@ module.exports = async function chatHandler(request, response) {
   const provider = getAiProvider();
   const apiKey = provider === "openai" ? process.env.OPENAI_API_KEY : process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
-    return sendJson(response, 500, { error: `AI-помощник пока не настроен. Администратору нужно добавить ${provider === "openai" ? "OPENAI_API_KEY" : "DEEPSEEK_API_KEY"}.` });
+    return sendJson(response, 500, { error: `Филипп Филиппович пока не настроен. Администратору нужно добавить ${provider === "openai" ? "OPENAI_API_KEY" : "DEEPSEEK_API_KEY"}.` });
   }
 
   try {
@@ -230,7 +244,7 @@ module.exports = async function chatHandler(request, response) {
     const message = typeof body.message === "string" ? body.message.trim() : "";
 
     if (!message) {
-      return sendJson(response, 400, { error: "Введите сообщение для AI-помощника." });
+      return sendJson(response, 400, { error: "Введите сообщение для Филиппа Филипповича." });
     }
 
     if (message.length > MAX_MESSAGE_LENGTH) {
@@ -258,12 +272,12 @@ module.exports = async function chatHandler(request, response) {
     const answer = completion?.choices?.[0]?.message?.content?.trim();
     if (!answer) {
       console.error("DeepSeek returned an empty answer:", completion);
-      return sendJson(response, 502, { error: "AI-помощник не смог подготовить ответ. Попробуйте ещё раз." });
+      return sendJson(response, 502, { error: "Филипп Филиппович не смог подготовить ответ. Попробуйте ещё раз." });
     }
 
     return sendJson(response, 200, { answer });
   } catch (error) {
     console.error("AI chatbot backend error:", error);
-    return sendJson(response, 500, { error: "AI-помощник временно недоступен. Попробуйте позже или позвоните в центр." });
+    return sendJson(response, 500, { error: "Филипп Филиппович временно недоступен. Попробуйте позже или позвоните в центр." });
   }
 };

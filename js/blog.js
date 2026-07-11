@@ -1,43 +1,158 @@
 (function () {
+  function getArticleIndex() {
+    return window.AZIMUT_ARTICLES_INDEX || window.AZIMUT_ARTICLES || [];
+  }
+
+  function getArticleContent(slug) {
+    var contentMap = window.AZIMUT_ARTICLES_CONTENT;
+    if (contentMap && contentMap[slug]) return contentMap[slug];
+    var legacy = (window.AZIMUT_ARTICLES || []).find(function (item) { return item.slug === slug; });
+    if (!legacy) return null;
+    return {
+      blocks: legacy.content || [],
+      faq: legacy.faq || []
+    };
+  }
+
   function getArticle() {
-    const params = new URLSearchParams(location.search);
-    const slug = params.get("slug") || "panic-attacks";
-    return (window.AZIMUT_ARTICLES || []).find((item) => item.slug === slug) || (window.AZIMUT_ARTICLES || [])[0];
+    var params = new URLSearchParams(location.search);
+    var slug = params.get("slug") || "panic-attacks";
+    var meta = getArticleIndex().find(function (item) { return item.slug === slug; });
+    if (!meta) meta = getArticleIndex()[0];
+    if (!meta) return null;
+    var body = getArticleContent(meta.slug) || {};
+    return Object.assign({}, meta, body);
+  }
+
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function renderImageSlot(slot, caption, extraClass) {
+    var label = escapeHtml(slot || "article-image");
+    var cap = caption ? "<figcaption>" + escapeHtml(caption) + "</figcaption>" : "";
+    return (
+      '<figure class="article-image-slot' + (extraClass ? " " + extraClass : "") + '" data-image-slot="' + label + '" data-image-pending="true">' +
+        '<div class="article-image-slot__frame" data-slot-label="' + label + '" role="img" aria-label="Место для иллюстрации"></div>' +
+        cap +
+      "</figure>"
+    );
+  }
+
+  function renderBlock(block) {
+    if (!block) return "";
+    if (typeof block === "string") return "<p>" + escapeHtml(block) + "</p>";
+
+    switch (block.type) {
+      case "paragraph":
+        return "<p>" + escapeHtml(block.text) + "</p>";
+      case "heading":
+        return "<h2>" + escapeHtml(block.text) + "</h2>";
+      case "list":
+        return "<ul>" + (block.items || []).map(function (item) {
+          return "<li>" + escapeHtml(item) + "</li>";
+        }).join("") + "</ul>";
+      case "image-slot":
+        return renderImageSlot(block.slot, block.caption);
+      case "callout":
+        return '<aside class="article-callout"><p>' + escapeHtml(block.text) + "</p></aside>";
+      default:
+        return "";
+    }
+  }
+
+  function renderArticleHero(article) {
+    if (article.image && !article.imagePending) {
+      return (
+        '<div class="article-image article-hero-image" role="img" aria-label="' + escapeHtml(article.title) + '" ' +
+        'style="background-image: url(\'' + escapeHtml(article.image) + '\'); background-position: ' + (article.imagePosition || "center") + '"></div>'
+      );
+    }
+    if (article.imageSlot || article.imagePending) {
+      return renderImageSlot(article.imageSlot || article.slug + "-hero", "Обложка статьи — иллюстрация будет добавлена", "article-hero-slot");
+    }
+    return "";
   }
 
   function renderArticle(target) {
-    const article = getArticle();
+    var article = getArticle();
     if (!article) {
       target.innerHTML = "<h1>Статья не найдена</h1><p>Вернитесь в блог и выберите материал из списка.</p>";
       return;
     }
-    document.title = `${article.title} — Азимут Клиник`;
-    target.innerHTML = `
-      <p class="eyebrow">${article.category}</p>
-      <h1>${article.title}</h1>
-      <div class="article-meta">${new Date(article.date).toLocaleDateString("ru-RU")} · ${article.readTime}</div>
-      ${article.content.map((paragraph) => `<p>${paragraph}</p>`).join("")}
-      <div class="faq-block">
-        <h2>FAQ</h2>
-        ${article.faq.map(([question, answer]) => `<div class="faq-item"><h3>${question}</h3><p>${answer}</p></div>`).join("")}
-      </div>
-    `;
+
+    var blocks = article.blocks || article.content || [];
+    document.title = article.title + " — Азимут Клиник";
+
+    target.innerHTML =
+      '<p class="eyebrow">' + escapeHtml(article.category) + "</p>" +
+      "<h1>" + escapeHtml(article.title) + "</h1>" +
+      '<div class="article-meta">' + new Date(article.date).toLocaleDateString("ru-RU") + " · " + escapeHtml(article.readTime) + "</div>" +
+      renderArticleHero(article) +
+      blocks.map(renderBlock).join("") +
+      '<div class="faq-block">' +
+        "<h2>Частые вопросы</h2>" +
+        (article.faq || []).map(function (pair) {
+          return '<div class="faq-item"><h3>' + escapeHtml(pair[0]) + "</h3><p>" + escapeHtml(pair[1]) + "</p></div>";
+        }).join("") +
+      "</div>";
   }
 
   function initFilters() {
-    const articleList = document.querySelector('[data-render="articles"]');
+    var articleList = document.querySelector('[data-render="articles"]');
     if (!articleList || !window.AzimutRender) return;
-    document.querySelectorAll(".tabs [data-category]").forEach((button) => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll(".tabs [data-category]").forEach((item) => item.classList.remove("active"));
+
+    document.querySelectorAll(".tabs [data-category]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        document.querySelectorAll(".tabs [data-category]").forEach(function (item) {
+          item.classList.remove("active");
+        });
         button.classList.add("active");
         window.AzimutRender.renderArticles(articleList, button.dataset.category);
+        updateArticlesCount(button.dataset.category);
       });
     });
+
+    document.querySelectorAll(".blog-topic-chips [data-category]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var category = button.dataset.category;
+        document.querySelectorAll(".tabs [data-category]").forEach(function (tab) {
+          tab.classList.toggle("active", tab.dataset.category === category);
+        });
+        window.AzimutRender.renderArticles(articleList, category);
+        updateArticlesCount(category);
+        articleList.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+      });
+    });
+
+    updateArticlesCount("all");
+  }
+
+  function updateArticlesCount(category) {
+    var counter = document.querySelector("[data-articles-count]");
+    if (!counter) return;
+    var items = getArticleIndex();
+    if (category && category !== "all") {
+      items = items.filter(function (item) { return item.category === category; });
+    }
+    counter.textContent = items.length + " " + pluralizeArticles(items.length);
+  }
+
+  function pluralizeArticles(count) {
+    var mod10 = count % 10;
+    var mod100 = count % 100;
+    if (mod10 === 1 && mod100 !== 11) return "статья";
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "статьи";
+    return "статей";
   }
 
   window.AzimutBlog = {
-    renderArticle
+    renderArticle: renderArticle,
+    getArticleIndex: getArticleIndex
   };
 
   document.addEventListener("DOMContentLoaded", initFilters);

@@ -74,10 +74,20 @@ css/chatbot.css
 
 ```text
 AI_PROVIDER=openai
-OPENAI_MODEL=gpt-4.1-nano
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4o-mini
 ```
 
 Если `AI_PROVIDER` не задан, код сам выберет OpenAI при наличии `OPENAI_API_KEY`, иначе DeepSeek.
+
+Для OpenAI-compatible провайдера, например купленного endpoint `api.artemox.com`, используется тот же режим:
+
+```text
+AI_PROVIDER=artemox
+OPENAI_BASE_URL=https://api.artemox.com/v1
+OPENAI_API_KEY=реальный_ключ_только_в_переменных_окружения
+OPENAI_MODEL=gpt-4o-mini
+```
 
 Для DeepSeek можно использовать:
 
@@ -93,7 +103,8 @@ DEEPSEEK_MODEL=deepseek-v4-flash
 ```text
 AI_PROVIDER=openai
 OPENAI_API_KEY=сюда_вставить_новый_openai_api_key
-OPENAI_MODEL=gpt-4.1-nano
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4o-mini
 ```
 
 Файл `.env.local` не должен попадать в GitHub. Он добавлен в `.gitignore`.
@@ -125,8 +136,11 @@ Value: openai
 Name: OPENAI_API_KEY
 Value: реальный OpenAI API key
 
+Name: OPENAI_BASE_URL
+Value: https://api.openai.com/v1
+
 Name: OPENAI_MODEL
-Value: gpt-4.1-nano
+Value: gpt-4o-mini
 ```
 
 Не указывать значение ключа в коде или документации. После добавления переменной выполнить redeploy.
@@ -156,7 +170,7 @@ curl -i -X POST http://localhost:3000/api/chat \
   -d '{"message":"Сколько стоит онлайн-консультация психолога?","history":[],"pageUrl":"http://localhost:3000","utm":{}}'
 ```
 
-`GET /api/chat` должен вернуть ошибку метода. При отсутствии API-ключа endpoint возвращает понятное сообщение, что AI-помощник не настроен.
+`GET /api/chat` должен вернуть ошибку метода. При отсутствии API-ключа endpoint возвращает понятное сообщение, что Филипп Филиппович не настроен.
 
 ## 13. Как подключить Битрикс24 позже
 

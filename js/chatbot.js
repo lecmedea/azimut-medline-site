@@ -4,13 +4,13 @@
   const MAX_MESSAGE_LENGTH = 2000;
 
   const quickActions = [
+    ["Подобрать формат", "Помогите понять, какой формат помощи мне подойдёт"],
     ["Узнать стоимость", "Расскажите, пожалуйста, сколько стоят основные услуги"],
     ["Вызвать специалиста", "Хочу вызвать специалиста на дом"],
-    ["Онлайн-консультация", "Хочу записаться на онлайн-консультацию"],
-    ["Позвонить", "Подскажите, как позвонить в центр"]
+    ["Заказать звонок", "Хочу, чтобы мне помогли записаться и перезвонили"]
   ];
 
-  const fallbackGreeting = "Здравствуйте. Я AI-помощник Азимут Клиник. Могу подсказать по услугам, ценам, форматам помощи и записи. В экстренной ситуации звоните 112 или 103.";
+  const fallbackGreeting = "Здравствуйте. Я Филипп Филиппович, виртуальный консультант Азимут Клиник. Помогу спокойно сориентироваться по услугам, цене и подходящему формату обращения. В экстренной ситуации звоните 112 или 103.";
 
   let history = loadHistory();
   let isOpen = false;
@@ -92,31 +92,31 @@
   function createWidget() {
     const widget = document.createElement("section");
     widget.className = "ai-chatbot";
-    widget.setAttribute("aria-label", "AI-помощник Азимут Клиник");
+    widget.setAttribute("aria-label", "Филипп Филиппович, виртуальный консультант Азимут Клиник");
     widget.innerHTML = `
-      <button class="ai-chatbot-toggle" type="button" aria-expanded="false" aria-controls="ai-chatbot-panel" title="AI-помощник">
+      <button class="ai-chatbot-toggle" type="button" aria-expanded="false" aria-controls="ai-chatbot-panel" title="Филипп Филиппович">
         <span class="ai-chatbot-toggle-icon" aria-hidden="true"></span>
-        <span class="ai-chatbot-toggle-label">AI-помощник</span>
+        <span class="ai-chatbot-toggle-label">Филипп Филиппович</span>
       </button>
       <div class="ai-chatbot-panel" id="ai-chatbot-panel" role="dialog" aria-modal="false" aria-labelledby="ai-chatbot-title">
         <div class="ai-chatbot-orbit" aria-hidden="true"></div>
         <header class="ai-chatbot-header">
           <div>
             <p class="ai-chatbot-kicker">Круглосуточно</p>
-            <h2 id="ai-chatbot-title">AI-помощник Азимут Клиник</h2>
-            <p>Помогу сориентироваться по услугам, ценам и записи</p>
+            <h2 id="ai-chatbot-title">Филипп Филиппович</h2>
+            <p>Подскажу формат помощи и помогу перейти к записи</p>
           </div>
           <div class="ai-chatbot-actions">
             <button class="ai-chatbot-icon-btn" type="button" data-chat-close aria-label="Закрыть чат">×</button>
           </div>
         </header>
-        <div class="ai-chatbot-warning">AI-помощник не заменяет консультацию врача. В экстренной ситуации звоните 112 или 103.</div>
+        <div class="ai-chatbot-warning">Филипп Филиппович не заменяет консультацию врача. В экстренной ситуации звоните 112 или 103.</div>
         <div class="ai-chatbot-messages" data-chat-messages aria-live="polite"></div>
         <div class="ai-chatbot-quick" aria-label="Быстрые вопросы">
           ${quickActions.map(([label, message]) => `<button type="button" data-chat-quick="${escapeHtml(message)}">${escapeHtml(label)}</button>`).join("")}
         </div>
         <form class="ai-chatbot-form" data-chat-form>
-          <label class="visually-hidden" for="ai-chatbot-input">Сообщение AI-помощнику</label>
+          <label class="visually-hidden" for="ai-chatbot-input">Сообщение Филиппу Филипповичу</label>
           <textarea id="ai-chatbot-input" name="message" rows="1" maxlength="${MAX_MESSAGE_LENGTH}" placeholder="Напишите вопрос"></textarea>
           <button class="ai-chatbot-send" type="submit">Отправить</button>
         </form>
@@ -204,7 +204,7 @@
 
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.answer) {
-        throw new Error(data.error || "AI-помощник временно недоступен.");
+        throw new Error(data.error || "Филипп Филиппович временно недоступен.");
       }
 
       history.push({ role: "assistant", content: data.answer });
@@ -217,7 +217,7 @@
       removeTyping(root);
       history.push({
         role: "assistant",
-        content: "Сейчас не получается получить ответ AI-помощника. Попробуйте позже или позвоните в центр: 8 (925) 112 77 99."
+        content: "Сейчас не получается получить ответ Филиппа Филипповича. Попробуйте позже или позвоните в центр: 8 (925) 112 77 99."
       });
       history = history.slice(-MAX_HISTORY);
       saveHistory();
