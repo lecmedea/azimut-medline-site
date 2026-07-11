@@ -1,4 +1,2 @@
 User-agent: *
-Allow: /
-
-Sitemap: https://azimutclinic.ru/sitemap.xml
+Disallow: /

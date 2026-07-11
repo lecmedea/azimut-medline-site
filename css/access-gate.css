@@ -1,0 +1,132 @@
+.pin-gate,
+.pin-gate * {
+  box-sizing: border-box;
+}
+
+html.pin-gate-locked {
+  min-height: 100%;
+  background: #fbf7ee;
+}
+
+html.pin-gate-locked body {
+  min-height: 100dvh;
+  width: 100vw;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+html.pin-gate-locked body > :not(.pin-gate) {
+  display: none !important;
+}
+
+.pin-gate {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 100000;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  min-height: 100dvh;
+  overflow: hidden;
+  padding: 24px;
+  background:
+    linear-gradient(120deg, rgba(255, 250, 241, 0.96), rgba(246, 236, 220, 0.88)),
+    url("../assets/images/onyx-warm-bg.png") center / cover;
+}
+
+.pin-gate-panel {
+  width: 100%;
+  max-width: 360px;
+  padding: clamp(26px, 7vw, 40px);
+  border: 1px solid rgba(174, 139, 102, 0.26);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.92);
+  box-shadow: 0 28px 70px rgba(74, 58, 35, 0.14);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .pin-gate {
+    padding: 18px;
+  }
+
+  .pin-gate-panel {
+    max-width: 100%;
+    padding: 28px 20px;
+  }
+}
+
+.pin-gate-logo {
+  width: min(230px, 82%);
+  margin: 0 auto 24px;
+}
+
+.pin-gate-title {
+  margin: 0 0 12px;
+  color: #584021;
+  font-size: clamp(26px, 7vw, 36px);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.pin-gate-text {
+  margin: 0 0 24px;
+  color: #6f665b;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.pin-gate-form {
+  display: grid;
+  gap: 12px;
+}
+
+.pin-gate-input {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid rgba(174, 139, 102, 0.42);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #584021;
+  font-size: 24px;
+  letter-spacing: 0.22em;
+  text-align: center;
+}
+
+.pin-gate-input:focus-visible {
+  outline: 3px solid rgba(174, 139, 102, 0.28);
+  outline-offset: 2px;
+}
+
+.pin-gate-button {
+  min-height: 52px;
+  border: 0;
+  border-radius: 8px;
+  background: #AE8B66;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+}
+
+.pin-gate-error {
+  min-height: 22px;
+  margin: 2px 0 0;
+  color: #9A4C39;
+  font-size: 14px;
+  text-align: center;
+}
+
+.pin-gate .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+  white-space: nowrap;
+}
