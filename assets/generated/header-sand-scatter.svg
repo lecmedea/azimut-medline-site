@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180" aria-hidden="true">
+  <defs>
+    <radialGradient id="grain" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8d4b0" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#c9a87c" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="0.6"/>
+    </filter>
+  </defs>
+  <g opacity="0.82" filter="url(#soft)">
+    <ellipse cx="42" cy="38" rx="5" ry="3" fill="#d4b896"/>
+    <ellipse cx="78" cy="52" rx="4" ry="2.5" fill="#c6a57a"/>
+    <ellipse cx="118" cy="28" rx="6" ry="3.5" fill="#e2c9a0"/>
+    <ellipse cx="156" cy="44" rx="3.5" ry="2" fill="#b99059"/>
+    <ellipse cx="198" cy="34" rx="5.5" ry="3" fill="#d9c4a0"/>
+    <ellipse cx="238" cy="58" rx="4" ry="2.5" fill="#c4a274"/>
+    <ellipse cx="276" cy="40" rx="5" ry="3" fill="#e8d8b8"/>
+    <ellipse cx="62" cy="72" rx="3" ry="2" fill="#ae8b66"/>
+    <ellipse cx="102" cy="88" rx="4.5" ry="2.5" fill="#d2b48c"/>
+    <ellipse cx="142" cy="66" rx="3" ry="2" fill="#c9a87c"/>
+    <ellipse cx="182" cy="82" rx="5" ry="3" fill="#e0caa4"/>
+    <ellipse cx="222" cy="96" rx="3.5" ry="2" fill="#b58f63"/>
+    <ellipse cx="262" cy="74" rx="4" ry="2.5" fill="#d6bf94"/>
+    <ellipse cx="298" cy="92" rx="3" ry="2" fill="#c7a67b"/>
+    <ellipse cx="34" cy="108" rx="4" ry="2.5" fill="#dcc3a0"/>
+    <ellipse cx="88" cy="124" rx="3" ry="2" fill="#ae8b66"/>
+    <ellipse cx="128" cy="112" rx="5" ry="3" fill="#e5d2b2"/>
+    <ellipse cx="168" cy="128" rx="3.5" ry="2" fill="#c4a274"/>
+    <ellipse cx="208" cy="118" rx="4" ry="2.5" fill="#d9c4a0"/>
+    <ellipse cx="248" cy="136" rx="3" ry="2" fill="#b99059"/>
+    <ellipse cx="288" cy="120" rx="4.5" ry="2.5" fill="#e2c9a0"/>
+    <circle cx="54" cy="148" r="1.8" fill="#9a7a52"/>
+    <circle cx="94" cy="156" r="1.5" fill="#ae8b66"/>
+    <circle cx="134" cy="148" r="2" fill="#c9a87c"/>
+    <circle cx="174" cy="160" r="1.6" fill="#b58f63"/>
+    <circle cx="214" cy="152" r="1.9" fill="#d4b896"/>
+    <circle cx="254" cy="158" r="1.4" fill="#ae8b66"/>
+    <circle cx="294" cy="150" r="1.7" fill="#c6a57a"/>
+  </g>
+</svg>
