@@ -95,16 +95,19 @@
     widget.setAttribute("aria-label", "Филипп Филиппович, виртуальный консультант Азимут Клиник");
     widget.innerHTML = `
       <button class="ai-chatbot-toggle" type="button" aria-expanded="false" aria-controls="ai-chatbot-panel" title="Филипп Филиппович">
-        <span class="ai-chatbot-toggle-icon" aria-hidden="true"></span>
+        <span class="ai-chatbot-toggle-icon" aria-hidden="true"><img src="assets/icons/iconly/doctor.svg" alt="" width="22" height="22"></span>
         <span class="ai-chatbot-toggle-label">Филипп Филиппович</span>
       </button>
       <div class="ai-chatbot-panel" id="ai-chatbot-panel" role="dialog" aria-modal="false" aria-labelledby="ai-chatbot-title">
         <div class="ai-chatbot-orbit" aria-hidden="true"></div>
         <header class="ai-chatbot-header">
-          <div>
+          <div class="ai-chatbot-header-main">
+            <img class="ai-chatbot-avatar" src="assets/icons/iconly/doctor.svg" alt="" width="36" height="36" aria-hidden="true">
+            <div>
             <p class="ai-chatbot-kicker">Круглосуточно</p>
             <h2 id="ai-chatbot-title">Филипп Филиппович</h2>
             <p>Подскажу формат помощи и помогу перейти к записи</p>
+            </div>
           </div>
           <div class="ai-chatbot-actions">
             <button class="ai-chatbot-icon-btn" type="button" data-chat-close aria-label="Закрыть чат">×</button>
