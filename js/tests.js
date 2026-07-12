@@ -1325,11 +1325,21 @@
     applyFilters();
   }
 
+  function openTestFromQuery(listRoot) {
+    const testId = new URLSearchParams(window.location.search).get("open");
+    if (!testId) return;
+    const test = tests.find((item) => item.id === testId);
+    if (!test) return;
+    const opener = listRoot.querySelector(`[data-test-open="${testId}"]`);
+    if (opener) opener.click();
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     const root = document.querySelector("[data-tests-list]");
     if (!root) return;
     root.innerHTML = tests.map(renderTestCard).join("");
     initTestModal(root);
     initFilters(root);
+    openTestFromQuery(root);
   });
 })();
