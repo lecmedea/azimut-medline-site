@@ -49,7 +49,7 @@ body {
   font-size: 16px;
   font-weight: 300;
   line-height: 1.6;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
 }
 
 body::before {
@@ -163,6 +163,20 @@ select {
   transition: opacity var(--azimut-transition), visibility var(--azimut-transition);
 }
 
+.site-header::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: clamp(12px, 8vw, 120px);
+  width: min(18vw, 200px);
+  height: min(58%, 72px);
+  max-height: 20%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  background: url("../assets/generated/header-sand-scatter.svg") right center / contain no-repeat;
+}
+
 .site-header::after {
   content: "";
   position: absolute;
@@ -269,7 +283,7 @@ section {
   align-items: center;
   justify-content: flex-start;
   gap: clamp(16px, 1.7vw, 30px);
-  color: #314a59;
+  color: #5a4a36;
   font-weight: 300;
   font-size: 15px;
 }
@@ -412,7 +426,7 @@ section {
   display: block;
   padding: 10px 12px 10px 28px;
   border-radius: 10px;
-  color: #314a59;
+  color: #5a4a36;
   font-weight: 300;
   font-size: 15px;
   line-height: 1.25;
@@ -594,7 +608,7 @@ button:focus-visible {
 .button-ghost {
   background: transparent;
   color: var(--blue-dark);
-  border-color: rgba(22, 78, 122, 0.2);
+  border-color: rgba(113, 83, 47, 0.2);
 }
 
 .nav-toggle {
@@ -774,7 +788,7 @@ button:focus-visible {
 
 .lead {
   font-size: clamp(18px, 2vw, 22px);
-  color: #3d5563;
+  color: #6f5f4a;
 }
 
 .support-text {
@@ -851,7 +865,7 @@ button:focus-visible {
   border-bottom: 8px solid transparent;
   border-left: 16px solid #6d5437;
   transform: translateY(-50%);
-  filter: drop-shadow(0 8px 12px rgba(22, 78, 122, 0.18));
+  filter: drop-shadow(0 8px 12px rgba(113, 83, 47, 0.18));
 }
 
 .compass-card.is-following .route-line,
@@ -1012,7 +1026,8 @@ button:focus-visible {
 .conditions-section {
   background:
     linear-gradient(180deg, rgba(255, 250, 241, 0.82), rgba(255, 255, 255, 0.92)),
-    url("../assets/images/onyx-warm-bg.png") center / cover fixed;
+    url("../assets/images/onyx-warm-bg.png") center / cover;
+  background-attachment: scroll;
 }
 
 .condition-grid {
@@ -1210,7 +1225,7 @@ button:focus-visible {
 .review-card:hover,
 .photo-frame:hover {
   transform: translateY(-6px) scale(1.025);
-  border-color: rgba(120, 180, 150, 0.55);
+  border-color: rgba(185, 144, 89, 0.55);
   box-shadow: var(--azimut-card-shadow-hover);
 }
 
@@ -1278,7 +1293,7 @@ button:focus-visible {
 }
 
 .review-card p {
-  color: #314a59;
+  color: #5a4a36;
 }
 
 .review-card strong {
@@ -1363,11 +1378,17 @@ button:focus-visible {
 .page-hero {
   padding: 86px 0 62px;
   background:
-    radial-gradient(circle at 12% 20%, rgba(185, 144, 89, 0.13), transparent 28%),
-    linear-gradient(135deg, #f7fbfb, #eef7f5 70%, #f6efe3);
+    linear-gradient(180deg, rgba(255, 250, 241, 0.88), rgba(255, 255, 255, 0.94)),
+    url("../assets/images/onyx-warm-bg.png") center / cover;
+}
+
+.page-hero.clarity-section::before,
+.page-hero.clarity-section::after {
+  display: none;
 }
 
 .blog-hero,
+.tests-hero,
 .inner-hero-bg {
   min-height: 430px;
   display: flex;
@@ -1438,7 +1459,7 @@ button:focus-visible {
 
 .cta-band {
   background:
-    linear-gradient(135deg, rgba(22, 78, 122, 0.96), rgba(19, 118, 114, 0.92)),
+    linear-gradient(135deg, rgba(113, 83, 47, 0.96), rgba(174, 139, 102, 0.92)),
     var(--blue);
 }
 
@@ -1483,7 +1504,7 @@ button:focus-visible {
   padding: 11px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #fbfdfd;
+  background: #fffaf1;
 }
 
 .wide-field {
@@ -1505,7 +1526,7 @@ button:focus-visible {
   padding: 12px 13px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #fbfdfd;
+  background: #fffaf1;
   color: var(--ink);
 }
 
@@ -1629,8 +1650,8 @@ button:focus-visible {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background:
-    linear-gradient(90deg, rgba(22, 78, 122, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(22, 78, 122, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(113, 83, 47, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(113, 83, 47, 0.08) 1px, transparent 1px),
     var(--soft);
   background-size: 34px 34px;
   color: var(--blue-dark);
@@ -2442,7 +2463,7 @@ button:focus-visible {
 .tests-filter-dropdown.is-open .tests-filter-trigger {
   border-color: var(--teal);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(19, 118, 114, 0.12);
+  box-shadow: 0 0 0 3px rgba(174, 139, 102, 0.12);
 }
 
 .tests-filter-name {
@@ -2487,6 +2508,26 @@ button:focus-visible {
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 18px 40px rgba(21, 31, 45, 0.12);
   overflow: auto;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px) scale(0.98);
+  transform-origin: top center;
+  transition:
+    opacity 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 280ms;
+}
+
+.tests-filter-panel[hidden] {
+  display: none !important;
+}
+
+.tests-filter-dropdown.is-open .tests-filter-panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
 }
 
 .tests-filter-panel--scroll {
@@ -2532,7 +2573,7 @@ button:focus-visible {
 }
 
 .tests-search input:focus-visible {
-  outline: 2px solid rgba(19, 118, 114, 0.35);
+  outline: 2px solid rgba(174, 139, 102, 0.35);
   outline-offset: 2px;
   border-color: var(--teal);
 }
@@ -2564,7 +2605,7 @@ button:focus-visible {
 .tests-topic-chips button {
   min-height: 38px;
   padding: 8px 14px;
-  border: 1px solid rgba(120, 180, 150, 0.45);
+  border: 1px solid rgba(185, 144, 89, 0.45);
   border-radius: 999px;
   background: var(--paper);
   color: var(--teal);
@@ -2647,7 +2688,7 @@ button:focus-visible {
 .test-grid-card:hover,
 .test-grid-card:focus-within {
   transform: translateY(-2px);
-  border-color: rgba(19, 118, 114, 0.35);
+  border-color: rgba(174, 139, 102, 0.35);
   box-shadow: 0 16px 36px rgba(21, 31, 45, 0.1);
 }
 
@@ -2669,15 +2710,21 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: rgba(19, 118, 114, 0.08);
+  width: 52px;
+  height: 52px;
+  margin-bottom: 2px;
+  padding: 10px;
+  border: 1px solid rgba(185, 144, 89, 0.24);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 78% 20%, rgba(174, 139, 102, 0.16), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(255, 246, 232, 0.58));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88), 0 10px 24px rgba(113, 83, 47, 0.08);
 }
 
 .test-grid-card__icon img {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
 }
 
@@ -2782,9 +2829,82 @@ body.test-modal-open {
 
 .test-modal__meta {
   margin: 6px 0 0;
-  color: #5a7a8a;
+  color: #8a7358;
   font-size: 13px;
   font-weight: 300;
+}
+
+.test-modal__intro {
+  display: grid;
+  gap: 16px;
+}
+
+.test-modal__timer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid rgba(185, 144, 89, 0.28);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 250, 241, 0.95), rgba(244, 230, 205, 0.72));
+}
+
+.test-hourglass {
+  width: 54px;
+  height: 74px;
+  flex: 0 0 auto;
+}
+
+.test-hourglass__glass {
+  fill: rgba(255, 250, 241, 0.35);
+  stroke: #ae8b66;
+  stroke-width: 1.4;
+}
+
+.test-hourglass__sand-top {
+  fill: #c6a27a;
+  transform-origin: center;
+  animation: hourglassSandTop var(--test-duration, 300s) linear forwards;
+}
+
+.test-hourglass__sand-stream {
+  fill: #b99059;
+  animation: hourglassStream 1.2s ease-in-out infinite;
+}
+
+.test-hourglass__sand-bottom {
+  fill: #ae8b66;
+  transform-origin: center bottom;
+  animation: hourglassSandBottom var(--test-duration, 300s) linear forwards;
+}
+
+.test-timer-count {
+  font-size: 22px;
+  font-weight: 400;
+  color: #6d5437;
+  font-variant-numeric: tabular-nums;
+}
+
+.test-timer-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@keyframes hourglassSandTop {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(0.05); }
+}
+
+@keyframes hourglassSandBottom {
+  from { transform: scaleY(0.08); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes hourglassStream {
+  0%, 100% { opacity: 0.35; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(3px); }
 }
 
 .test-modal__dialog h2 {
