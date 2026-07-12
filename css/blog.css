@@ -32,6 +32,14 @@
   content: "Изображение: " attr(data-slot-label);
 }
 
+.article-image-slot img {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  display: block;
+}
+
 .article-image-slot figcaption {
   margin-top: 10px;
   font-size: 13px;
@@ -72,6 +80,32 @@
   height: min(42vw, 280px);
   min-height: 200px;
   border-radius: var(--radius);
+}
+
+.article-card-image img,
+.article-hero-image {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+}
+
+.article-card-image {
+  width: calc(100% + 48px);
+  margin: -24px -24px 20px;
+  overflow: hidden;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.article-card-image img {
+  display: block;
+  border-radius: var(--radius) var(--radius) 0 0;
+  transition: transform var(--azimut-transition), filter var(--azimut-transition);
+}
+
+.article-card:hover .article-card-image img {
+  transform: scale(1.06);
+  filter: saturate(1.06) brightness(1.02);
 }
 
 .article-hero-slot .article-image-slot__frame {
