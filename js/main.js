@@ -120,17 +120,9 @@
   function initCompass() {
     const compass = $(".compass-card");
     if (!compass) return;
-    const mobileCompass = matchMedia("(max-width: 860px)").matches;
-    const status = $(".compass-status");
-    const clinic = {
-      lat: Number(compass.dataset.clinicLat || 55.660607),
-      lon: Number(compass.dataset.clinicLon || 37.538170)
-    };
+    if (matchMedia("(max-width: 860px)").matches) return;
     let usesDeviceOrientation = false;
     let currentNeedleAngle = -90;
-    let deviceHeading = 0;
-    let targetBearing = null;
-    let geoWatchId = null;
 
     const setNeedleAngle = (angle, mode) => {
       const normalizedAngle = ((angle % 360) + 360) % 360;
@@ -142,24 +134,6 @@
       compass.style.setProperty("--needle-angle", `${currentNeedleAngle}deg`);
       compass.classList.toggle("is-orientation", mode === "orientation");
       compass.classList.toggle("is-following", mode === "pointer");
-      compass.classList.toggle("is-routing", mode === "route");
-    };
-
-    const toRad = (value) => value * Math.PI / 180;
-    const toDeg = (value) => value * 180 / Math.PI;
-    const bearingToClinic = (position) => {
-      const lat1 = toRad(position.coords.latitude);
-      const lat2 = toRad(clinic.lat);
-      const deltaLon = toRad(clinic.lon - position.coords.longitude);
-      const y = Math.sin(deltaLon) * Math.cos(lat2);
-      const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLon);
-      return (toDeg(Math.atan2(y, x)) + 360) % 360;
-    };
-
-    const updateRouteNeedle = () => {
-      if (targetBearing === null) return;
-      const screenAngle = screen.orientation?.angle || window.orientation || 0;
-      setNeedleAngle(targetBearing - deviceHeading - 90 + screenAngle, "route");
     };
 
     const normalizeHeading = (event) => {
@@ -176,11 +150,6 @@
       const heading = normalizeHeading(event);
       if (heading === null) return;
       usesDeviceOrientation = true;
-      deviceHeading = heading;
-      if (mobileCompass && targetBearing !== null) {
-        updateRouteNeedle();
-        return;
-      }
       const screenAngle = screen.orientation?.angle || window.orientation || 0;
       setNeedleAngle(-heading - 90 + screenAngle, "orientation");
     };
@@ -198,40 +167,6 @@
       window.addEventListener("deviceorientation", updateNorthNeedle, true);
     };
 
-    const setCompassStatus = (message) => {
-      if (status) status.textContent = message;
-    };
-
-    const startClinicCompass = async () => {
-      if (!mobileCompass) {
-        startOrientationCompass();
-        return;
-      }
-      if (!navigator.geolocation) {
-        setCompassStatus("Ваш браузер не передает геопозицию. Позвоните нам, и администратор подскажет маршрут.");
-        return;
-      }
-      setCompassStatus("Запросим геопозицию только для направления стрелки к клинике.");
-      await startOrientationCompass();
-      if (geoWatchId !== null) {
-        updateRouteNeedle();
-        return;
-      }
-      geoWatchId = navigator.geolocation.watchPosition(
-        (position) => {
-          targetBearing = bearingToClinic(position);
-          updateRouteNeedle();
-          setCompassStatus("Стрелка показывает направление к Азимут Клиник на Старокалужском шоссе.");
-        },
-        () => {
-          if (geoWatchId !== null) navigator.geolocation.clearWatch(geoWatchId);
-          geoWatchId = null;
-          setCompassStatus("Геопозиция не включилась. Компас останется декоративным, а маршрут можно уточнить по телефону.");
-        },
-        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
-      );
-    };
-
     const updateNeedle = (event) => {
       if (usesDeviceOrientation) return;
       const rect = compass.getBoundingClientRect();
@@ -240,17 +175,12 @@
       const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * 180 / Math.PI;
       setNeedleAngle(angle, "pointer");
     };
-    if (!mobileCompass && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
       window.addEventListener("mousemove", updateNeedle);
     }
-    if (!mobileCompass) startOrientationCompass();
-    compass.addEventListener("click", startClinicCompass);
-    compass.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        startClinicCompass();
-      }
-    });
+    startOrientationCompass();
+    compass.addEventListener("click", startOrientationCompass);
+    compass.addEventListener("touchstart", startOrientationCompass, { passive: true, once: true });
   }
 
   function initHomeDepthParallax() {
@@ -377,9 +307,7 @@
   function renderFormats(target) {
     target.innerHTML = (window.AZIMUT_FORMATS || []).map((item, index) => `
       <article class="feature-card">
-        ${item.icon
-          ? `<img class="page-icon page-icon--feature" src="${item.icon}" alt="" aria-hidden="true" loading="lazy">`
-          : `<span class="icon-dot">${String(index + 1).padStart(2, "0")}</span>`}
+        <span class="icon-dot">${String(index + 1).padStart(2, "0")}</span>
         <h3>${item.title}</h3>
         <p>${item.text}</p>
         <a href="services.html#service-form">Получить консультацию</a>
@@ -476,27 +404,23 @@
     `).join("");
   }
 
-  function renderArticleCardImage(item) {
-    if (item.image && !item.imagePending) {
-      return `<div class="article-image" role="img" aria-label="${item.title}" style="background-image: url('${item.image}'); background-position: ${item.imagePosition || "center"}"></div>`;
+  function getArticleIndex() {
+    if (window.AZIMUT_ARTICLES_INDEX && window.AZIMUT_ARTICLES_INDEX.length) {
+      return window.AZIMUT_ARTICLES_INDEX;
     }
-    if (item.imageSlot || item.imagePending) {
-      const slot = item.imageSlot || `${item.slug}-hero`;
-      return `<div class="article-card-image-slot" data-image-slot="${slot}" data-image-pending="true" aria-label="Иллюстрация скоро"><span>Иллюстрация: ${slot}</span></div>`;
-    }
-    return "";
+    return window.AZIMUT_ARTICLES || [];
   }
 
   function renderArticles(target, category = "all") {
     const limit = Number(target.dataset.limit || 0);
-    let items = window.AZIMUT_ARTICLES_INDEX || window.AZIMUT_ARTICLES || [];
+    let items = getArticleIndex();
     if (category !== "all") {
       items = items.filter((item) => item.category === category);
     }
     items = items.slice(0, limit || undefined);
     target.innerHTML = items.map((item) => `
       <article class="article-card" data-category="${item.category}">
-        ${renderArticleCardImage(item)}
+        ${item.image ? `<div class="article-image" role="img" aria-label="${item.title}" style="background-image: url('${item.image}'); background-position: ${item.imagePosition || "center"}"></div>` : ""}
         <div class="meta"><span>${item.category}</span><span>${item.readTime}</span></div>
         <h3>${item.title}</h3>
         <p>${item.excerpt}</p>
