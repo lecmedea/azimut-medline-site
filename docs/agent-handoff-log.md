@@ -4,6 +4,13 @@
 
 ---
 
+## 2026-07-12 — Уникальные иконки тестов (max 3 повтора)
+
+- `js/tests.js`: `buildTestIconMap()` — 17 иконок (iconly + site-symbols), подбор по ключевым словам теста, лимит **3 повтора** на иконку.
+- Cache-bust: `tests.js?v=20260712-test-icons`.
+
+---
+
 ## 2026-07-12 — Gold palette, Philipp, tests timer, perf
 
 **Автор:** Grok (сессия azimut-medline-site)
