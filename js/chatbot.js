@@ -12,7 +12,7 @@
 
   const config = window.AZIMUT_CHAT_CONFIG || {};
   const agentName = config.agentName || "Филипп Филипович";
-  const agentTitle = config.agentTitle || "AI-помощник Азимут Клиник";
+  const agentTitle = config.agentTitle || agentName;
   const fallbackPhone = config.fallbackPhone || "8 (925) 112 77 99";
   const fallbackGreeting = `Здравствуйте. Я ${agentName}, виртуальный помощник Азимут Клиник. Могу подсказать по услугам, ценам, форматам помощи и записи. В экстренной ситуации звоните 112 или 103.`;
 
@@ -104,11 +104,11 @@
   function createWidget() {
     const widget = document.createElement("section");
     widget.className = "ai-chatbot";
-    widget.setAttribute("aria-label", "AI-помощник Азимут Клиник");
+    widget.setAttribute("aria-label", agentName + " — виртуальный помощник Азимут Клиник");
     widget.innerHTML = `
-      <button class="ai-chatbot-toggle" type="button" aria-expanded="false" aria-controls="ai-chatbot-panel" title="AI-помощник">
+      <button class="ai-chatbot-toggle" type="button" aria-expanded="false" aria-controls="ai-chatbot-panel" title="${escapeHtml(agentName)}">
         <span class="ai-chatbot-toggle-icon" aria-hidden="true"></span>
-        <span class="ai-chatbot-toggle-label">AI-помощник</span>
+        <span class="ai-chatbot-toggle-label">${escapeHtml(agentName)}</span>
       </button>
       <div class="ai-chatbot-panel" id="ai-chatbot-panel" role="dialog" aria-modal="false" aria-labelledby="ai-chatbot-title">
         <div class="ai-chatbot-orbit" aria-hidden="true"></div>
@@ -123,13 +123,13 @@
             <button class="ai-chatbot-icon-btn" type="button" data-chat-close aria-label="Закрыть чат">×</button>
           </div>
         </header>
-        <div class="ai-chatbot-warning">AI-помощник не заменяет консультацию врача. В экстренной ситуации звоните 112 или 103.</div>
+        <div class="ai-chatbot-warning">${escapeHtml(agentName)} не заменяет консультацию врача. В экстренной ситуации звоните 112 или 103.</div>
         <div class="ai-chatbot-messages" data-chat-messages aria-live="polite"></div>
         <div class="ai-chatbot-quick" aria-label="Быстрые вопросы">
           ${quickActions.map(([label, message]) => `<button type="button" data-chat-quick="${escapeHtml(message)}">${escapeHtml(label)}</button>`).join("")}
         </div>
         <form class="ai-chatbot-form" data-chat-form>
-          <label class="visually-hidden" for="ai-chatbot-input">Сообщение AI-помощнику</label>
+          <label class="visually-hidden" for="ai-chatbot-input">Сообщение ${escapeHtml(agentName)}</label>
           <textarea id="ai-chatbot-input" name="message" rows="1" maxlength="${MAX_MESSAGE_LENGTH}" placeholder="Напишите вопрос"></textarea>
           <button class="ai-chatbot-send" type="submit">Отправить</button>
         </form>
