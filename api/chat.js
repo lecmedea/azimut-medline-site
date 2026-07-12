@@ -238,6 +238,34 @@ function getAiProvider() {
   return process.env.OPENAI_API_KEY ? "openai" : "deepseek";
 }
 
+function buildFallbackAnswer(message) {
+  const text = String(message || "").toLowerCase();
+  const priceDisclaimer = "Цены предварительные, администратор уточнит итоговую стоимость с учётом состояния, адреса, времени обращения и формата помощи.";
+
+  if (/цен|стоим|сколько|прайс|руб|₽/.test(text)) {
+    if (/психолог/.test(text)) {
+      return `Онлайн-консультация психолога предварительно стоит 2 900 ₽, консультация психолога на дому - 4 900 ₽. ${priceDisclaimer} Могу подсказать формат обращения или вы можете позвонить круглосуточно: 8 (925) 112 77 99.`;
+    }
+    if (/психиатр/.test(text)) {
+      return `Онлайн-консультация психиатра предварительно стоит 2 900 ₽, консультация психиатра на дому - 5 900 ₽. ${priceDisclaimer} Если состояние острое или есть риск для жизни, пожалуйста, звоните 112 или 103.`;
+    }
+    if (/нарколог|завис|алког|капельниц|детокс/.test(text)) {
+      return `Консультация нарколога на дому предварительно стоит 4 900 ₽, онлайн-консультация нарколога - 2 900 ₽. Капельницы: очищающая - 3 900 ₽, комплексная - 5 900 ₽, «Эффект жизни» - 7 900 ₽, Premium - 10 900 ₽. ${priceDisclaimer}`;
+    }
+    return `По основным услугам: консультация по телефону - бесплатно, онлайн-консультации специалиста - от 2 900 ₽, выезд специалиста на дом - от 4 900 ₽. ${priceDisclaimer} Для точного подбора позвоните: 8 (925) 112 77 99.`;
+  }
+
+  if (/дом|выезд|вызвать|адрес/.test(text)) {
+    return "Выезд специалиста возможен по Москве и Московской области, время зависит от адреса и загрузки. Напишите район или позвоните 8 (925) 112 77 99 - администратор подскажет ближайший формат помощи.";
+  }
+
+  if (/экстр|суицид|умереть|угроз|судорог|потер.*созн|психоз|агресс/.test(text)) {
+    return "Это может быть экстренная ситуация. Пожалуйста, немедленно позвоните 112 или 103 либо обратитесь за срочной медицинской помощью. Онлайн-бот не может заменить экстренную службу.";
+  }
+
+  return "Я Филипп Филиппович, виртуальный консультант Азимут Клиник. Помогу сориентироваться по услугам, цене и формату обращения: в клинике, на дому, онлайн или по телефону. Опишите, что вас беспокоит, или позвоните круглосуточно: 8 (925) 112 77 99.";
+}
+
 module.exports = async function chatHandler(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
@@ -250,9 +278,12 @@ module.exports = async function chatHandler(request, response) {
     return sendJson(response, 500, { error: `Филипп Филиппович пока не настроен. Администратору нужно добавить ${provider === "openai" ? "OPENAI_API_KEY" : "DEEPSEEK_API_KEY"}.` });
   }
 
+  let requestMessage = "";
+
   try {
     const body = await readJsonBody(request);
     const message = typeof body.message === "string" ? body.message.trim() : "";
+    requestMessage = message;
 
     if (!message) {
       return sendJson(response, 400, { error: "Введите сообщение для Филиппа Филипповича." });
@@ -289,6 +320,9 @@ module.exports = async function chatHandler(request, response) {
     return sendJson(response, 200, { answer });
   } catch (error) {
     console.error("AI chatbot backend error:", error);
-    return sendJson(response, 500, { error: "Филипп Филиппович временно недоступен. Попробуйте позже или позвоните в центр." });
+    return sendJson(response, 200, {
+      answer: buildFallbackAnswer(requestMessage),
+      fallback: true
+    });
   }
 };
