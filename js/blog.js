@@ -87,6 +87,51 @@
     return "";
   }
 
+  function updateArticleMeta(article) {
+    var description = article.excerpt || "Материал о ментальном здоровье от специалистов Азимут Клиник.";
+    var url = "https://azimutclinic.ru/article.html?slug=" + encodeURIComponent(article.slug);
+    var image = article.image ? (article.image.indexOf("http") === 0 ? article.image : "https://azimutclinic.ru/" + article.image.replace(/^\//, "")) : "https://azimutclinic.ru/assets/logo-main.jpg";
+
+    document.title = article.title + " — Азимут Клиник";
+
+    function setMeta(selector, content) {
+      var node = document.querySelector(selector);
+      if (node) node.setAttribute("content", content);
+    }
+
+    setMeta('meta[name="description"]', description);
+    setMeta('meta[property="og:title"]', article.title + " — Азимут Клиник");
+    setMeta('meta[property="og:description"]', description);
+    setMeta('meta[property="og:url"]', url);
+    setMeta('meta[property="og:image"]', image);
+
+    var canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute("href", url);
+
+    var existing = document.getElementById("article-jsonld");
+    if (existing) existing.remove();
+
+    var script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "article-jsonld";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: article.title,
+      description: description,
+      datePublished: article.date,
+      image: image,
+      author: { "@type": "Organization", name: "Азимут Клиник" },
+      publisher: {
+        "@type": "Organization",
+        name: "Азимут Клиник",
+        logo: { "@type": "ImageObject", url: "https://azimutclinic.ru/assets/logo-main.jpg" }
+      },
+      mainEntityOfPage: url
+    });
+    document.head.appendChild(script);
+  }
+
   function renderArticle(target) {
     var article = getArticle();
     if (!article) {
@@ -95,7 +140,7 @@
     }
 
     var blocks = article.blocks || article.content || [];
-    document.title = article.title + " — Азимут Клиник";
+    updateArticleMeta(article);
 
     target.innerHTML =
       '<p class="eyebrow">' + escapeHtml(article.category) + "</p>" +
