@@ -165,6 +165,13 @@
   text-transform: uppercase;
 }
 
+.ai-chatbot-agent {
+  margin: 4px 0 0;
+  color: #977959;
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .ai-chatbot-header h2 {
   margin: 2px 0 4px;
   font-size: 18px;
