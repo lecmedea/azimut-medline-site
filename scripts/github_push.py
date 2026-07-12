@@ -14,7 +14,6 @@ BRANCH = "main"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TOKEN = ""
 
-# Read token from gh CLI config
 HOSTS = pathlib.Path.home() / ".config/gh/hosts.yml"
 if HOSTS.exists():
     for line in HOSTS.read_text(encoding="utf-8").splitlines():
@@ -25,38 +24,53 @@ if HOSTS.exists():
 if not TOKEN:
     sys.exit("GitHub token not found in ~/.config/gh/hosts.yml")
 
-FILES = [
-    "services.html",
-    "js/chatbot.js",
-    "css/chatbot.css",
-    "css/style.css",
-    "assets/icons/iconly/doctor.svg",
-    "assets/icons/iconly/family.svg",
-    "assets/icons/iconly/shield.svg",
-    "docs/agent-handoff-log.md",
-    "scripts/publish-changes.command",
-    "scripts/github_push.py",
-    "about.html",
-    "article.html",
-    "blog.html",
-    "contacts.html",
-    "doctors.html",
-    "index.html",
-    "partnership.html",
-    "payment.html",
-    "personal-data.html",
-    "prices.html",
-    "privacy.html",
-    "services.html",
-    "terms.html",
-    "tests.html",
-    "js/tests.js",
-    "js/tests-batch200.js",
-    "data/articles-index.js",
-    "data/articles-batch30-index.js",
-    "css/blog.css",
-    "js/blog.js",
-]
+COMMIT_MSG = "Tests grid 6-col, filter dropdowns, 20 articles, SEO sitemap"
+
+
+def collect_files() -> list[str]:
+    rels: list[str] = []
+
+    def add(path: pathlib.Path) -> None:
+        if path.is_file():
+            rel = str(path.relative_to(ROOT)).replace("\\", "/")
+            if rel not in rels:
+                rels.append(rel)
+
+    for pattern in ("*.html",):
+        for path in sorted(ROOT.glob(pattern)):
+            add(path)
+
+    for rel in (
+        "css/style.css",
+        "css/responsive.css",
+        "css/blog.css",
+        "js/tests.js",
+        "js/tests-batch200.js",
+        "js/blog.js",
+        "js/main.js",
+        "sitemap.xml",
+        "robots.txt",
+        "scripts/github_push.py",
+        "scripts/generate-batch20-and-seo.py",
+    ):
+        add(ROOT / rel)
+
+    for pattern in ("data/articles*.js",):
+        for path in sorted(ROOT.glob(pattern)):
+            add(path)
+
+    for pattern in ("assets/blog/*-hero.svg",):
+        for path in sorted(ROOT.glob(pattern)):
+            add(path)
+
+    for pattern in ("assets/icons/iconly/*.svg", "assets/icons/site-symbols/*.png"):
+        for path in sorted(ROOT.glob(pattern)):
+            add(path)
+
+    return rels
+
+
+FILES = collect_files()
 
 
 def api(method: str, path: str, payload: dict | None = None) -> dict:
@@ -90,20 +104,14 @@ def file_api_put(path: str, content: bytes, message: str, sha: str | None) -> di
 
 
 def main() -> None:
-    unique_files = []
-    seen = set()
-    for rel in FILES:
-        if rel not in seen:
-            seen.add(rel)
-            unique_files.append(rel)
-
-    commit_msg = "Add 20 psychology screening tests, services icons, blog updates"
     updated = 0
+    skipped = 0
 
-    for rel in unique_files:
+    for rel in FILES:
         local = ROOT / rel
         if not local.exists():
             print(f"SKIP missing local: {rel}")
+            skipped += 1
             continue
 
         sha = None
@@ -115,11 +123,11 @@ def main() -> None:
                 raise
 
         content = local.read_bytes()
-        file_api_put(rel, content, f"{commit_msg} ({rel})", sha)
+        file_api_put(rel, content, f"{COMMIT_MSG} ({rel})", sha)
         updated += 1
         print(f"OK {rel}")
 
-    print(f"Done: {updated} files pushed to {BRANCH}")
+    print(f"Done: {updated} files pushed, {skipped} skipped → {BRANCH}")
 
 
 if __name__ == "__main__":
