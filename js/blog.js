@@ -43,7 +43,7 @@
     );
   }
 
-  function renderBlock(block) {
+  function renderBlock(block, article) {
     if (!block) return "";
     if (typeof block === "string") return "<p>" + escapeHtml(block) + "</p>";
 
@@ -57,6 +57,16 @@
           return "<li>" + escapeHtml(item) + "</li>";
         }).join("") + "</ul>";
       case "image-slot":
+        if (article && article.image) {
+          var alt = block.caption || article.title || "Иллюстрация к статье";
+          var cap = block.caption ? "<figcaption>" + escapeHtml(block.caption) + "</figcaption>" : "";
+          return (
+            '<figure class="article-image-slot">' +
+              '<img src="' + escapeHtml(article.image) + '" alt="' + escapeHtml(alt) + '" loading="lazy" decoding="async" />' +
+              cap +
+            "</figure>"
+          );
+        }
         return renderImageSlot(block.slot, block.caption);
       case "callout":
         return '<aside class="article-callout"><p>' + escapeHtml(block.text) + "</p></aside>";
@@ -66,10 +76,9 @@
   }
 
   function renderArticleHero(article) {
-    if (article.image && !article.imagePending) {
+    if (article.image) {
       return (
-        '<div class="article-image article-hero-image" role="img" aria-label="' + escapeHtml(article.title) + '" ' +
-        'style="background-image: url(\'' + escapeHtml(article.image) + '\'); background-position: ' + (article.imagePosition || "center") + '"></div>'
+        '<img class="article-hero-image" src="' + escapeHtml(article.image) + '" alt="' + escapeHtml(article.title) + '" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'assets/images/azimut-consultation-room.jpg\'" />'
       );
     }
     if (article.imageSlot || article.imagePending) {
@@ -93,7 +102,7 @@
       "<h1>" + escapeHtml(article.title) + "</h1>" +
       '<div class="article-meta">' + new Date(article.date).toLocaleDateString("ru-RU") + " · " + escapeHtml(article.readTime) + "</div>" +
       renderArticleHero(article) +
-      blocks.map(renderBlock).join("") +
+      blocks.map(function (block) { return renderBlock(block, article); }).join("") +
       '<div class="faq-block">' +
         "<h2>Частые вопросы</h2>" +
         (article.faq || []).map(function (pair) {
