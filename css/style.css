@@ -1309,8 +1309,8 @@ button:focus-visible {
 .doctor-card img,
 .article-card img,
 .review-card img,
-.info-card img,
-.feature-card img {
+.info-card img:not(.condition-icon):not(.page-icon),
+.feature-card img:not(.condition-icon):not(.page-icon) {
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 3;
