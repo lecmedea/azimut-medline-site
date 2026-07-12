@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 200" role="img" aria-label="порядок">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7efe1"/>
+      <stop offset="55%" stop-color="#ead8bd"/>
+      <stop offset="100%" stop-color="#AE8B66" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+  <rect width="420" height="200" fill="url(#bg)"/>
+  <path d="M0 160 Q120 120 210 150 T420 130 V200 H0Z" fill="#9A4C39" opacity="0.12"/>
+    <ellipse cx="140" cy="100" rx="90" ry="70" fill="#AE8B66" opacity="0.35"/>
+    <circle cx="320" cy="85" r="55" fill="#c6a27a" opacity="0.45"/>
+    <circle cx="260" cy="150" r="35" fill="#9A4C39" opacity="0.25"/>
+    <rect x="60" y="140" width="120" height="50" rx="12" fill="#ead8bd" opacity="0.6"/>
+  <text x="24" y="36" font-family="Montserrat, Arial, sans-serif" font-size="11" font-weight="400" fill="#9A4C39" opacity="0.85">Психология</text>
+  <text x="24" y="178" font-family="Montserrat, Arial, sans-serif" font-size="13" font-weight="400" fill="#9A4C39" opacity="0.7">порядок</text>
+</svg>

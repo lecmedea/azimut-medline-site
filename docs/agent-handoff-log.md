@@ -63,6 +63,13 @@
 - На главную страницу добавлены структурированные данные `MedicalClinic` с адресом, телефоном и координатами.
 - Для сброса кэша обновлены версии `style.css`, `responsive.css` и `main.js` до `20260711-mobile-compass-seo`.
 
+- **Grok (блог batch30, 2026-07-12):**
+  - Добавлено 30 статей: 10 Психология, 10 Психотерапия, 10 Зависимость (всего 43).
+  - Новая категория **Зависимость** в табах и чипах `blog.html`.
+  - Данные: `data/articles-batch30-index.js`, `data/articles-batch30-content.js`.
+  - Иллюстрации: 30 SVG в `assets/blog/{slug}-hero.svg` (палитра сайта).
+  - Скрипты: `scripts/generate-blog-images.py`, `scripts/generate-articles-content.py`.
+  - Cache-bust: `20260712-blog-batch30`.
 - **Grok (блог, 2026-07-11):**
   - Удалён SEO-блок с `blog.html`, вместо него — панель «Нужна поддержка» с записью, телефоном и быстрыми темами.
   - Добавлено 10 новых статей (всего 13): индекс в `data/articles-index.js`, полные тексты в `data/articles-content.js`.
