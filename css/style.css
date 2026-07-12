@@ -2397,6 +2397,124 @@ button:focus-visible {
   padding-right: 22px;
 }
 
+.tests-toolbar {
+  display: grid;
+  gap: 18px;
+}
+
+.tests-search input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.tests-search input::placeholder {
+  color: var(--muted);
+}
+
+.tests-search input:focus-visible {
+  outline: 2px solid rgba(19, 118, 114, 0.35);
+  outline-offset: 2px;
+  border-color: var(--teal);
+}
+
+.tests-filter-block {
+  display: grid;
+  gap: 10px;
+}
+
+.tests-filter-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.tests-filter-tabs--compact button {
+  font-size: 14px;
+}
+
+.tests-topic-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tests-topic-chips button {
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1px solid rgba(120, 180, 150, 0.45);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: background var(--azimut-transition), border-color var(--azimut-transition);
+}
+
+.tests-topic-chips button:hover,
+.tests-topic-chips button:focus-visible,
+.tests-topic-chips button.active {
+  background: var(--teal-soft);
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.tests-toolbar-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tests-count {
+  margin: 0;
+  color: #5a7a8a;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.tests-reset {
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--blue-dark);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.tests-reset:hover,
+.tests-reset:focus-visible {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.tests-empty {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(185, 144, 89, 0.1);
+  color: var(--blue-dark);
+  font-weight: 300;
+}
+
+.screening-test-card[hidden] {
+  display: none;
+}
+
 .screening-tests {
   display: grid;
   gap: 14px;
