@@ -105,6 +105,7 @@ def collect_article_slugs() -> list[str]:
         "data/articles-index.js",
         "data/articles-batch30-index.js",
         "data/articles-batch20-index.js",
+        "data/articles-batch21-index.js",
         "data/articles.js",
     ):
         path = ROOT / rel
