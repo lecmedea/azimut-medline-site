@@ -814,14 +814,14 @@
     { key: "eating", path: "assets/icons/iconly/eating.svg", match: /пищев|scoff|аппетит|переедан|вес|еда/i },
     { key: "schizophrenia", path: "assets/icons/iconly/schizophrenia.svg", match: /психоз|шизофрен|окр|ybocs|навязчив|ритуал|компульс/i },
     { key: "elderly", path: "assets/icons/iconly/elderly.svg", match: /пожил|деменц|старческ|asrs|внимани|концентрац/i },
-    { key: "family", path: "assets/icons/site-symbols/family.png", match: /родител|подрост|ребён|семь|опекун|caregiver|pg-?13/i },
-    { key: "dialog", path: "assets/icons/site-symbols/dialog.png", match: /отношен|привязан|довер|прощен|близост|attachment|ucla|одиночеств|codepend|созависим/i },
-    { key: "doctor", path: "assets/icons/site-symbols/doctor.png", match: /клиническ|сомат|phq-?15|врач|диагност|hads/i },
-    { key: "compass", path: "assets/icons/site-symbols/compass.png", match: /смысл|направлен|выбор|метафор|архетип|хронотип|color-mood|erq|эмоциональн.*регуляц/i },
-    { key: "calendar", path: "assets/icons/site-symbols/calendar.png", match: /прокрастин|время|дедлайн|откладыв|планир/i },
-    { key: "online", path: "assets/icons/site-symbols/online.png", match: /digital|экран|новост|онлайн|перегруз.*информ/i },
-    { key: "protection", path: "assets/icons/site-symbols/protection.png", match: /границ|boundaries|защит|безопасност/i },
-    { key: "home-care", path: "assets/icons/site-symbols/home-care.png", match: /на дому|выезд|домашн|опека/i }
+    { key: "family", path: "assets/icons/iconly/family.svg", match: /родител|подрост|ребён|семь|опекун|caregiver|pg-?13/i },
+    { key: "dialog", path: "assets/icons/iconly/dialog.svg", match: /отношен|привязан|довер|прощен|близост|attachment|ucla|одиночеств|codepend|созависим/i },
+    { key: "doctor", path: "assets/icons/iconly/doctor.svg", match: /клиническ|сомат|phq-?15|врач|диагност|hads/i },
+    { key: "compass", path: "assets/icons/iconly/compass.svg", match: /смысл|направлен|выбор|метафор|архетип|хронотип|color-mood|erq|эмоциональн.*регуляц/i },
+    { key: "calendar", path: "assets/icons/iconly/calendar.svg", match: /прокрастин|время|дедлайн|откладыв|планир/i },
+    { key: "online", path: "assets/icons/iconly/online.svg", match: /digital|экран|новост|онлайн|перегруз.*информ/i },
+    { key: "protection", path: "assets/icons/iconly/protection.svg", match: /границ|boundaries|защит|безопасност/i },
+    { key: "home-care", path: "assets/icons/iconly/home-care.svg", match: /на дому|выезд|домашн|опека/i }
   ];
 
   function iconMatchScore(hay, pattern) {
