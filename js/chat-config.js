@@ -7,7 +7,7 @@
 window.AZIMUT_CHAT_CONFIG = {
   provider: "auto",
   agentName: "Филипп Филипович",
-  agentTitle: "AI-помощник Азимут Клиник",
+  agentTitle: "Филипп Филипович",
   endpoint: "",
   fallbackPhone: "8 (925) 112 77 99"
 };
