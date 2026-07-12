@@ -1,0 +1,7 @@
+.git
+.vercel
+.env
+.env.*
+node_modules
+assets/fonts/samples/
+font-sample-index.html
