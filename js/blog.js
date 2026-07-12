@@ -70,6 +70,16 @@
         return renderImageSlot(block.slot, block.caption);
       case "callout":
         return '<aside class="article-callout"><p>' + escapeHtml(block.text) + "</p></aside>";
+      case "test-cta":
+        var testUrl = "tests.html?open=" + encodeURIComponent(block.testId || "");
+        return (
+          '<section class="article-test-cta">' +
+            '<p class="article-test-cta__lead">' + escapeHtml(block.text || "") + "</p>" +
+            '<a class="button button-primary article-test-cta__button" href="' + escapeHtml(testUrl) + '">' +
+              "Пройти тест: " + escapeHtml(block.testTitle || "скрининг") +
+            "</a>" +
+          "</section>"
+        );
       default:
         return "";
     }
@@ -140,6 +150,21 @@
     }
 
     var blocks = article.blocks || article.content || [];
+    var hasTestCta = blocks.some(function (block) {
+      return block && block.type === "test-cta";
+    });
+    if (!hasTestCta) {
+      var linkMap = window.AZIMUT_ARTICLE_TEST_LINKS || {};
+      var link = linkMap[article.slug];
+      if (link && link.testId) {
+        blocks = blocks.concat([{
+          type: "test-cta",
+          testId: link.testId,
+          testTitle: link.testTitle,
+          text: "Пройдите скрининг «" + link.testTitle + "», чтобы мягко проверить, насколько описанные признаки откликаются вам сейчас. Это займёт несколько минут и поможет решить, нужна ли поддержка специалиста."
+        }]);
+      }
+    }
     updateArticleMeta(article);
 
     target.innerHTML =
