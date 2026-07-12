@@ -199,15 +199,26 @@ async function requestOpenAI(apiKey, body) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Accept": "application/json",
+      "User-Agent": "AzimutClinicChatbot/1.0",
       "Authorization": `Bearer ${apiKey}`
     },
     body: JSON.stringify(payload)
   });
 
-  const data = await response.json().catch(() => ({}));
+  const rawText = await response.text();
+  let data = {};
+  try {
+    data = rawText ? JSON.parse(rawText) : {};
+  } catch {
+    data = {};
+  }
 
   if (!response.ok) {
-    const message = data?.error?.message || `OpenAI API error: ${response.status}`;
+    const providerMessage = data?.error?.message || data?.message || rawText;
+    const message = providerMessage
+      ? `OpenAI API error: ${response.status} - ${String(providerMessage).slice(0, 500)}`
+      : `OpenAI API error: ${response.status}`;
     const error = new Error(message);
     error.status = response.status;
     throw error;
