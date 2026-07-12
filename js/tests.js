@@ -802,30 +802,65 @@
     unusual: "Нетипичные"
   };
 
-  const CATEGORY_ICONS = {
-    anxiety: "assets/icons/iconly/anxiety.svg",
-    depression: "assets/icons/iconly/depression.svg",
-    relationships: "assets/icons/iconly/anxiety.svg",
-    burnout: "assets/icons/iconly/burnout.svg",
-    addiction: "assets/icons/iconly/addiction.svg",
-    sleep: "assets/icons/iconly/anxiety.svg",
-    ptsd: "assets/icons/iconly/ptsd.svg",
-    ocd: "assets/icons/iconly/anxiety.svg",
-    bipolar: "assets/icons/iconly/bipolar.svg",
-    adhd: "assets/icons/iconly/anxiety.svg",
-    eating: "assets/icons/iconly/eating.svg",
-    anger: "assets/icons/iconly/burnout.svg",
-    grief: "assets/icons/iconly/depression.svg",
-    "self-esteem": "assets/icons/iconly/depression.svg",
-    parenting: "assets/icons/iconly/elderly.svg",
-    stress: "assets/icons/iconly/burnout.svg",
-    psychosis: "assets/icons/iconly/schizophrenia.svg",
-    elderly: "assets/icons/iconly/elderly.svg",
-    "психология": "assets/icons/iconly/anxiety.svg",
-    "психотерапия": "assets/icons/iconly/burnout.svg",
-    "психиатрия": "assets/icons/iconly/depression.svg",
-    "наркология": "assets/icons/iconly/addiction.svg"
-  };
+  const MAX_ICON_REPEATS = 3;
+
+  const TEST_ICON_POOL = [
+    { key: "anxiety", path: "assets/icons/iconly/anxiety.svg", match: /тревог|паник|страх|беспокой|gad|spin|pdss|оценк|критик|социальн|насторож/i },
+    { key: "depression", path: "assets/icons/iconly/depression.svg", match: /депресс|настроен|phq|тоск|подавлен|безнадёж|апат|rosenberg|стыд|смысл|meaning|shame/i },
+    { key: "bipolar", path: "assets/icons/iconly/bipolar.svg", match: /биполяр|mdq|гипомани|качел|маниак|перепад/i },
+    { key: "addiction", path: "assets/icons/iconly/addiction.svg", match: /алкогол|зависим|audit|dast|assist|наркот|употреблен|веществ/i },
+    { key: "burnout", path: "assets/icons/iconly/burnout.svg", match: /выгоран|истощен|burnout|compassion|усталост|перегруз|pss|стресс/i },
+    { key: "ptsd", path: "assets/icons/iconly/ptsd.svg", match: /травм|pcl|птср|посттравм|навязчив.*воспомин|flashback/i },
+    { key: "eating", path: "assets/icons/iconly/eating.svg", match: /пищев|scoff|аппетит|переедан|вес|еда/i },
+    { key: "schizophrenia", path: "assets/icons/iconly/schizophrenia.svg", match: /психоз|шизофрен|окр|ybocs|навязчив|ритуал|компульс/i },
+    { key: "elderly", path: "assets/icons/iconly/elderly.svg", match: /пожил|деменц|старческ|asrs|внимани|концентрац/i },
+    { key: "family", path: "assets/icons/site-symbols/family.png", match: /родител|подрост|ребён|семь|опекун|caregiver|pg-?13/i },
+    { key: "dialog", path: "assets/icons/site-symbols/dialog.png", match: /отношен|привязан|довер|прощен|близост|attachment|ucla|одиночеств|codepend|созависим/i },
+    { key: "doctor", path: "assets/icons/site-symbols/doctor.png", match: /клиническ|сомат|phq-?15|врач|диагност|hads/i },
+    { key: "compass", path: "assets/icons/site-symbols/compass.png", match: /смысл|направлен|выбор|метафор|архетип|хронотип|color-mood|erq|эмоциональн.*регуляц/i },
+    { key: "calendar", path: "assets/icons/site-symbols/calendar.png", match: /прокрастин|время|дедлайн|откладыв|планир/i },
+    { key: "online", path: "assets/icons/site-symbols/online.png", match: /digital|экран|новост|онлайн|перегруз.*информ/i },
+    { key: "protection", path: "assets/icons/site-symbols/protection.png", match: /границ|boundaries|защит|безопасност/i },
+    { key: "home-care", path: "assets/icons/site-symbols/home-care.png", match: /на дому|выезд|домашн|опека/i }
+  ];
+
+  function iconMatchScore(hay, pattern) {
+    const parts = hay.toLowerCase().match(pattern);
+    return parts ? parts.length : 0;
+  }
+
+  function buildTestIconMap(allTests) {
+    const usage = Object.fromEntries(TEST_ICON_POOL.map((icon) => [icon.key, 0]));
+    const assignments = {};
+
+    const ranked = allTests.map((test) => {
+      const hay = `${test.id} ${test.title} ${test.description} ${(test.questions || []).slice(0, 2).join(" ")}`;
+      const scores = TEST_ICON_POOL.map((icon) => ({
+        key: icon.key,
+        path: icon.path,
+        score: iconMatchScore(hay, icon.match)
+      })).sort((a, b) => b.score - a.score);
+      return { id: test.id, scores };
+    }).sort((a, b) => b.scores[0].score - a.scores[0].score);
+
+    ranked.forEach((item) => {
+      const available = item.scores.filter((entry) => usage[entry.key] < MAX_ICON_REPEATS);
+      let pick = available.sort((a, b) => b.score - a.score || usage[a.key] - usage[b.key])[0];
+
+      if (!pick) {
+        pick = TEST_ICON_POOL
+          .map((icon) => ({ key: icon.key, path: icon.path, used: usage[icon.key] }))
+          .sort((a, b) => a.used - b.used)[0];
+      }
+
+      usage[pick.key] += 1;
+      assignments[item.id] = pick.path;
+    });
+
+    return assignments;
+  }
+
+  const testIconById = buildTestIconMap(tests);
 
   function normalizeDirection(direction) {
     return String(direction || "").trim().toLowerCase();
@@ -870,8 +905,13 @@
   }
 
   function getTestIcon(test) {
-    const category = getTestCategory(test);
-    return CATEGORY_ICONS[category] || CATEGORY_ICONS.anxiety;
+    return testIconById[test.id] || TEST_ICON_POOL[0].path;
+  }
+
+  function getTestIconKey(test) {
+    const path = getTestIcon(test);
+    const found = TEST_ICON_POOL.find((icon) => icon.path === path);
+    return found ? found.key : "anxiety";
   }
 
   function getTestTimeLimitSeconds(test) {
@@ -990,7 +1030,7 @@
     return `
       <article class="test-grid-card screening-test-card" data-test="${test.id}" data-topics="${escapeHtml(topics.join(","))}">
         <button type="button" class="test-grid-card__open" data-test-open="${test.id}" aria-label="Пройти тест: ${escapeHtml(test.title)}">
-          <span class="test-grid-card__icon" data-category="${escapeHtml(getTestCategory(test))}">
+          <span class="test-grid-card__icon" data-icon="${escapeHtml(getTestIconKey(test))}">
             <img src="${escapeHtml(getTestIcon(test))}" alt="" width="36" height="36" loading="lazy" decoding="async">
           </span>
           <span class="test-grid-card__direction">${escapeHtml(test.direction)}</span>
