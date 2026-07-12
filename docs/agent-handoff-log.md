@@ -4,6 +4,12 @@
 
 ## 2026-07-12
 
+- Иконки и раздел услуг (`services.html`, cache `20260712-services-philipp`):
+  - eyebrow «SEO-раздел» заменён на «Направления помощи»;
+  - в блок «Центр ментального здоровья в Москве» добавлен 9-й пункт «Поддержка для близких»;
+  - во все 9 карточек добавлены Iconly-иконки (`doctor.svg`, `family.svg`, `shield.svg` — новые);
+  - у AI-помощника «Филипп Филиппович» пузырь чата заменён на `doctor.svg` (кнопка + аватар в шапке панели).
+- Фото обложек блога: скрипт `scripts/copy-all-blog-heroes.py` готов, источники в `~/.grok/sessions/`, но JPG в `assets/blog/` ещё не скопированы — запустить локально и запушить.
 - Начато подключение проекта к Vercel:
   - добавлен `vercel.json` с `Cache-Control: no-store` для `/api/*`, чтобы ответы AI-чата не кэшировались;
   - Vercel должен деплоить статические страницы из корня проекта и serverless endpoint `api/chat.js`;
@@ -63,6 +69,12 @@
 - На главную страницу добавлены структурированные данные `MedicalClinic` с адресом, телефоном и координатами.
 - Для сброса кэша обновлены версии `style.css`, `responsive.css` и `main.js` до `20260711-mobile-compass-seo`.
 
+- **Grok (блог фото, 2026-07-12):**
+  - 43 фотореалистичных hero сгенерированы (warm cream/gold/terracotta, стиль клиники).
+  - Код переведён на `assets/blog/{slug}-hero.jpg`, SVG и плейсхолдеры убраны из индекса.
+  - Карточки и статьи: `<img loading="lazy">` вместо background-image.
+  - **Важно:** JPG лежат в `~/.grok/sessions/.../images/` — скопировать: `bash scripts/install-blog-photos.command` или `python3 scripts/copy-all-blog-heroes.py`.
+  - Cache-bust: `20260712-blog-photos`.
 - **Grok (блог batch30, 2026-07-12):**
   - Добавлено 30 статей: 10 Психология, 10 Психотерапия, 10 Зависимость (всего 43).
   - Новая категория **Зависимость** в табах и чипах `blog.html`.
