@@ -805,25 +805,22 @@
   const CATEGORY_ICONS = {
     anxiety: "assets/icons/iconly/anxiety.svg",
     depression: "assets/icons/iconly/depression.svg",
-    relationships: "assets/icons/site-symbols/dialog.png",
+    relationships: "assets/icons/iconly/anxiety.svg",
     burnout: "assets/icons/iconly/burnout.svg",
     addiction: "assets/icons/iconly/addiction.svg",
-    sleep: "assets/icons/site-symbols/compass.png",
+    sleep: "assets/icons/iconly/anxiety.svg",
     ptsd: "assets/icons/iconly/ptsd.svg",
     ocd: "assets/icons/iconly/anxiety.svg",
     bipolar: "assets/icons/iconly/bipolar.svg",
-    adhd: "assets/icons/site-symbols/compass.png",
+    adhd: "assets/icons/iconly/anxiety.svg",
     eating: "assets/icons/iconly/eating.svg",
-    anger: "assets/icons/iconly/anxiety.svg",
+    anger: "assets/icons/iconly/burnout.svg",
     grief: "assets/icons/iconly/depression.svg",
     "self-esteem": "assets/icons/iconly/depression.svg",
-    parenting: "assets/icons/site-symbols/family.png",
+    parenting: "assets/icons/iconly/elderly.svg",
     stress: "assets/icons/iconly/burnout.svg",
     psychosis: "assets/icons/iconly/schizophrenia.svg",
-    elderly: "assets/icons/iconly/elderly.svg"
-  };
-
-  const DIRECTION_ICONS = {
+    elderly: "assets/icons/iconly/elderly.svg",
     "психология": "assets/icons/iconly/anxiety.svg",
     "психотерапия": "assets/icons/iconly/burnout.svg",
     "психиатрия": "assets/icons/iconly/depression.svg",
@@ -866,11 +863,36 @@
     return "long";
   }
 
-  function getTestIcon(test) {
+  function getTestCategory(test) {
     const topics = getTestTopics(test);
-    if (topics.length && CATEGORY_ICONS[topics[0]]) return CATEGORY_ICONS[topics[0]];
-    const direction = normalizeDirection(test.direction);
-    return DIRECTION_ICONS[direction] || "assets/icons/site-symbols/dialog.png";
+    if (topics.length) return topics[0];
+    return normalizeDirection(test.direction);
+  }
+
+  function getTestIcon(test) {
+    const category = getTestCategory(test);
+    return CATEGORY_ICONS[category] || CATEGORY_ICONS.anxiety;
+  }
+
+  function getTestTimeLimitSeconds(test) {
+    return Math.max(120, getTestMinutes(test) * 60);
+  }
+
+  function renderHourglass() {
+    return `
+      <svg class="test-hourglass" viewBox="0 0 54 74" aria-hidden="true">
+        <path class="test-hourglass__glass" d="M12 6h30l-12 16 12 16-12 16 12 16H12l12-16-12-16 12-16z"/>
+        <rect class="test-hourglass__sand-top" x="18" y="10" width="18" height="14" rx="2"/>
+        <rect class="test-hourglass__sand-stream" x="25" y="34" width="4" height="8" rx="2"/>
+        <rect class="test-hourglass__sand-bottom" x="18" y="50" width="18" height="6" rx="2"/>
+      </svg>
+    `;
+  }
+
+  function formatTimer(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   }
 
   function pluralizeQuestions(count) {
@@ -906,27 +928,59 @@
     `).join("");
   }
 
-  function renderTestForm(test) {
+  function renderTestIntro(test) {
+    const limit = getTestTimeLimitSeconds(test);
     return `
-      <div class="test-modal__header">
-        <img class="test-modal__icon" src="${escapeHtml(getTestIcon(test))}" alt="" width="40" height="40" decoding="async">
-        <div>
-          <span class="test-direction">${escapeHtml(test.direction)}</span>
-          <h2 id="test-modal-title">${escapeHtml(test.title)}</h2>
-          <p class="test-modal__lead">${escapeHtml(test.description)}</p>
-          <p class="test-modal__meta">≈ ${getTestMinutes(test)} мин · ${test.questions.length} ${pluralizeQuestions(test.questions.length)}</p>
+      <div class="test-modal__intro" data-test-intro="${test.id}">
+        <div class="test-modal__header">
+          <span class="test-grid-card__icon" aria-hidden="true">
+            <img src="${escapeHtml(getTestIcon(test))}" alt="" width="36" height="36" decoding="async">
+          </span>
+          <div>
+            <span class="test-direction">${escapeHtml(test.direction)}</span>
+            <h2 id="test-modal-title">${escapeHtml(test.title)}</h2>
+            <p class="test-modal__lead">${escapeHtml(test.description)}</p>
+            <p class="test-modal__meta">На прохождение — ${formatTimer(limit)} · ${test.questions.length} ${pluralizeQuestions(test.questions.length)}</p>
+          </div>
         </div>
+        <p>Нажмите «Начать тест», когда будете готовы. Таймер запустится сразу после старта.</p>
+        <button class="button button-primary" type="button" data-test-start="${test.id}">Начать тест</button>
       </div>
-      <form class="test-form" data-test-form="${test.id}">
-        ${test.questions.map((question, index) => `
-          <fieldset class="test-question">
-            <legend>${index + 1}. ${escapeHtml(question)}</legend>
-            <div class="test-options">${renderOptions(test, index)}</div>
-          </fieldset>
-        `).join("")}
-        <button class="button button-primary" type="submit">Показать результат</button>
-        <p class="test-result" aria-live="polite"></p>
-      </form>
+    `;
+  }
+
+  function renderTestActiveForm(test) {
+    const limit = getTestTimeLimitSeconds(test);
+    return `
+      <div data-test-active="${test.id}" style="--test-duration: ${limit}s">
+        <div class="test-modal__header">
+          <span class="test-grid-card__icon" aria-hidden="true">
+            <img src="${escapeHtml(getTestIcon(test))}" alt="" width="36" height="36" decoding="async">
+          </span>
+          <div>
+            <span class="test-direction">${escapeHtml(test.direction)}</span>
+            <h2 id="test-modal-title">${escapeHtml(test.title)}</h2>
+            <p class="test-modal__meta">${test.questions.length} ${pluralizeQuestions(test.questions.length)}</p>
+          </div>
+        </div>
+        <div class="test-modal__timer-bar">
+          ${renderHourglass()}
+          <div>
+            <p class="test-timer-label">Осталось времени</p>
+            <p class="test-timer-count" data-test-timer aria-live="polite">${formatTimer(limit)}</p>
+          </div>
+        </div>
+        <form class="test-form" data-test-form="${test.id}">
+          ${test.questions.map((question, index) => `
+            <fieldset class="test-question">
+              <legend>${index + 1}. ${escapeHtml(question)}</legend>
+              <div class="test-options">${renderOptions(test, index)}</div>
+            </fieldset>
+          `).join("")}
+          <button class="button button-primary" type="submit">Показать результат</button>
+          <p class="test-result" aria-live="polite"></p>
+        </form>
+      </div>
     `;
   }
 
@@ -936,7 +990,7 @@
     return `
       <article class="test-grid-card screening-test-card" data-test="${test.id}" data-topics="${escapeHtml(topics.join(","))}">
         <button type="button" class="test-grid-card__open" data-test-open="${test.id}" aria-label="Пройти тест: ${escapeHtml(test.title)}">
-          <span class="test-grid-card__icon">
+          <span class="test-grid-card__icon" data-category="${escapeHtml(getTestCategory(test))}">
             <img src="${escapeHtml(getTestIcon(test))}" alt="" width="36" height="36" loading="lazy" decoding="async">
           </span>
           <span class="test-grid-card__direction">${escapeHtml(test.direction)}</span>
@@ -1014,9 +1068,9 @@
     toolbar.querySelectorAll(".tests-filter-dropdown").forEach((dropdown) => {
       const trigger = dropdown.querySelector(".tests-filter-trigger");
       const panel = dropdown.querySelector(".tests-filter-panel");
+      dropdown.classList.remove("is-open");
       if (panel) panel.hidden = true;
       if (trigger) trigger.setAttribute("aria-expanded", "false");
-      dropdown.classList.remove("is-open");
     });
   }
 
@@ -1025,9 +1079,10 @@
       const trigger = dropdown.querySelector(".tests-filter-trigger");
       const panel = dropdown.querySelector(".tests-filter-panel");
       if (!trigger || !panel) return;
+      panel.hidden = true;
       trigger.addEventListener("click", (event) => {
         event.stopPropagation();
-        const willOpen = panel.hidden;
+        const willOpen = !dropdown.classList.contains("is-open");
         closeFilterDropdowns(toolbar);
         if (willOpen) {
           panel.hidden = false;
@@ -1047,28 +1102,78 @@
     const modalBody = modal?.querySelector("[data-test-modal-body]");
     if (!modal || !modalBody) return;
 
+    let activeTimer = null;
+
+    function stopTimer() {
+      if (activeTimer) {
+        clearInterval(activeTimer);
+        activeTimer = null;
+      }
+    }
+
     function closeModal() {
+      stopTimer();
       modal.hidden = true;
       modal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("test-modal-open");
       modalBody.innerHTML = "";
     }
 
+    function startTimer(test, container) {
+      let remaining = getTestTimeLimitSeconds(test);
+      const timerNode = container.querySelector("[data-test-timer]");
+      const update = () => {
+        if (timerNode) timerNode.textContent = formatTimer(remaining);
+        if (remaining <= 0) {
+          stopTimer();
+          const form = container.querySelector("[data-test-form]");
+          const result = form?.querySelector(".test-result");
+          if (result && !result.classList.contains("is-visible")) {
+            result.textContent = "Время вышло. Отправьте ответы, которые успели дать, или закройте окно и начните заново.";
+            result.classList.add("is-visible");
+          }
+        }
+        remaining -= 1;
+      };
+      update();
+      activeTimer = setInterval(update, 1000);
+    }
+
     function openModal(testId) {
       const test = tests.find((item) => item.id === testId);
       if (!test) return;
-      modalBody.innerHTML = renderTestForm(test);
-      attachScoring(modalBody);
+      stopTimer();
+      modalBody.innerHTML = renderTestIntro(test);
       modal.hidden = false;
       modal.setAttribute("aria-hidden", "false");
       document.body.classList.add("test-modal-open");
       modal.querySelector(".test-modal__close")?.focus();
     }
 
+    function beginTest(testId) {
+      const test = tests.find((item) => item.id === testId);
+      if (!test) return;
+      stopTimer();
+      modalBody.innerHTML = renderTestActiveForm(test);
+      attachScoring(modalBody);
+      const active = modalBody.querySelector(`[data-test-active="${testId}"]`);
+      if (active) startTimer(test, active);
+      active?.querySelector(".test-question")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     listRoot.addEventListener("click", (event) => {
       const opener = event.target.closest("[data-test-open]");
-      if (!opener) return;
-      openModal(opener.dataset.testOpen);
+      if (opener) {
+        openModal(opener.dataset.testOpen);
+        return;
+      }
+      const starter = event.target.closest("[data-test-start]");
+      if (starter) beginTest(starter.dataset.testStart);
+    });
+
+    modal.addEventListener("click", (event) => {
+      const starter = event.target.closest("[data-test-start]");
+      if (starter) beginTest(starter.dataset.testStart);
     });
 
     modal.querySelectorAll("[data-test-modal-close]").forEach((control) => {
