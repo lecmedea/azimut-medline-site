@@ -51,6 +51,7 @@ FILES = [
     "terms.html",
     "tests.html",
     "js/tests.js",
+    "js/tests-batch200.js",
     "data/articles-index.js",
     "data/articles-batch30-index.js",
     "css/blog.css",
