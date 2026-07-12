@@ -1,103 +1,55 @@
-# Журнал изменений для ИИ-агентов
+# Agent handoff log — Азимут Клиник
 
-Этот файл нужен для синхронизации Codex, Grok и других агентов. README не использовать для оперативных заметок.
+Журнал изменений для Grok / Codex / других агентов. Дополняйте сверху (новые записи первыми).
 
-## 2026-07-12
+---
 
-- Фикс Филиппа Филипповича для `azimutclinic.ru`:
-  - `js/chatbot.js` больше не ходит в относительный `/api/chat` на GitHub Pages; с внешних доменов используется `https://azimut-medline-site.vercel.app/api/chat`;
-  - `api/chat.js` на Vercel получил CORS для `azimutclinic.ru`, `www.azimutclinic.ru`, Vercel preview/production и `OPTIONS`;
-  - cache-bust чат-скрипта: `20260712-chat-crossdomain`.
-- Иконки и раздел услуг (`services.html`, cache `20260712-services-philipp`):
-  - eyebrow «SEO-раздел» заменён на «Направления помощи»;
-  - в блок «Центр ментального здоровья в Москве» добавлен 9-й пункт «Поддержка для близких»;
-  - во все 9 карточек добавлены Iconly-иконки (`doctor.svg`, `family.svg`, `shield.svg` — новые);
-  - у AI-помощника «Филипп Филиппович» пузырь чата заменён на `doctor.svg` (кнопка + аватар в шапке панели).
-- Фото обложек блога: скрипт `scripts/copy-all-blog-heroes.py` готов, источники в `~/.grok/sessions/`, но JPG в `assets/blog/` ещё не скопированы — запустить локально и запушить.
-- Начато подключение проекта к Vercel:
-  - добавлен `vercel.json` с `Cache-Control: no-store` для `/api/*`, чтобы ответы AI-чата не кэшировались;
-  - Vercel должен деплоить статические страницы из корня проекта и serverless endpoint `api/chat.js`;
-  - реальные API-ключи по-прежнему не хранить в репозитории.
-- Для работы «Филиппа Филипповича» на Vercel после создания/claim проекта нужны Environment Variables:
-  - `AI_PROVIDER=artemox`;
-  - `OPENAI_BASE_URL=https://api.artemox.com/v1`;
-  - `OPENAI_API_KEY=<реальный ключ только в Vercel Environment Variables>`;
-  - `OPENAI_MODEL=gpt-4o-mini`.
-- Черновики `font-sample-index.html` и `assets/fonts/samples/` не публиковать без отдельного запроса владельца.
+## 2026-07-12 — Gold palette, Philipp, tests timer, perf
 
-## 2026-07-11
+**Автор:** Grok (сессия azimut-medline-site)
 
-- Шапка сайта переделана по архитектуре EMC, но в стилистике Азимут Клиник:
-  - десктопная версия стала двухрядной: слева крупный логотип, сверху служебная строка, снизу навигация и кнопка записи;
-  - добавлены быстрые действия `Заказать звонок` и `Вызвать врача`;
-  - мобильная логика с бургером сохранена.
-- AI-бот расширен под OpenAI-compatible endpoint:
-  - `OPENAI_BASE_URL` или `OPENAI_API_BASE_URL` задаёт базовый адрес API, например `https://api.artemox.com/v1`;
-  - `OPENAI_MODEL` по умолчанию теперь `gpt-4o-mini`;
-  - `AI_PROVIDER=artemox`, `AI_PROVIDER=openai-compatible` и `AI_PROVIDER=openai` используют один OpenAI-compatible путь;
-  - системный промпт усилен под аккуратного онлайн-консультанта-продажника медицинских услуг: выявление потребности, мягкий перевод к заявке/звонку, без диагнозов, назначений, гарантий и давления;
-  - публичное имя консультанта в интерфейсе: `Филипп Филиппович`;
-  - реальные ключи не сохранять в репозиторий, только в переменные окружения хостинга.
-- AI-бот переведён на конфигурируемого провайдера:
-  - при `AI_PROVIDER=openai` и `OPENAI_API_KEY` endpoint `/api/chat` использует OpenAI Chat Completions;
-  - модель выбирается через `OPENAI_MODEL`;
-  - DeepSeek оставлен как fallback через `AI_PROVIDER=deepseek` / `DEEPSEEK_API_KEY`;
-  - реальный API-ключ не сохранять в репозиторий, если ключ был отправлен в чат, его нужно отозвать и создать новый.
-- Страница `contacts.html` приведена к актуальным реквизитам из подвала:
-  - удалён коричневый круглый логотип в контактном блоке;
-  - добавлена встроенная Яндекс Карта на координаты `55.660607, 37.538170`;
-  - банк и расчётный счёт заменены на ПАО Сбербанк / `40702810038720049190`.
-- На первых секциях страниц `about.html`, `services.html`, `doctors.html`, `contacts.html` поставлен фон как у страницы `blog.html`; `index.html` не менять.
-- В мобильных стилях исправлено кадрирование `.doctor-photo`: убран `background-size: 200% 200%`, чтобы фото врачей не искажались.
-- По просьбе владельца сайт временно закрыт от публичного просмотра мягким PIN-экраном:
-  - PIN: `2206`;
-  - срок доступа после ввода: 2 часа;
-  - реализация: `css/access-gate.css` и `js/access-gate.js`;
-  - важно: это клиентская защита для статического GitHub Pages, не серверная авторизация.
-- Индексация временно остановлена:
-  - на страницы добавлен `meta name="robots" content="noindex, nofollow, noarchive"`;
-  - `robots.txt` изменён на `Disallow: /`.
-- Почта заменена на `info@azimutclinic.ru` в рабочих страницах, структурированных данных и служебном скрипте обновления футера.
-- Мобильный компас на главной странице получил интерактивный режим:
-  - координаты клиники: `55.660607, 37.538170`;
-  - по нажатию запрашивается геопозиция пользователя;
-  - стрелка рассчитывает направление к адресу `Старокалужское шоссе, 62, стр. 1`;
-  - при доступной ориентации устройства стрелка учитывает направление телефона;
-  - под компасом добавлен текст: `Коснитесь компаса — он мягко покажет путь к Азимут Клиник.`
-- В мобильном подвале у раздела `Разделы` убрана вертикальная золотистая полоса.
-- В блок `Помогаем при состояниях, которые влияют на жизнь, отношения и безопасность` возвращены иконки Iconly.
-- Добавлены SEO-файлы:
-  - `robots.txt`;
-  - `sitemap.xml`.
-- Добавлен key-файл IndexNow: `a7d4f28c9b315e70c6f0a2d8e9b13465.txt`.
-- На главную страницу добавлены структурированные данные `MedicalClinic` с адресом, телефоном и координатами.
-- Для сброса кэша обновлены версии `style.css`, `responsive.css` и `main.js` до `20260711-mobile-compass-seo`.
+### UI / CSS
+- Голубые оттенки (`#314a59`, `#eef7f5`, teal-rgba) заменены на золотистые по `css/style.css`, `animations.css`, `chatbot.css`.
+- Hero внутренних страниц (`page-hero`, `tests-hero`, `blog-hero`): тёплый фон как на about/services (`onyx-warm-bg` / `blog-hero-bg-wide`), убран `clarity-section` с tests.html.
+- Шапка: восстановлена сетка с `.header-utility` (скрипт `scripts/sync-header-utility.py`), добавлен рассыпанный песок `assets/generated/header-sand-scatter.svg` (≤20% шапки, `z-index: 0`, текст `z-index: 2+`).
+- `letter-spacing: -0.01em` на `body`.
+- Фильтры тестов: панели свёрнуты при загрузке (`[hidden]` + `is-open` + CSS-анимация).
 
-- **Grok (блог фото, 2026-07-12):**
-  - 43 фотореалистичных hero сгенерированы (warm cream/gold/terracotta, стиль клиники).
-  - Код переведён на `assets/blog/{slug}-hero.jpg`, SVG и плейсхолдеры убраны из индекса.
-  - Карточки и статьи: `<img loading="lazy">` вместо background-image.
-  - **Важно:** JPG лежат в `~/.grok/sessions/.../images/` — скопировать: `bash scripts/install-blog-photos.command` или `python3 scripts/copy-all-blog-heroes.py`.
-  - Cache-bust: `20260712-blog-photos`.
-- **Grok (блог batch30, 2026-07-12):**
-  - Добавлено 30 статей: 10 Психология, 10 Психотерапия, 10 Зависимость (всего 43).
-  - Новая категория **Зависимость** в табах и чипах `blog.html`.
-  - Данные: `data/articles-batch30-index.js`, `data/articles-batch30-content.js`.
-  - Иллюстрации: 30 SVG в `assets/blog/{slug}-hero.svg` (палитра сайта).
-  - Скрипты: `scripts/generate-blog-images.py`, `scripts/generate-articles-content.py`.
-  - Cache-bust: `20260712-blog-batch30`.
-- **Grok (блог, 2026-07-11):**
-  - Удалён SEO-блок с `blog.html`, вместо него — панель «Нужна поддержка» с записью, телефоном и быстрыми темами.
-  - Добавлено 10 новых статей (всего 13): индекс в `data/articles-index.js`, полные тексты в `data/articles-content.js`.
-  - На списке блога грузится только индекс; полный контент — только на `article.html`.
-  - Плейсхолдеры изображений: `imageSlot`, `data-image-pending`, классы `.article-image-slot` / `.article-card-image-slot` — **Codex** добавляет картинки в `assets/blog/` по слотам (`*-hero`, `*-body`).
-  - Новые файлы: `css/blog.css`, `css/lite-mode.css`, `js/lite-mode.js`.
-  - Лёгкий режим для старых/слабых мобильных (до ~2019): класс `lite-mode` на `<html>`, отключает тяжёлые анимации, blur, particles.
-  - Cache-bust после общей публикации: `20260712-header-philipp`.
-  - Не трогать: `access-gate`, chatbot API, hero главной, contacts map.
+### Тесты (`js/tests.js`)
+- Иконки **строго по категории** (topic → один из `assets/icons/iconly/*.svg`), жемчужная рамка как у `.condition-icon`.
+- Модал: экран «Начать тест» → таймер + CSS-песочные часы → форма.
+- Время = `getTestMinutes(test) * 60` сек (мин. 120 с).
 
-## Важно для следующих агентов
+### AI — Филипп Филипович
+- `js/chat-config.js` — endpoint для n8n webhook (обязательно на GitHub Pages).
+- `js/chatbot.js` — имя Филипп, ответы из `answer|output|text|message`.
+- `api/chat.js` — fallback `OPENAI_API_KEY` (gpt-4o-mini) или `DEEPSEEK_API_KEY` для `vercel dev` / локального прокси.
 
-- **Codex:** сгенерировать иллюстрации для статей по `imageSlot` в `articles-index.js` (например `anxiety-vs-norm-hero.jpg` → подставить в карточку и статью, снять `imagePending`).
-- Полноценная верификация Google Search Console и Яндекс Вебмастера требует проверочные токены из аккаунтов владельца. Без токенов не добавлять фиктивные verification meta tags.
-- Локальные файлы `font-sample-index.html` и `assets/fonts/samples/` являются черновиками для образцов шрифтов и не должны публиковаться без отдельного запроса.
+**Чтобы Филипп заработал на azimutclinic.ru:**
+1. Быстрый путь: n8n webhook → OpenAI → ответ `{ "answer": "..." }` → URL в `js/chat-config.js` → `endpoint`.
+2. Локально: `OPENAI_API_KEY=... vercel dev` и пустой `endpoint` (localhost использует `/api/chat`).
+3. Не использовать Artemox + Vercel serverless для этого сайта (режет запросы).
+
+### Perf
+- `defer` на `tests-batch200.js`, `tests.js`.
+- `background-attachment: scroll` у `.conditions-section` (убран `fixed`).
+- Cache-bust: `?v=20260712-gold-philipp`.
+
+### Skills / токены (рекомендация)
+- Для этого репо держать **один** project skill: `.grok/skills/azimut-site/SKILL.md`.
+- Perf — только `.grok/skills/performance-optimizer/SKILL.md` при задачах скорости.
+- Не грузить все 40+ skills в каждый чат: в `~/.grok/config.toml` оставить узкий `paths`.
+- Искать новые skills: `find-skills` (superagent), на GitHub — `vercel-labs/agent-skills`, `anthropics/skills` (выборочно, 1 skill = 1 задача).
+
+### Publish
+```bash
+/usr/bin/python3 /Users/polzovatel/azimut-medline-site/scripts/github_push.py
+```
+
+### Файлы затронуты
+`css/style.css`, `css/animations.css`, `css/chatbot.css`, `css/responsive.css`, `tests.html`, `js/tests.js`, `js/chatbot.js`, `js/chat-config.js`, `api/chat.js`, `assets/generated/header-sand-scatter.svg`, `scripts/sync-header-utility.py`, `*.html` (header-utility).
+
+---
+
+## Ранее (кратко)
+- Сетка тестов 6 колонок, 63 статьи блога, sitemap.xml, SEO meta, `github_push.py` auto-collect.
