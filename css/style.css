@@ -1434,6 +1434,27 @@ button:focus-visible {
   font-size: 18px;
 }
 
+.article-test-cta {
+  margin: 36px 0 8px;
+  padding: 28px 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--paper) 0%, var(--teal-soft) 100%);
+}
+
+.article-test-cta__lead {
+  margin: 0 0 18px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.article-test-cta__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .faq-block {
   margin-top: 34px;
 }
