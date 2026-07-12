@@ -4,6 +4,14 @@
 
 ---
 
+## 2026-07-12 — Единая серия iconly для иконок тестов
+
+- Убраны PNG `site-symbols` из пула тестов — смешивали толстые/тонкие линии.
+- Добавлены 8 SVG в стиле iconly (`family`, `dialog`, `doctor`, `compass`, `calendar`, `online`, `protection`, `home-care`): stroke `#765f42`, width `1.5`.
+- Все 17 иконок тестов теперь только `assets/icons/iconly/*.svg`.
+
+---
+
 ## 2026-07-12 — Уникальные иконки тестов (max 3 повтора)
 
 - `js/tests.js`: `buildTestIconMap()` — 17 иконок (iconly + site-symbols), подбор по ключевым словам теста, лимит **3 повтора** на иконку.
