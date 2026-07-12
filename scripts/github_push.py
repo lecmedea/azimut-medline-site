@@ -29,6 +29,7 @@ FILES = [
     "services.html",
     "js/chatbot.js",
     "css/chatbot.css",
+    "css/style.css",
     "assets/icons/iconly/doctor.svg",
     "assets/icons/iconly/family.svg",
     "assets/icons/iconly/shield.svg",
