@@ -1,7 +1,6 @@
 /**
  * Лёгкий индекс статей для списка блога.
  * Полные тексты — в articles-content.js (подключается только на article.html).
- * imageSlot — идентификатор для будущей иллюстрации (Codex).
  */
 window.AZIMUT_ARTICLES_INDEX = [
   {
@@ -11,8 +10,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-05-18",
     excerpt: "Паническая атака пугает, но она поддаётся разбору. Рассказываем, какие признаки важны и как проходит первичное обращение.",
     readTime: "6 минут",
-    imagePending: true,
-    imageSlot: "panic-attacks-hero"
+    image: "assets/blog/panic-attacks-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "burnout",
@@ -21,8 +20,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-04-26",
     excerpt: "Когда отдых уже не возвращает силы, важно разобраться в причинах состояния и подобрать бережный план восстановления.",
     readTime: "5 минут",
-    imagePending: true,
-    imageSlot: "burnout-hero"
+    image: "assets/blog/burnout-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "teen-support",
@@ -31,8 +30,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-03-30",
     excerpt: "Поддержка подростка начинается с уважительного разговора, а не с давления. Разбираем мягкий маршрут обращения.",
     readTime: "7 минут",
-    imagePending: true,
-    imageSlot: "teen-support-hero"
+    image: "assets/blog/teen-support-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "anxiety-vs-norm",
@@ -41,8 +40,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-06-20",
     excerpt: "Волнение перед важным событием — норма. Но когда тревога управляет решениями и сном, стоит разобраться глубже.",
     readTime: "7 минут",
-    imagePending: true,
-    imageSlot: "anxiety-vs-norm-hero"
+    image: "assets/blog/anxiety-vs-norm-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "work-burnout-signs",
@@ -51,8 +50,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-06-12",
     excerpt: "Цинизм, опустошение и ощущение «я на автопилоте» — не характер, а сигналы перегруза. Что делать на ранней стадии.",
     readTime: "6 минут",
-    imagePending: true,
-    imageSlot: "work-burnout-signs-hero"
+    image: "assets/blog/work-burnout-signs-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "healthy-boundaries",
@@ -61,8 +60,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-06-05",
     excerpt: "Здоровые границы — не эгоизм, а условие уважения. Разбираем, как обозначать свои потребности спокойно и ясно.",
     readTime: "8 минут",
-    imagePending: true,
-    imageSlot: "healthy-boundaries-hero"
+    image: "assets/blog/healthy-boundaries-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "cbt-explained",
@@ -71,8 +70,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-05-28",
     excerpt: "КПТ помогает замечать автоматические мысли и менять привычные реакции. Объясняем метод простым языком.",
     readTime: "7 минут",
-    imagePending: true,
-    imageSlot: "cbt-explained-hero"
+    image: "assets/blog/cbt-explained-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "choose-therapist",
@@ -81,8 +80,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-05-15",
     excerpt: "Диплом, подход, ощущение безопасности — три опоры выбора. Чек-лист для первой консультации.",
     readTime: "6 минут",
-    imagePending: true,
-    imageSlot: "choose-therapist-hero"
+    image: "assets/blog/choose-therapist-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "teen-anxiety",
@@ -91,8 +90,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-05-08",
     excerpt: "Избегание школы, бессонница, раздражительность — тревога у подростка часто маскируется. Как не пропустить сигналы.",
     readTime: "7 минут",
-    imagePending: true,
-    imageSlot: "teen-anxiety-hero"
+    image: "assets/blog/teen-anxiety-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "sleep-mental-health",
@@ -101,8 +100,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-04-18",
     excerpt: "Недосып усиливает тревогу, а тревога мешает заснуть. Разрываем порочный круг бережными шагами.",
     readTime: "6 минут",
-    imagePending: true,
-    imageSlot: "sleep-mental-health-hero"
+    image: "assets/blog/sleep-mental-health-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "shame-self-criticism",
@@ -111,8 +110,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-04-10",
     excerpt: "Внутренний критик кажется защитой, но часто усиливает изоляцию. Как отличить конструктивную рефлексию от самоуничижения.",
     readTime: "8 минут",
-    imagePending: true,
-    imageSlot: "shame-self-criticism-hero"
+    image: "assets/blog/shame-self-criticism-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "breakup-recovery",
@@ -121,8 +120,8 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-03-22",
     excerpt: "Горевание после разрыва — процесс, а не слабость. Что помогает восстановиться и когда стоит обратиться к специалисту.",
     readTime: "7 минут",
-    imagePending: true,
-    imageSlot: "breakup-recovery-hero"
+    image: "assets/blog/breakup-recovery-hero.jpg",
+    imagePosition: "center"
   },
   {
     slug: "psychiatrist-vs-psychologist",
@@ -131,7 +130,7 @@ window.AZIMUT_ARTICLES_INDEX = [
     date: "2026-03-15",
     excerpt: "Врач, психолог и психотерапевт дополняют друг друга. Разбираем роли и типичные маршруты обращения.",
     readTime: "6 минут",
-    imagePending: true,
-    imageSlot: "psychiatrist-vs-psychologist-hero"
+    image: "assets/blog/psychiatrist-vs-psychologist-hero.jpg",
+    imagePosition: "center"
   }
 ];
