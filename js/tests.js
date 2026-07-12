@@ -737,6 +737,53 @@
 
   const tests = testsBase.concat(window.AZIMUT_TESTS_BATCH200 || []);
 
+  const TOPIC_RULES = [
+    ["anxiety", /тревог|беспокой|паник|страх|нервоз|worry|fear/i],
+    ["depression", /депресс|настроен|тоск|подавлен|безнадёж|апат/i],
+    ["relationships", /отношен|близост|партнёр|довер|привязан|созависим|границ|интим|codepend/i],
+    ["burnout", /выгоран|истощен|перегруз|усталост|caregiver|опекун|burnout/i],
+    ["addiction", /алкогол|зависим|употреблен|наркот|веществ|assist|audit|addiction/i],
+    ["sleep", /сон|бессонн|засыпан|ночн|\bisi\b/i]
+  ];
+
+  function normalizeDirection(direction) {
+    return String(direction || "").trim().toLowerCase();
+  }
+
+  function getTestKind(test) {
+    const id = test.id || "";
+    const title = (test.title || "").toLowerCase();
+    const desc = (test.description || "").toLowerCase();
+    const hay = id + " " + title + " " + desc;
+    if (/нетипичн|метафор|цветов|хронотип|архетип|color-mood|metaphor|chrono-type|archetype|news-anxiety|digital-overload/.test(hay)) {
+      return "unusual";
+    }
+    if (/^(phq9|gad7|auditc|dast10|pcl5|mdq|scoff|isi|pss|ybocs|hads|assist|asrs|pdss|phq15)/.test(id) ||
+        /phq-9|gad-7|audit-c|dast-10|pcl-5|mdq|scoff|isi:|pss-10|y-bocs|hads|assist|asrs|pg-13|ucla loneliness|rosenberg|spin|staxi|des brief|pdss|phq-15|phq15/.test(title)) {
+      return "clinical";
+    }
+    return "brief";
+  }
+
+  function getTestTopics(test) {
+    const hay = [test.title, test.description, ...(test.questions || [])].join(" ");
+    return TOPIC_RULES.filter(([, pattern]) => pattern.test(hay)).map(([topic]) => topic);
+  }
+
+  function getDurationBucket(count) {
+    if (count <= 5) return "short";
+    if (count <= 8) return "medium";
+    return "long";
+  }
+
+  function pluralizeTests(count) {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+    if (mod10 === 1 && mod100 !== 11) return "тест";
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "теста";
+    return "тестов";
+  }
+
   function escapeHtml(value) {
     return String(value)
       .replace(/&/g, "&amp;")
@@ -800,10 +847,140 @@
     });
   }
 
+  function getFilteredTests(state) {
+    const query = state.query.trim().toLowerCase();
+    return tests.filter((test) => {
+      if (state.direction !== "all" && normalizeDirection(test.direction) !== state.direction) return false;
+      if (state.duration !== "all" && getDurationBucket(test.questions.length) !== state.duration) return false;
+      if (state.kind !== "all" && getTestKind(test) !== state.kind) return false;
+      if (state.topic !== "all" && !getTestTopics(test).includes(state.topic)) return false;
+      if (query) {
+        const hay = `${test.title} ${test.description}`.toLowerCase();
+        if (!hay.includes(query)) return false;
+      }
+      return true;
+    });
+  }
+
+  function isFilterActive(state) {
+    return Boolean(
+      state.query.trim() ||
+      state.direction !== "all" ||
+      state.duration !== "all" ||
+      state.kind !== "all" ||
+      state.topic !== "all"
+    );
+  }
+
+  function setActiveButton(selector, value, attr) {
+    document.querySelectorAll(selector).forEach((button) => {
+      button.classList.toggle("active", button.dataset[attr] === value);
+    });
+  }
+
+  function initFilters(listRoot) {
+    const toolbar = document.querySelector("[data-tests-toolbar]");
+    if (!toolbar) return;
+
+    const searchInput = toolbar.querySelector("[data-tests-search]");
+    const counter = toolbar.querySelector("[data-tests-count]");
+    const emptyState = toolbar.querySelector("[data-tests-empty]");
+    const resetButton = toolbar.querySelector("[data-tests-reset]");
+    const cards = () => listRoot.querySelectorAll(".screening-test-card");
+
+    const state = {
+      query: "",
+      direction: "all",
+      duration: "all",
+      kind: "all",
+      topic: "all"
+    };
+
+    function applyFilters() {
+      const visible = new Set(getFilteredTests(state).map((test) => test.id));
+      cards().forEach((card) => {
+        card.hidden = !visible.has(card.dataset.test);
+      });
+
+      const count = visible.size;
+      if (counter) {
+        counter.textContent = isFilterActive(state)
+          ? `Показано ${count} из ${tests.length} ${pluralizeTests(tests.length)}`
+          : `${tests.length} ${pluralizeTests(tests.length)}`;
+      }
+      if (emptyState) emptyState.hidden = count > 0;
+      if (resetButton) resetButton.hidden = !isFilterActive(state);
+    }
+
+    function resetFilters() {
+      state.query = "";
+      state.direction = "all";
+      state.duration = "all";
+      state.kind = "all";
+      state.topic = "all";
+      if (searchInput) searchInput.value = "";
+      setActiveButton("[data-tests-direction]", "all", "testsDirection");
+      setActiveButton("[data-tests-duration]", "all", "testsDuration");
+      setActiveButton("[data-tests-kind]", "all", "testsKind");
+      setActiveButton("[data-tests-topic]", "all", "testsTopic");
+      applyFilters();
+    }
+
+    let searchTimer;
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+          state.query = searchInput.value;
+          applyFilters();
+        }, 180);
+      });
+    }
+
+    toolbar.querySelectorAll("[data-tests-direction]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.direction = button.dataset.testsDirection;
+        setActiveButton("[data-tests-direction]", state.direction, "testsDirection");
+        applyFilters();
+      });
+    });
+
+    toolbar.querySelectorAll("[data-tests-duration]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.duration = button.dataset.testsDuration;
+        setActiveButton("[data-tests-duration]", state.duration, "testsDuration");
+        applyFilters();
+      });
+    });
+
+    toolbar.querySelectorAll("[data-tests-kind]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.kind = button.dataset.testsKind;
+        setActiveButton("[data-tests-kind]", state.kind, "testsKind");
+        applyFilters();
+      });
+    });
+
+    toolbar.querySelectorAll("[data-tests-topic]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.topic = button.dataset.testsTopic;
+        setActiveButton("[data-tests-topic]", state.topic, "testsTopic");
+        applyFilters();
+      });
+    });
+
+    if (resetButton) {
+      resetButton.addEventListener("click", resetFilters);
+    }
+
+    applyFilters();
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     const root = document.querySelector("[data-tests-list]");
     if (!root) return;
     root.innerHTML = tests.map(renderTest).join("");
     attachScoring(root);
+    initFilters(root);
   });
 })();
