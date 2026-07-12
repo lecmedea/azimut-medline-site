@@ -738,13 +738,97 @@
   const tests = testsBase.concat(window.AZIMUT_TESTS_BATCH200 || []);
 
   const TOPIC_RULES = [
-    ["anxiety", /тревог|беспокой|паник|страх|нервоз|worry|fear/i],
-    ["depression", /депресс|настроен|тоск|подавлен|безнадёж|апат/i],
-    ["relationships", /отношен|близост|партнёр|довер|привязан|созависим|границ|интим|codepend/i],
-    ["burnout", /выгоран|истощен|перегруз|усталост|caregiver|опекун|burnout/i],
-    ["addiction", /алкогол|зависим|употреблен|наркот|веществ|assist|audit|addiction/i],
-    ["sleep", /сон|бессонн|засыпан|ночн|\bisi\b/i]
+    ["anxiety", /тревог|беспокой|паник|страх|нервоз|worry|fear|социальн.*тревог/i],
+    ["depression", /депресс|настроен|тоск|подавлен|безнадёж|апат|сезонн/i],
+    ["relationships", /отношен|близост|партнёр|довер|привязан|созависим|границ|интим|codepend|одиночеств|ucla/i],
+    ["burnout", /выгоран|истощен|перегруз|усталост|caregiver|опекун|burnout|эмоциональн.*истощ/i],
+    ["addiction", /алкогол|зависим|употреблен|наркот|веществ|assist|audit|addiction|каннабис|sober/i],
+    ["sleep", /сон|бессонн|засыпан|ночн|\bisi\b|инсомн/i],
+    ["ptsd", /птср|травм|pcl|после.*событ|flashback|навязчив.*воспомин/i],
+    ["ocd", /окр|навязчив|ритуал|компульс|y-bocs|ybocs|обсесс/i],
+    ["bipolar", /биполяр|mdq|маниак|гипомани/i],
+    ["adhd", /сдвг|adhd|asrs|внимани|гиперактив|прокрастин/i],
+    ["eating", /пищев|scoff|переедан|анорекс|булим|вес.*контрол/i],
+    ["anger", /гнев|раздраж|агресс|staxi|вспышк/i],
+    ["grief", /горе|утрат|потер|расставан/i],
+    ["self-esteem", /самооцен|rosenberg|стыд|самокритик|вина/i],
+    ["parenting", /подрост|родител|семь|ребён|teen/i],
+    ["stress", /стресс|pss|напряжен|давлен/i],
+    ["psychosis", /психоз|шизофрен|галлюцин|бред/i],
+    ["elderly", /пожил|деменц|старческ|elderly/i]
   ];
+
+  const TOPIC_LABELS = {
+    all: "Все темы",
+    anxiety: "Тревога",
+    depression: "Депрессия",
+    relationships: "Отношения",
+    burnout: "Выгорание",
+    addiction: "Зависимость",
+    sleep: "Сон",
+    ptsd: "ПТСР и травма",
+    ocd: "ОКР",
+    bipolar: "Биполярное",
+    adhd: "СДВГ",
+    eating: "Пищевое поведение",
+    anger: "Гнев",
+    grief: "Горе и утрата",
+    "self-esteem": "Самооценка",
+    parenting: "Родительство",
+    stress: "Стресс",
+    psychosis: "Психоз",
+    elderly: "Пожилые"
+  };
+
+  const DIRECTION_LABELS = {
+    all: "Все",
+    "психология": "Психология",
+    "психотерапия": "Психотерапия",
+    "психиатрия": "Психиатрия",
+    "наркология": "Наркология"
+  };
+
+  const DURATION_LABELS = {
+    all: "Любая",
+    short: "До 5 мин",
+    medium: "6–8 мин",
+    long: "9+ мин"
+  };
+
+  const KIND_LABELS = {
+    all: "Все",
+    clinical: "Клинические шкалы",
+    brief: "Авторские brief",
+    unusual: "Нетипичные"
+  };
+
+  const CATEGORY_ICONS = {
+    anxiety: "assets/icons/iconly/anxiety.svg",
+    depression: "assets/icons/iconly/depression.svg",
+    relationships: "assets/icons/site-symbols/dialog.png",
+    burnout: "assets/icons/iconly/burnout.svg",
+    addiction: "assets/icons/iconly/addiction.svg",
+    sleep: "assets/icons/site-symbols/compass.png",
+    ptsd: "assets/icons/iconly/ptsd.svg",
+    ocd: "assets/icons/iconly/anxiety.svg",
+    bipolar: "assets/icons/iconly/bipolar.svg",
+    adhd: "assets/icons/site-symbols/compass.png",
+    eating: "assets/icons/iconly/eating.svg",
+    anger: "assets/icons/iconly/anxiety.svg",
+    grief: "assets/icons/iconly/depression.svg",
+    "self-esteem": "assets/icons/iconly/depression.svg",
+    parenting: "assets/icons/site-symbols/family.png",
+    stress: "assets/icons/iconly/burnout.svg",
+    psychosis: "assets/icons/iconly/schizophrenia.svg",
+    elderly: "assets/icons/iconly/elderly.svg"
+  };
+
+  const DIRECTION_ICONS = {
+    "психология": "assets/icons/iconly/anxiety.svg",
+    "психотерапия": "assets/icons/iconly/burnout.svg",
+    "психиатрия": "assets/icons/iconly/depression.svg",
+    "наркология": "assets/icons/iconly/addiction.svg"
+  };
 
   function normalizeDirection(direction) {
     return String(direction || "").trim().toLowerCase();
@@ -770,10 +854,31 @@
     return TOPIC_RULES.filter(([, pattern]) => pattern.test(hay)).map(([topic]) => topic);
   }
 
-  function getDurationBucket(count) {
-    if (count <= 5) return "short";
-    if (count <= 8) return "medium";
+  function getTestMinutes(test) {
+    const count = (test.questions || []).length;
+    return Math.max(2, Math.ceil(count * 0.75));
+  }
+
+  function getDurationBucket(test) {
+    const minutes = getTestMinutes(test);
+    if (minutes <= 5) return "short";
+    if (minutes <= 8) return "medium";
     return "long";
+  }
+
+  function getTestIcon(test) {
+    const topics = getTestTopics(test);
+    if (topics.length && CATEGORY_ICONS[topics[0]]) return CATEGORY_ICONS[topics[0]];
+    const direction = normalizeDirection(test.direction);
+    return DIRECTION_ICONS[direction] || "assets/icons/site-symbols/dialog.png";
+  }
+
+  function pluralizeQuestions(count) {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+    if (mod10 === 1 && mod100 !== 11) return "вопрос";
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "вопроса";
+    return "вопросов";
   }
 
   function pluralizeTests(count) {
@@ -801,28 +906,44 @@
     `).join("");
   }
 
-  function renderTest(test) {
+  function renderTestForm(test) {
     return `
-      <details class="screening-test-card" data-test="${test.id}">
-        <summary>
-          <div>
-            <span class="test-direction">${escapeHtml(test.direction)}</span>
-            <h2>${escapeHtml(test.title)} (${escapeHtml(test.direction)})</h2>
-            <p>${escapeHtml(test.description)}</p>
-          </div>
-          <span class="test-toggle">Пройти тест</span>
-        </summary>
-        <form class="test-form" data-test-form="${test.id}">
-          ${test.questions.map((question, index) => `
-            <fieldset class="test-question">
-              <legend>${index + 1}. ${escapeHtml(question)}</legend>
-              <div class="test-options">${renderOptions(test, index)}</div>
-            </fieldset>
-          `).join("")}
-          <button class="button button-primary" type="submit">Показать результат</button>
-          <p class="test-result" aria-live="polite"></p>
-        </form>
-      </details>
+      <div class="test-modal__header">
+        <img class="test-modal__icon" src="${escapeHtml(getTestIcon(test))}" alt="" width="40" height="40" decoding="async">
+        <div>
+          <span class="test-direction">${escapeHtml(test.direction)}</span>
+          <h2 id="test-modal-title">${escapeHtml(test.title)}</h2>
+          <p class="test-modal__lead">${escapeHtml(test.description)}</p>
+          <p class="test-modal__meta">≈ ${getTestMinutes(test)} мин · ${test.questions.length} ${pluralizeQuestions(test.questions.length)}</p>
+        </div>
+      </div>
+      <form class="test-form" data-test-form="${test.id}">
+        ${test.questions.map((question, index) => `
+          <fieldset class="test-question">
+            <legend>${index + 1}. ${escapeHtml(question)}</legend>
+            <div class="test-options">${renderOptions(test, index)}</div>
+          </fieldset>
+        `).join("")}
+        <button class="button button-primary" type="submit">Показать результат</button>
+        <p class="test-result" aria-live="polite"></p>
+      </form>
+    `;
+  }
+
+  function renderTestCard(test) {
+    const minutes = getTestMinutes(test);
+    const topics = getTestTopics(test);
+    return `
+      <article class="test-grid-card screening-test-card" data-test="${test.id}" data-topics="${escapeHtml(topics.join(","))}">
+        <button type="button" class="test-grid-card__open" data-test-open="${test.id}" aria-label="Пройти тест: ${escapeHtml(test.title)}">
+          <span class="test-grid-card__icon">
+            <img src="${escapeHtml(getTestIcon(test))}" alt="" width="36" height="36" loading="lazy" decoding="async">
+          </span>
+          <span class="test-grid-card__direction">${escapeHtml(test.direction)}</span>
+          <h2 class="test-grid-card__title">${escapeHtml(test.title)}</h2>
+          <p class="test-grid-card__meta">${minutes} мин · ${test.questions.length} ${pluralizeQuestions(test.questions.length)}</p>
+        </button>
+      </article>
     `;
   }
 
@@ -851,7 +972,7 @@
     const query = state.query.trim().toLowerCase();
     return tests.filter((test) => {
       if (state.direction !== "all" && normalizeDirection(test.direction) !== state.direction) return false;
-      if (state.duration !== "all" && getDurationBucket(test.questions.length) !== state.duration) return false;
+      if (state.duration !== "all" && getDurationBucket(test) !== state.duration) return false;
       if (state.kind !== "all" && getTestKind(test) !== state.kind) return false;
       if (state.topic !== "all" && !getTestTopics(test).includes(state.topic)) return false;
       if (query) {
@@ -875,6 +996,87 @@
   function setActiveButton(selector, value, attr) {
     document.querySelectorAll(selector).forEach((button) => {
       button.classList.toggle("active", button.dataset[attr] === value);
+    });
+  }
+
+  function updateFilterLabels(toolbar, state) {
+    const directionLabel = toolbar.querySelector('[data-tests-filter-label="direction"]');
+    const durationLabel = toolbar.querySelector('[data-tests-filter-label="duration"]');
+    const kindLabel = toolbar.querySelector('[data-tests-filter-label="kind"]');
+    const topicLabel = toolbar.querySelector('[data-tests-filter-label="topic"]');
+    if (directionLabel) directionLabel.textContent = DIRECTION_LABELS[state.direction] || DIRECTION_LABELS.all;
+    if (durationLabel) durationLabel.textContent = DURATION_LABELS[state.duration] || DURATION_LABELS.all;
+    if (kindLabel) kindLabel.textContent = KIND_LABELS[state.kind] || KIND_LABELS.all;
+    if (topicLabel) topicLabel.textContent = TOPIC_LABELS[state.topic] || TOPIC_LABELS.all;
+  }
+
+  function closeFilterDropdowns(toolbar) {
+    toolbar.querySelectorAll(".tests-filter-dropdown").forEach((dropdown) => {
+      const trigger = dropdown.querySelector(".tests-filter-trigger");
+      const panel = dropdown.querySelector(".tests-filter-panel");
+      if (panel) panel.hidden = true;
+      if (trigger) trigger.setAttribute("aria-expanded", "false");
+      dropdown.classList.remove("is-open");
+    });
+  }
+
+  function initFilterDropdowns(toolbar) {
+    toolbar.querySelectorAll(".tests-filter-dropdown").forEach((dropdown) => {
+      const trigger = dropdown.querySelector(".tests-filter-trigger");
+      const panel = dropdown.querySelector(".tests-filter-panel");
+      if (!trigger || !panel) return;
+      trigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const willOpen = panel.hidden;
+        closeFilterDropdowns(toolbar);
+        if (willOpen) {
+          panel.hidden = false;
+          trigger.setAttribute("aria-expanded", "true");
+          dropdown.classList.add("is-open");
+        }
+      });
+    });
+    document.addEventListener("click", () => closeFilterDropdowns(toolbar));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeFilterDropdowns(toolbar);
+    });
+  }
+
+  function initTestModal(listRoot) {
+    const modal = document.querySelector("[data-test-modal]");
+    const modalBody = modal?.querySelector("[data-test-modal-body]");
+    if (!modal || !modalBody) return;
+
+    function closeModal() {
+      modal.hidden = true;
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("test-modal-open");
+      modalBody.innerHTML = "";
+    }
+
+    function openModal(testId) {
+      const test = tests.find((item) => item.id === testId);
+      if (!test) return;
+      modalBody.innerHTML = renderTestForm(test);
+      attachScoring(modalBody);
+      modal.hidden = false;
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("test-modal-open");
+      modal.querySelector(".test-modal__close")?.focus();
+    }
+
+    listRoot.addEventListener("click", (event) => {
+      const opener = event.target.closest("[data-test-open]");
+      if (!opener) return;
+      openModal(opener.dataset.testOpen);
+    });
+
+    modal.querySelectorAll("[data-test-modal-close]").forEach((control) => {
+      control.addEventListener("click", closeModal);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !modal.hidden) closeModal();
     });
   }
 
@@ -910,6 +1112,14 @@
       }
       if (emptyState) emptyState.hidden = count > 0;
       if (resetButton) resetButton.hidden = !isFilterActive(state);
+      updateFilterLabels(toolbar, state);
+    }
+
+    function selectFilter(attr, value, selector, dataKey) {
+      state[attr] = value;
+      setActiveButton(selector, value, dataKey);
+      closeFilterDropdowns(toolbar);
+      applyFilters();
     }
 
     function resetFilters() {
@@ -937,35 +1147,29 @@
       });
     }
 
+    initFilterDropdowns(toolbar);
+
     toolbar.querySelectorAll("[data-tests-direction]").forEach((button) => {
       button.addEventListener("click", () => {
-        state.direction = button.dataset.testsDirection;
-        setActiveButton("[data-tests-direction]", state.direction, "testsDirection");
-        applyFilters();
+        selectFilter("direction", button.dataset.testsDirection, "[data-tests-direction]", "testsDirection");
       });
     });
 
     toolbar.querySelectorAll("[data-tests-duration]").forEach((button) => {
       button.addEventListener("click", () => {
-        state.duration = button.dataset.testsDuration;
-        setActiveButton("[data-tests-duration]", state.duration, "testsDuration");
-        applyFilters();
+        selectFilter("duration", button.dataset.testsDuration, "[data-tests-duration]", "testsDuration");
       });
     });
 
     toolbar.querySelectorAll("[data-tests-kind]").forEach((button) => {
       button.addEventListener("click", () => {
-        state.kind = button.dataset.testsKind;
-        setActiveButton("[data-tests-kind]", state.kind, "testsKind");
-        applyFilters();
+        selectFilter("kind", button.dataset.testsKind, "[data-tests-kind]", "testsKind");
       });
     });
 
     toolbar.querySelectorAll("[data-tests-topic]").forEach((button) => {
       button.addEventListener("click", () => {
-        state.topic = button.dataset.testsTopic;
-        setActiveButton("[data-tests-topic]", state.topic, "testsTopic");
-        applyFilters();
+        selectFilter("topic", button.dataset.testsTopic, "[data-tests-topic]", "testsTopic");
       });
     });
 
@@ -979,8 +1183,8 @@
   document.addEventListener("DOMContentLoaded", () => {
     const root = document.querySelector("[data-tests-list]");
     if (!root) return;
-    root.innerHTML = tests.map(renderTest).join("");
-    attachScoring(root);
+    root.innerHTML = tests.map(renderTestCard).join("");
+    initTestModal(root);
     initFilters(root);
   });
 })();
