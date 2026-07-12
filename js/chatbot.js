@@ -2,16 +2,19 @@
   const STORAGE_KEY = "azimut-ai-chat-history";
   const MAX_HISTORY = 12;
   const MAX_MESSAGE_LENGTH = 2000;
-  const VERCEL_CHAT_API = "https://azimut-medline-site.vercel.app/api/chat";
 
   const quickActions = [
-    ["Подобрать формат", "Помогите понять, какой формат помощи мне подойдёт"],
     ["Узнать стоимость", "Расскажите, пожалуйста, сколько стоят основные услуги"],
     ["Вызвать специалиста", "Хочу вызвать специалиста на дом"],
-    ["Заказать звонок", "Хочу, чтобы мне помогли записаться и перезвонили"]
+    ["Онлайн-консультация", "Хочу записаться на онлайн-консультацию"],
+    ["Позвонить", "Подскажите, как позвонить в центр"]
   ];
 
-  const fallbackGreeting = "Здравствуйте. Я Филипп Филиппович, виртуальный консультант Азимут Клиник. Помогу спокойно сориентироваться по услугам, цене и подходящему формату обращения. В экстренной ситуации звоните 112 или 103.";
+  const config = window.AZIMUT_CHAT_CONFIG || {};
+  const agentName = config.agentName || "Филипп Филипович";
+  const agentTitle = config.agentTitle || "AI-помощник Азимут Клиник";
+  const fallbackPhone = config.fallbackPhone || "8 (925) 112 77 99";
+  const fallbackGreeting = `Здравствуйте. Я ${agentName}, виртуальный помощник Азимут Клиник. Могу подсказать по услугам, ценам, форматам помощи и записи. В экстренной ситуации звоните 112 или 103.`;
 
   let history = loadHistory();
   let isOpen = false;
@@ -31,16 +34,6 @@
 
   function saveHistory() {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(-MAX_HISTORY)));
-  }
-
-  function getChatApiUrl() {
-    if (window.AZIMUT_CHAT_API_URL) return window.AZIMUT_CHAT_API_URL;
-
-    const host = window.location.hostname;
-    const isLocal = host === "localhost" || host === "127.0.0.1" || host === "";
-    const isVercel = host === "azimut-medline-site.vercel.app" || host.endsWith(".vercel.app");
-
-    return isLocal || isVercel ? "/api/chat" : VERCEL_CHAT_API;
   }
 
   function getUtmParams() {
@@ -100,37 +93,43 @@
     }
   }
 
+  function resolveChatEndpoint() {
+    const explicit = (config.endpoint || "").trim();
+    if (explicit) return explicit;
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") return "/api/chat";
+    return "";
+  }
+
   function createWidget() {
     const widget = document.createElement("section");
     widget.className = "ai-chatbot";
-    widget.setAttribute("aria-label", "Филипп Филиппович, виртуальный консультант Азимут Клиник");
+    widget.setAttribute("aria-label", "AI-помощник Азимут Клиник");
     widget.innerHTML = `
-      <button class="ai-chatbot-toggle" type="button" aria-expanded="false" aria-controls="ai-chatbot-panel" title="Филипп Филиппович">
-        <span class="ai-chatbot-toggle-icon" aria-hidden="true"><img src="assets/icons/iconly/doctor.svg" alt="" width="22" height="22"></span>
-        <span class="ai-chatbot-toggle-label">Филипп Филиппович</span>
+      <button class="ai-chatbot-toggle" type="button" aria-expanded="false" aria-controls="ai-chatbot-panel" title="AI-помощник">
+        <span class="ai-chatbot-toggle-icon" aria-hidden="true"></span>
+        <span class="ai-chatbot-toggle-label">AI-помощник</span>
       </button>
       <div class="ai-chatbot-panel" id="ai-chatbot-panel" role="dialog" aria-modal="false" aria-labelledby="ai-chatbot-title">
         <div class="ai-chatbot-orbit" aria-hidden="true"></div>
         <header class="ai-chatbot-header">
-          <div class="ai-chatbot-header-main">
-            <img class="ai-chatbot-avatar" src="assets/icons/iconly/doctor.svg" alt="" width="36" height="36" aria-hidden="true">
-            <div>
+          <div>
             <p class="ai-chatbot-kicker">Круглосуточно</p>
-            <h2 id="ai-chatbot-title">Филипп Филиппович</h2>
-            <p>Подскажу формат помощи и помогу перейти к записи</p>
-            </div>
+            <h2 id="ai-chatbot-title">${escapeHtml(agentTitle)}</h2>
+            <p class="ai-chatbot-agent">${escapeHtml(agentName)}</p>
+            <p>Помогу сориентироваться по услугам, ценам и записи</p>
           </div>
           <div class="ai-chatbot-actions">
             <button class="ai-chatbot-icon-btn" type="button" data-chat-close aria-label="Закрыть чат">×</button>
           </div>
         </header>
-        <div class="ai-chatbot-warning">Филипп Филиппович не заменяет консультацию врача. В экстренной ситуации звоните 112 или 103.</div>
+        <div class="ai-chatbot-warning">AI-помощник не заменяет консультацию врача. В экстренной ситуации звоните 112 или 103.</div>
         <div class="ai-chatbot-messages" data-chat-messages aria-live="polite"></div>
         <div class="ai-chatbot-quick" aria-label="Быстрые вопросы">
           ${quickActions.map(([label, message]) => `<button type="button" data-chat-quick="${escapeHtml(message)}">${escapeHtml(label)}</button>`).join("")}
         </div>
         <form class="ai-chatbot-form" data-chat-form>
-          <label class="visually-hidden" for="ai-chatbot-input">Сообщение Филиппу Филипповичу</label>
+          <label class="visually-hidden" for="ai-chatbot-input">Сообщение AI-помощнику</label>
           <textarea id="ai-chatbot-input" name="message" rows="1" maxlength="${MAX_MESSAGE_LENGTH}" placeholder="Напишите вопрос"></textarea>
           <button class="ai-chatbot-send" type="submit">Отправить</button>
         </form>
@@ -189,6 +188,18 @@
     const status = root.querySelector("[data-chat-status]");
 
     if (!message || isSending) return;
+    if (!resolveChatEndpoint()) {
+      status.textContent = `${agentName} не настроен: добавьте endpoint в js/chat-config.js`;
+      history.push({ role: "user", content: message });
+      history.push({
+        role: "assistant",
+        content: `${agentName} пока не подключён к серверу. Для GitHub Pages укажите n8n webhook в js/chat-config.js. Позвоните нам: ${fallbackPhone}.`
+      });
+      history = history.slice(-MAX_HISTORY);
+      saveHistory();
+      renderMessages(root);
+      return;
+    }
     if (message.length > MAX_MESSAGE_LENGTH) {
       status.textContent = `Сообщение слишком длинное. Максимум ${MAX_MESSAGE_LENGTH} символов.`;
       return;
@@ -203,25 +214,29 @@
     setSending(root, true);
 
     try {
-      const response = await fetch(getChatApiUrl(), {
+      const payload = {
+        message,
+        history: history.slice(0, -1),
+        pageUrl: window.location.href,
+        utm: getUtmParams(),
+        agent: agentName
+      };
+      const endpoint = resolveChatEndpoint();
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          message,
-          history: history.slice(0, -1),
-          pageUrl: window.location.href,
-          utm: getUtmParams()
-        })
+        body: JSON.stringify(payload)
       });
 
       const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data.answer) {
-        throw new Error(data.error || "Филипп Филиппович временно недоступен.");
+      const answer = data.answer || data.output || data.text || data.message;
+      if (!response.ok || !answer) {
+        throw new Error(data.error || `${agentName} временно недоступен.`);
       }
 
-      history.push({ role: "assistant", content: data.answer });
+      history.push({ role: "assistant", content: answer });
       history = history.slice(-MAX_HISTORY);
       saveHistory();
       removeTyping(root);
@@ -231,7 +246,7 @@
       removeTyping(root);
       history.push({
         role: "assistant",
-        content: "Сейчас не получается получить ответ Филиппа Филипповича. Попробуйте позже или позвоните в центр: 8 (925) 112 77 99."
+        content: `Сейчас не получается связаться с ${agentName}. Укажите webhook в js/chat-config.js (n8n или OpenAI-прокси) или позвоните: ${fallbackPhone}.`
       });
       history = history.slice(-MAX_HISTORY);
       saveHistory();
