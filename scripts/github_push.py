@@ -50,6 +50,7 @@ FILES = [
     "services.html",
     "terms.html",
     "tests.html",
+    "js/tests.js",
 ]
 
 
@@ -91,7 +92,7 @@ def main() -> None:
             seen.add(rel)
             unique_files.append(rel)
 
-    commit_msg = "Services icons, Philipp doctor avatar, blog hero photos"
+    commit_msg = "Add 20 psychology screening tests, services icons, blog updates"
     updated = 0
 
     for rel in unique_files:
