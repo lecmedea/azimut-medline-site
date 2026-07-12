@@ -43,7 +43,7 @@
     ["4", "Почти всегда"]
   ];
 
-  const tests = [
+  const testsBase = [
     {
       id: "phq9",
       title: "PHQ-9: депрессивные симптомы",
@@ -734,6 +734,8 @@
       }
     }
   ];
+
+  const tests = testsBase.concat(window.AZIMUT_TESTS_BATCH200 || []);
 
   function escapeHtml(value) {
     return String(value)
