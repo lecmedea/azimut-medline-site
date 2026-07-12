@@ -7,7 +7,7 @@
     "date": "2026-07-11",
     "excerpt": "Краснение, паузы, страх оценки — знакомые сигналы. Разбираем мягкие шаги к уверенности в коллективе.",
     "readTime": "7 минут",
-    "image": "assets/blog/social-anxiety-work-hero.svg",
+    "image": "assets/blog/social-anxiety-work-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -17,7 +17,7 @@
     "date": "2026-07-11",
     "excerpt": "Сон — не враг продуктивности. Простые правила гигиены сна без фанатизма.",
     "readTime": "6 минут",
-    "image": "assets/blog/insomnia-routine-hero.svg",
+    "image": "assets/blog/insomnia-routine-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -27,7 +27,7 @@
     "date": "2026-07-10",
     "excerpt": "Навязчивости пугают, но поддаются терапии. Что такое ритуалы и как с ними работают.",
     "readTime": "8 минут",
-    "image": "assets/blog/ocd-intrusive-thoughts-hero.svg",
+    "image": "assets/blog/ocd-intrusive-thoughts-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -37,7 +37,7 @@
     "date": "2026-07-10",
     "excerpt": "Эйфория и провалы — не каприз. Когда стоит обсудить состояние с врачом.",
     "readTime": "7 минут",
-    "image": "assets/blog/bipolar-mood-swings-hero.svg",
+    "image": "assets/blog/bipolar-mood-swings-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -47,7 +47,7 @@
     "date": "2026-07-09",
     "excerpt": "СДВГ не только у детей. Какие признаки замечают взрослые и как проходит диагностика.",
     "readTime": "7 минут",
-    "image": "assets/blog/adhd-adults-signs-hero.svg",
+    "image": "assets/blog/adhd-adults-signs-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -57,7 +57,7 @@
     "date": "2026-07-09",
     "excerpt": "Вспышки, избегание, напряжение — нормальная реакция, которую можно переработать.",
     "readTime": "8 минут",
-    "image": "assets/blog/ptsd-after-accident-hero.svg",
+    "image": "assets/blog/ptsd-after-accident-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -67,7 +67,7 @@
     "date": "2026-07-08",
     "excerpt": "Ограничения и переедание — не «слабость воли». Бережный маршрут обращения.",
     "readTime": "7 минут",
-    "image": "assets/blog/eating-disorder-help-hero.svg",
+    "image": "assets/blog/eating-disorder-help-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -77,7 +77,7 @@
     "date": "2026-07-08",
     "excerpt": "Ночной страх усиливает бессонницу. Техники заземления и когда звонить 103.",
     "readTime": "6 минут",
-    "image": "assets/blog/panic-at-night-hero.svg",
+    "image": "assets/blog/panic-at-night-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -87,7 +87,7 @@
     "date": "2026-07-07",
     "excerpt": "Родителям важно сохранить контакт. Алгоритм разговора и срочные сигналы.",
     "readTime": "8 минут",
-    "image": "assets/blog/teen-self-harm-talk-hero.svg",
+    "image": "assets/blog/teen-self-harm-talk-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -97,7 +97,7 @@
     "date": "2026-07-07",
     "excerpt": "Ссоры — часть взросления. Как снижать накал и оставаться опорой.",
     "readTime": "7 минут",
-    "image": "assets/blog/parent-teen-conflict-hero.svg",
+    "image": "assets/blog/parent-teen-conflict-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -107,7 +107,7 @@
     "date": "2026-07-06",
     "excerpt": "Редкое употребление тоже может маскировать зависимость. На что смотреть.",
     "readTime": "6 минут",
-    "image": "assets/blog/alcohol-weekend-hero.svg",
+    "image": "assets/blog/alcohol-weekend-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -117,7 +117,7 @@
     "date": "2026-07-06",
     "excerpt": "Снижение мотивации, тревога при отмене — реальные последствия.",
     "readTime": "7 минут",
-    "image": "assets/blog/cannabis-dependence-hero.svg",
+    "image": "assets/blog/cannabis-dependence-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -127,7 +127,7 @@
     "date": "2026-07-05",
     "excerpt": "Созависимость, границы, группы поддержки — практический гид.",
     "readTime": "8 минут",
-    "image": "assets/blog/family-alanon-hero.svg",
+    "image": "assets/blog/family-alanon-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -137,7 +137,7 @@
     "date": "2026-07-05",
     "excerpt": "Анамнез, диагностика, план — без страха «навяжут таблетки».",
     "readTime": "6 минут",
-    "image": "assets/blog/psychiatrist-first-visit-hero.svg",
+    "image": "assets/blog/psychiatrist-first-visit-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -147,7 +147,7 @@
     "date": "2026-07-04",
     "excerpt": "Не «или-или». Когда нужны оба подхода и кто принимает решение.",
     "readTime": "7 минут",
-    "image": "assets/blog/therapy-vs-meds-hero.svg",
+    "image": "assets/blog/therapy-vs-meds-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -157,7 +157,7 @@
     "date": "2026-07-04",
     "excerpt": "Границы — не эгоизм, а условие близости. Примеры фраз и шаги.",
     "readTime": "6 минут",
-    "image": "assets/blog/boundaries-relationships-hero.svg",
+    "image": "assets/blog/boundaries-relationships-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -167,7 +167,7 @@
     "date": "2026-07-03",
     "excerpt": "Чувство вины, усталость, раздражение — сигналы запросить поддержку.",
     "readTime": "7 минут",
-    "image": "assets/blog/caregiver-burnout-hero.svg",
+    "image": "assets/blog/caregiver-burnout-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -177,7 +177,7 @@
     "date": "2026-07-03",
     "excerpt": "Свет, режим, активность и когда подключать специалиста.",
     "readTime": "6 минут",
-    "image": "assets/blog/seasonal-depression-hero.svg",
+    "image": "assets/blog/seasonal-depression-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -187,7 +187,7 @@
     "date": "2026-07-02",
     "excerpt": "Срочность ≠ паника. Дыхание, приоритеты, микропаузы.",
     "readTime": "5 минут",
-    "image": "assets/blog/work-stress-deadline-hero.svg",
+    "image": "assets/blog/work-stress-deadline-hero.jpg",
     "imagePosition": "center"
   },
   {
@@ -197,7 +197,7 @@
     "date": "2026-07-02",
     "excerpt": "Как подготовить пространство, связь и что спросить у администратора.",
     "readTime": "5 минут",
-    "image": "assets/blog/online-consult-privacy-hero.svg",
+    "image": "assets/blog/online-consult-privacy-hero.jpg",
     "imagePosition": "center"
   }
   ];
