@@ -1,8 +1,17 @@
+const DEFAULT_OPENAI_BASE_URL = "https://api.openai.com/v1";
 const DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions";
-const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-const MODEL = process.env.OPENAI_API_KEY ? (process.env.OPENAI_MODEL || "gpt-4o-mini") : "deepseek-v4-flash";
+const DEFAULT_OPENAI_MODEL = "gpt-5.6-luna";
+const DEFAULT_DEEPSEEK_MODEL = "deepseek-v4-flash";
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_HISTORY_MESSAGES = 10;
+const ALLOWED_ORIGINS = new Set([
+  "https://azimutclinic.ru",
+  "http://azimutclinic.ru",
+  "https://www.azimutclinic.ru",
+  "http://www.azimutclinic.ru",
+  "https://azimut-medline-site.vercel.app",
+  "null"
+]);
 
 const SITE_CONTEXT = `
 Данные о сайте:
@@ -39,14 +48,16 @@ const SITE_CONTEXT = `
 `;
 
 const SYSTEM_PROMPT = `
-Ты — Филипп Филипович, виртуальный помощник сайта «Центр ментального здоровья Азимут Клиник».
+Ты Филипп Филиппович — виртуальный консультант сайта «Центр ментального здоровья Азимут Клиник».
 
 Твоя задача:
 - спокойно отвечать на вопросы о центре, услугах, форматах помощи, ценах, записи и контактах;
 - помогать пользователю сориентироваться, какое направление может подойти: психиатрия, психология, наркология, психологическое тестирование;
 - объяснять разницу между форматами: в клинике, на дому, онлайн, по телефону;
 - рассказывать о предварительных ценах, если они есть на сайте;
-- предлагать оставить заявку или позвонить по телефону 8 (925) 112 77 99;
+- быть внимательным онлайн-консультантом: быстро понять ситуацию, убрать тревогу, объяснить ближайший безопасный шаг и мягко подвести к заявке или звонку;
+- задавать не больше 1-2 уточняющих вопросов за раз, если без них нельзя выбрать формат помощи;
+- предлагать оставить заявку или позвонить по телефону 8 (925) 112 77 99, особенно если пользователь описывает срочную, сложную или эмоционально тяжёлую ситуацию;
 - при необходимости направлять пользователя к администратору;
 - помогать родственникам понять, с чего начать обращение.
 
@@ -58,6 +69,13 @@ const SYSTEM_PROMPT = `
 - без давления;
 - без запугивания;
 - без агрессивных продаж.
+
+Коммерческое поведение:
+- не спорь с пользователем и не обесценивай его сомнения;
+- если человек колеблется, предложи самый простой первый шаг: бесплатный телефонный разговор или короткую заявку;
+- если пользователь спрашивает «сколько стоит», дай цену и сразу объясни, что администратор уточнит итоговую стоимость;
+- если пользователь описывает проблему близкого, предложи формат для родственников и аккуратно объясни, что начать можно с консультации без присутствия пациента;
+- не используй манипуляции, медицинские гарантии, страх и обещания результата.
 
 Строгие ограничения:
 - не ставь диагнозы;
@@ -91,6 +109,26 @@ const SYSTEM_PROMPT = `
 ${SITE_CONTEXT}
 `.trim();
 
+function getAllowedOrigin(origin) {
+  if (!origin) return "";
+  if (ALLOWED_ORIGINS.has(origin)) return origin;
+  if (/^https:\/\/azimut-medline-site-[a-z0-9-]+-lecmedeas-projects\.vercel\.app$/i.test(origin)) {
+    return origin;
+  }
+  return "";
+}
+
+function setCorsHeaders(request, response) {
+  const origin = getAllowedOrigin(request.headers.origin || "");
+  if (origin) {
+    response.setHeader("Access-Control-Allow-Origin", origin);
+    response.setHeader("Vary", "Origin");
+  }
+  response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  response.setHeader("Access-Control-Max-Age", "86400");
+}
+
 function sendJson(response, statusCode, payload) {
   response.statusCode = statusCode;
   response.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -122,6 +160,23 @@ function buildMessages(message, history, pageUrl, utm) {
   ];
 }
 
+function buildResponsesInput(message, history, pageUrl, utm) {
+  const meta = [
+    pageUrl ? `Текущая страница пользователя: ${String(pageUrl).slice(0, 500)}` : "",
+    utm && typeof utm === "object" ? `UTM-метки: ${JSON.stringify(utm).slice(0, 500)}` : ""
+  ].filter(Boolean).join("\n");
+
+  const transcript = normalizeHistory(history)
+    .map((item) => `${item.role === "assistant" ? "Филипп Филиппович" : "Пользователь"}: ${item.content}`)
+    .join("\n");
+
+  return [
+    meta ? `Контекст визита:\n${meta}` : "",
+    transcript ? `История диалога:\n${transcript}` : "",
+    `Новое сообщение пользователя:\n${message}`
+  ].filter(Boolean).join("\n\n");
+}
+
 async function readJsonBody(request) {
   if (request.body && typeof request.body === "object" && !Buffer.isBuffer(request.body)) {
     return request.body;
@@ -140,21 +195,21 @@ async function readJsonBody(request) {
   return JSON.parse(rawBody);
 }
 
-async function requestChatCompletion(apiKey, body, provider = "deepseek", allowThinking = true) {
+async function requestDeepSeek(apiKey, body, allowThinking = true) {
   const payload = {
-    model: MODEL,
+    model: process.env.DEEPSEEK_MODEL || DEFAULT_DEEPSEEK_MODEL,
     messages: body.messages,
     temperature: 0.35,
     max_tokens: 700,
     stream: false
   };
 
-  if (provider === "deepseek" && allowThinking) {
+  if (allowThinking) {
+    // If DeepSeek changes support for this option, remove this field or keep the retry below.
     payload.thinking = { type: "disabled" };
   }
 
-  const url = provider === "openai" ? OPENAI_API_URL : DEEPSEEK_API_URL;
-  const response = await fetch(url, {
+  const response = await fetch(DEEPSEEK_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -166,7 +221,7 @@ async function requestChatCompletion(apiKey, body, provider = "deepseek", allowT
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    const message = data?.error?.message || data?.message || `LLM API error: ${response.status}`;
+    const message = data?.error?.message || data?.message || `DeepSeek API error: ${response.status}`;
     const error = new Error(message);
     error.status = response.status;
     throw error;
@@ -175,26 +230,187 @@ async function requestChatCompletion(apiKey, body, provider = "deepseek", allowT
   return data;
 }
 
+async function requestOpenAI(apiKey, body) {
+  const baseUrl = String(process.env.OPENAI_BASE_URL || process.env.OPENAI_API_BASE_URL || DEFAULT_OPENAI_BASE_URL).trim().replace(/\/+$/, "");
+  const model = process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL;
+  const apiMode = String(process.env.OPENAI_API_MODE || "").trim().toLowerCase();
+  const useResponsesApi = apiMode === "responses" || /^gpt-5/i.test(model);
+
+  if (useResponsesApi) {
+    return requestOpenAIResponses(apiKey, baseUrl, body, model);
+  }
+
+  const apiUrl = /\/chat\/completions$/.test(baseUrl) ? baseUrl : `${baseUrl}/chat/completions`;
+  const payload = {
+    model,
+    messages: body.messages,
+    temperature: 0.35,
+    max_tokens: 700
+  };
+
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "User-Agent": "AzimutClinicChatbot/1.0",
+      "Authorization": `Bearer ${apiKey}`
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const rawText = await response.text();
+  let data = {};
+  try {
+    data = rawText ? JSON.parse(rawText) : {};
+  } catch {
+    data = {};
+  }
+
+  if (!response.ok) {
+    const providerMessage = data?.error?.message || data?.message || rawText;
+    const message = providerMessage
+      ? `OpenAI API error: ${response.status} - ${String(providerMessage).slice(0, 500)}`
+      : `OpenAI API error: ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
+}
+
+async function requestOpenAIResponses(apiKey, baseUrl, body, model) {
+  const apiUrl = /\/responses$/.test(baseUrl) ? baseUrl : `${baseUrl}/responses`;
+  const payload = {
+    model,
+    instructions: SYSTEM_PROMPT,
+    input: buildResponsesInput(body.message, body.history, body.pageUrl, body.utm),
+    max_output_tokens: 700
+  };
+
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "User-Agent": "AzimutClinicChatbot/1.0",
+      "Authorization": `Bearer ${apiKey}`
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const rawText = await response.text();
+  let data = {};
+  try {
+    data = rawText ? JSON.parse(rawText) : {};
+  } catch {
+    data = {};
+  }
+
+  if (!response.ok) {
+    const providerMessage = data?.error?.message || data?.message || rawText;
+    const message = providerMessage
+      ? `OpenAI Responses API error: ${response.status} - ${String(providerMessage).slice(0, 500)}`
+      : `OpenAI Responses API error: ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
+}
+
+function extractOpenAIAnswer(completion) {
+  const chatAnswer = completion?.choices?.[0]?.message?.content?.trim();
+  if (chatAnswer) return chatAnswer;
+
+  if (typeof completion?.output_text === "string" && completion.output_text.trim()) {
+    return completion.output_text.trim();
+  }
+
+  const output = Array.isArray(completion?.output) ? completion.output : [];
+  const parts = [];
+  for (const item of output) {
+    const content = Array.isArray(item?.content) ? item.content : [];
+    for (const contentItem of content) {
+      const text = contentItem?.text || contentItem?.output_text;
+      if (typeof text === "string" && text.trim()) {
+        parts.push(text.trim());
+      }
+    }
+  }
+
+  return parts.join("\n").trim();
+}
+
+function getAiProvider() {
+  const configuredProvider = String(process.env.AI_PROVIDER || "").trim().toLowerCase();
+  if (configuredProvider === "openai" || configuredProvider === "openai-compatible" || configuredProvider === "artemox") {
+    return "openai";
+  }
+  if (configuredProvider === "deepseek") {
+    return "deepseek";
+  }
+  return process.env.OPENAI_API_KEY ? "openai" : "deepseek";
+}
+
+function buildFallbackAnswer(message) {
+  const text = String(message || "").toLowerCase();
+  const priceDisclaimer = "Цены предварительные, администратор уточнит итоговую стоимость с учётом состояния, адреса, времени обращения и формата помощи.";
+
+  if (/цен|стоим|сколько|прайс|руб|₽/.test(text)) {
+    if (/психолог/.test(text)) {
+      return `Онлайн-консультация психолога предварительно стоит 2 900 ₽, консультация психолога на дому - 4 900 ₽. ${priceDisclaimer} Могу подсказать формат обращения или вы можете позвонить круглосуточно: 8 (925) 112 77 99.`;
+    }
+    if (/психиатр/.test(text)) {
+      return `Онлайн-консультация психиатра предварительно стоит 2 900 ₽, консультация психиатра на дому - 5 900 ₽. ${priceDisclaimer} Если состояние острое или есть риск для жизни, пожалуйста, звоните 112 или 103.`;
+    }
+    if (/нарколог|завис|алког|капельниц|детокс/.test(text)) {
+      return `Консультация нарколога на дому предварительно стоит 4 900 ₽, онлайн-консультация нарколога - 2 900 ₽. Капельницы: очищающая - 3 900 ₽, комплексная - 5 900 ₽, «Эффект жизни» - 7 900 ₽, Premium - 10 900 ₽. ${priceDisclaimer}`;
+    }
+    return `По основным услугам: консультация по телефону - бесплатно, онлайн-консультации специалиста - от 2 900 ₽, выезд специалиста на дом - от 4 900 ₽. ${priceDisclaimer} Для точного подбора позвоните: 8 (925) 112 77 99.`;
+  }
+
+  if (/дом|выезд|вызвать|адрес/.test(text)) {
+    return "Выезд специалиста возможен по Москве и Московской области, время зависит от адреса и загрузки. Напишите район или позвоните 8 (925) 112 77 99 - администратор подскажет ближайший формат помощи.";
+  }
+
+  if (/экстр|суицид|умереть|угроз|судорог|потер.*созн|психоз|агресс/.test(text)) {
+    return "Это может быть экстренная ситуация. Пожалуйста, немедленно позвоните 112 или 103 либо обратитесь за срочной медицинской помощью. Онлайн-бот не может заменить экстренную службу.";
+  }
+
+  return "Я Филипп Филиппович, виртуальный консультант Азимут Клиник. Помогу сориентироваться по услугам, цене и формату обращения: в клинике, на дому, онлайн или по телефону. Опишите, что вас беспокоит, или позвоните круглосуточно: 8 (925) 112 77 99.";
+}
+
 module.exports = async function chatHandler(request, response) {
+  setCorsHeaders(request, response);
+
+  if (request.method === "OPTIONS") {
+    response.statusCode = 204;
+    return response.end();
+  }
+
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
     return sendJson(response, 405, { error: "Метод не поддерживается. Используйте POST-запрос." });
   }
 
-  const openaiKey = process.env.OPENAI_API_KEY;
-  const deepseekKey = process.env.DEEPSEEK_API_KEY;
-  const apiKey = openaiKey || deepseekKey;
-  const provider = openaiKey ? "openai" : "deepseek";
+  const provider = getAiProvider();
+  const apiKey = provider === "openai" ? process.env.OPENAI_API_KEY : process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
-    return sendJson(response, 500, { error: "Филипп Филипович не настроен. Добавьте OPENAI_API_KEY или DEEPSEEK_API_KEY, либо n8n webhook в js/chat-config.js." });
+    return sendJson(response, 500, { error: `Филипп Филиппович пока не настроен. Администратору нужно добавить ${provider === "openai" ? "OPENAI_API_KEY" : "DEEPSEEK_API_KEY"}.` });
   }
+
+  let requestMessage = "";
 
   try {
     const body = await readJsonBody(request);
     const message = typeof body.message === "string" ? body.message.trim() : "";
+    requestMessage = message;
 
     if (!message) {
-      return sendJson(response, 400, { error: "Введите сообщение для AI-помощника." });
+      return sendJson(response, 400, { error: "Введите сообщение для Филиппа Филипповича." });
     }
 
     if (message.length > MAX_MESSAGE_LENGTH) {
@@ -202,28 +418,41 @@ module.exports = async function chatHandler(request, response) {
     }
 
     const requestBody = {
+      message,
+      history: body.history,
+      pageUrl: body.pageUrl,
+      utm: body.utm,
       messages: buildMessages(message, body.history, body.pageUrl, body.utm)
     };
 
     let completion;
-    try {
-      completion = await requestChatCompletion(apiKey, requestBody, provider, true);
-    } catch (error) {
-      const isThinkingError = provider === "deepseek" && /thinking/i.test(error.message || "");
-      if (!isThinkingError) throw error;
-      console.error("DeepSeek thinking option failed, retrying without thinking:", error);
-      completion = await requestChatCompletion(apiKey, requestBody, provider, false);
+    if (provider === "openai") {
+      completion = await requestOpenAI(apiKey, requestBody);
+    } else {
+      try {
+        completion = await requestDeepSeek(apiKey, requestBody, true);
+      } catch (error) {
+        const isThinkingError = /thinking/i.test(error.message || "");
+        if (!isThinkingError) throw error;
+        console.error("DeepSeek thinking option failed, retrying without thinking:", error);
+        completion = await requestDeepSeek(apiKey, requestBody, false);
+      }
     }
 
-    const answer = completion?.choices?.[0]?.message?.content?.trim();
+    const answer = provider === "openai"
+      ? extractOpenAIAnswer(completion)
+      : completion?.choices?.[0]?.message?.content?.trim();
     if (!answer) {
-      console.error("DeepSeek returned an empty answer:", completion);
-      return sendJson(response, 502, { error: "AI-помощник не смог подготовить ответ. Попробуйте ещё раз." });
+      console.error("AI provider returned an empty answer:", completion);
+      return sendJson(response, 502, { error: "Филипп Филиппович не смог подготовить ответ. Попробуйте ещё раз." });
     }
 
     return sendJson(response, 200, { answer });
   } catch (error) {
     console.error("AI chatbot backend error:", error);
-    return sendJson(response, 500, { error: "AI-помощник временно недоступен. Попробуйте позже или позвоните в центр." });
+    return sendJson(response, 200, {
+      answer: buildFallbackAnswer(requestMessage),
+      fallback: true
+    });
   }
 };

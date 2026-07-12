@@ -4,6 +4,16 @@
 
 ---
 
+## 2026-07-12 — Прямое подключение OpenAI для Филиппа
+
+- `api/chat.js` переведён на прямой OpenAI Responses API для GPT-5-моделей.
+- Дефолтная модель OpenAI: `gpt-5.6-luna`.
+- Production env в Vercel: `AI_PROVIDER=openai`, `OPENAI_BASE_URL=https://api.openai.com/v1`, `OPENAI_API_MODE=responses`, `OPENAI_MODEL=gpt-5.6-luna`, `OPENAI_API_KEY` только в Vercel.
+- Artemox больше не нужен для Филиппа: Vercel получал от него `403 Just a moment...` Cloudflare и чат уходил в fallback.
+- Официальный OpenAI-ключ проверен напрямую, но OpenAI вернул `429 insufficient_quota`; после пополнения/активации квоты этот код начнёт отдавать живые ответы без дополнительных правок.
+
+---
+
 ## 2026-07-12 — Единая серия iconly для иконок тестов
 
 - Убраны PNG `site-symbols` из пула тестов — смешивали толстые/тонкие линии.
