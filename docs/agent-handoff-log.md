@@ -4,6 +4,10 @@
 
 ## 2026-07-12
 
+- Фикс Филиппа Филипповича для `azimutclinic.ru`:
+  - `js/chatbot.js` больше не ходит в относительный `/api/chat` на GitHub Pages; с внешних доменов используется `https://azimut-medline-site.vercel.app/api/chat`;
+  - `api/chat.js` на Vercel получил CORS для `azimutclinic.ru`, `www.azimutclinic.ru`, Vercel preview/production и `OPTIONS`;
+  - cache-bust чат-скрипта: `20260712-chat-crossdomain`.
 - Иконки и раздел услуг (`services.html`, cache `20260712-services-philipp`):
   - eyebrow «SEO-раздел» заменён на «Направления помощи»;
   - в блок «Центр ментального здоровья в Москве» добавлен 9-й пункт «Поддержка для близких»;

@@ -4,6 +4,14 @@ const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
 const DEFAULT_DEEPSEEK_MODEL = "deepseek-v4-flash";
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_HISTORY_MESSAGES = 10;
+const ALLOWED_ORIGINS = new Set([
+  "https://azimutclinic.ru",
+  "http://azimutclinic.ru",
+  "https://www.azimutclinic.ru",
+  "http://www.azimutclinic.ru",
+  "https://azimut-medline-site.vercel.app",
+  "null"
+]);
 
 const SITE_CONTEXT = `
 Данные о сайте:
@@ -100,6 +108,26 @@ const SYSTEM_PROMPT = `
 
 ${SITE_CONTEXT}
 `.trim();
+
+function getAllowedOrigin(origin) {
+  if (!origin) return "";
+  if (ALLOWED_ORIGINS.has(origin)) return origin;
+  if (/^https:\/\/azimut-medline-site-[a-z0-9-]+-lecmedeas-projects\.vercel\.app$/i.test(origin)) {
+    return origin;
+  }
+  return "";
+}
+
+function setCorsHeaders(request, response) {
+  const origin = getAllowedOrigin(request.headers.origin || "");
+  if (origin) {
+    response.setHeader("Access-Control-Allow-Origin", origin);
+    response.setHeader("Vary", "Origin");
+  }
+  response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  response.setHeader("Access-Control-Max-Age", "86400");
+}
 
 function sendJson(response, statusCode, payload) {
   response.statusCode = statusCode;
@@ -267,6 +295,13 @@ function buildFallbackAnswer(message) {
 }
 
 module.exports = async function chatHandler(request, response) {
+  setCorsHeaders(request, response);
+
+  if (request.method === "OPTIONS") {
+    response.statusCode = 204;
+    return response.end();
+  }
+
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
     return sendJson(response, 405, { error: "Метод не поддерживается. Используйте POST-запрос." });

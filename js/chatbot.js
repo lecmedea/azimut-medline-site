@@ -2,6 +2,7 @@
   const STORAGE_KEY = "azimut-ai-chat-history";
   const MAX_HISTORY = 12;
   const MAX_MESSAGE_LENGTH = 2000;
+  const VERCEL_CHAT_API = "https://azimut-medline-site.vercel.app/api/chat";
 
   const quickActions = [
     ["Подобрать формат", "Помогите понять, какой формат помощи мне подойдёт"],
@@ -30,6 +31,16 @@
 
   function saveHistory() {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(-MAX_HISTORY)));
+  }
+
+  function getChatApiUrl() {
+    if (window.AZIMUT_CHAT_API_URL) return window.AZIMUT_CHAT_API_URL;
+
+    const host = window.location.hostname;
+    const isLocal = host === "localhost" || host === "127.0.0.1" || host === "";
+    const isVercel = host === "azimut-medline-site.vercel.app" || host.endsWith(".vercel.app");
+
+    return isLocal || isVercel ? "/api/chat" : VERCEL_CHAT_API;
   }
 
   function getUtmParams() {
@@ -192,7 +203,7 @@
     setSending(root, true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch(getChatApiUrl(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
