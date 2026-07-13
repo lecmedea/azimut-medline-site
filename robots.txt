@@ -1,4 +1,17 @@
 User-agent: *
 Allow: /
 Disallow: /deliverables/
+
+User-agent: Yandex
+Allow: /
+Disallow: /deliverables/
+Crawl-delay: 1
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Host: azimutclinic.ru
 Sitemap: https://azimutclinic.ru/sitemap.xml
