@@ -24,7 +24,7 @@ if HOSTS.exists():
 if not TOKEN:
     sys.exit("GitHub token not found in ~/.config/gh/hosts.yml")
 
-COMMIT_MSG = "Gold palette, Philipp chat, test timer, header sand, perf"
+COMMIT_MSG = "Mobile fixes, PIN gate 20m, compass, doctor chat icon, email"
 
 
 def collect_files() -> list[str]:
@@ -52,8 +52,12 @@ def collect_files() -> list[str]:
         "js/chat-config.js",
         "api/chat.js",
         "css/chatbot.css",
+        "css/access-gate.css",
         "css/animations.css",
+        "js/access-gate.js",
         "docs/agent-handoff-log.md",
+        "scripts/apply-mobile-site-fixes.py",
+        "scripts/audit-article-images.py",
         "assets/generated/header-sand-scatter.svg",
         "scripts/sync-header-utility.py",
         "sitemap.xml",
@@ -67,7 +71,7 @@ def collect_files() -> list[str]:
         for path in sorted(ROOT.glob(pattern)):
             add(path)
 
-    for pattern in ("assets/blog/*-hero.svg",):
+    for pattern in ("assets/blog/*-hero.svg", "assets/blog/*-hero.jpg", "assets/blog/*-hero.webp"):
         for path in sorted(ROOT.glob(pattern)):
             add(path)
 
