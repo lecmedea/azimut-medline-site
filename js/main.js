@@ -76,6 +76,8 @@
       if (button) {
         button.addEventListener("click", (event) => {
           event.preventDefault();
+          event.stopPropagation();
+          if (!matchMedia("(max-width: 1180px)").matches) return;
           const willOpen = !item.classList.contains("dropdown-open");
           closeDropdowns(item);
           setDropdown(item, willOpen);
@@ -95,7 +97,8 @@
     });
 
     document.addEventListener("click", (event) => {
-      if (!event.target.closest(".site-header")) closeDropdowns();
+      if (event.target.closest(".site-header") || event.target.closest(".mobile-nav-portal")) return;
+      closeDropdowns();
     });
 
     document.addEventListener("keydown", (event) => {
