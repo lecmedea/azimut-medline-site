@@ -459,9 +459,10 @@
 
 .scroll-top-btn {
   position: fixed;
-  right: 14px;
-  bottom: calc(88px + env(safe-area-inset-bottom, 0px));
-  z-index: 70;
+  left: 14px;
+  right: auto;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  z-index: 72;
   display: grid;
   place-items: center;
   width: 42px;
@@ -489,6 +490,34 @@
 @media (min-width: 861px) {
   .scroll-top-btn {
     display: none !important;
+  }
+}
+
+/* Мобильный док: слева «наверх» + плеер, справа чат — без наложений */
+@media (max-width: 860px) {
+  body:has(.azimut-mini-player) .azimut-mini-player {
+    left: 14px;
+    right: auto;
+    bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+    z-index: 71;
+  }
+
+  body:has(.azimut-mini-player.is-collapsed) .azimut-mini-player {
+    width: 64px;
+    height: 64px;
+  }
+
+  body:has(.azimut-mini-player:not(.is-collapsed)) .azimut-mini-player {
+    width: min(340px, calc(100vw - 88px));
+    max-width: calc(100vw - 88px);
+  }
+
+  body:has(.azimut-mini-player.is-collapsed) .ai-chatbot {
+    bottom: calc(132px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body:has(.azimut-mini-player:not(.is-collapsed)) .ai-chatbot {
+    bottom: calc(196px + env(safe-area-inset-bottom, 0px));
   }
 }
 
