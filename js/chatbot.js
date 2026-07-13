@@ -107,7 +107,7 @@
     widget.setAttribute("aria-label", agentName + " — виртуальный помощник Азимут Клиник");
     widget.innerHTML = `
       <button class="ai-chatbot-toggle" type="button" aria-expanded="false" aria-controls="ai-chatbot-panel" title="${escapeHtml(agentName)}">
-        <span class="ai-chatbot-toggle-icon" aria-hidden="true"></span>
+        <span class="ai-chatbot-toggle-icon" aria-hidden="true"><img src="assets/icons/iconly/doctor.svg" width="22" height="22" alt=""></span>
         <span class="ai-chatbot-toggle-label">${escapeHtml(agentName)}</span>
       </button>
       <div class="ai-chatbot-panel" id="ai-chatbot-panel" role="dialog" aria-modal="false" aria-labelledby="ai-chatbot-title">
