@@ -3137,6 +3137,13 @@ h1 {
   transform: translateX(-35%);
 }
 
+@media (max-width: 560px) {
+  .footer-brand-stack {
+    transform: none;
+    margin-inline: auto;
+  }
+}
+
 .footer-logo-watermark {
   width: 100%;
   max-width: 136px;
