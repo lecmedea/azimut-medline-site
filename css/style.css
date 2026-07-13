@@ -2032,14 +2032,27 @@ button:focus-visible {
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: minmax(72px, 108px) minmax(0, 1fr);
+  grid-template-columns: minmax(120px, 220px) minmax(0, 1fr);
   align-content: center;
   align-items: center;
   gap: clamp(16px, 3vw, 30px);
-  padding: clamp(30px, 5vw, 52px);
+  padding: clamp(24px, 4vw, 44px);
   opacity: 0;
   transform: translateX(18px);
   animation: bannerRotate 15s infinite;
+}
+
+.banner-photo {
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow:
+    0 16px 34px rgba(74, 58, 35, 0.16),
+    0 0 0 1px rgba(174, 139, 102, 0.14) inset;
+  animation: iconFloat 6s ease-in-out infinite;
 }
 
 .banner-icon {
@@ -2874,32 +2887,69 @@ body.test-modal-open {
 }
 
 .test-hourglass {
-  width: 54px;
-  height: 74px;
+  --test-progress: 0;
+  width: 66px;
+  height: 90px;
   flex: 0 0 auto;
+  filter: drop-shadow(0 6px 14px rgba(109, 84, 55, 0.18));
 }
 
-.test-hourglass__glass {
-  fill: rgba(255, 250, 241, 0.35);
-  stroke: #ae8b66;
-  stroke-width: 1.4;
+.test-hourglass__cap {
+  fill: linear-gradient(180deg, #c9a67d, #9f7a52);
+  fill: #b8946c;
+}
+
+.test-hourglass__frame {
+  stroke-linejoin: round;
 }
 
 .test-hourglass__sand-top {
-  fill: #c6a27a;
-  transform-origin: center;
-  animation: hourglassSandTop var(--test-duration, 300s) linear forwards;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(calc(1 - var(--test-progress)));
+  transition: transform 0.95s linear;
 }
 
-.test-hourglass__sand-stream {
-  fill: #b99059;
-  animation: hourglassStream 1.2s ease-in-out infinite;
+.test-hourglass__sand-top-surface {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(calc(1 - var(--test-progress)));
+  transition: transform 0.95s linear;
 }
 
 .test-hourglass__sand-bottom {
-  fill: #ae8b66;
-  transform-origin: center bottom;
-  animation: hourglassSandBottom var(--test-duration, 300s) linear forwards;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(var(--test-progress));
+  transition: transform 0.95s linear;
+}
+
+.test-hourglass__sand-bottom-surface {
+  opacity: calc(0.25 + var(--test-progress) * 0.75);
+  transform: translateY(calc((1 - var(--test-progress)) * 18px));
+  transition: transform 0.95s linear, opacity 0.95s linear;
+}
+
+.test-hourglass__stream-wrap {
+  opacity: calc(1 - var(--test-progress));
+  transition: opacity 0.6s ease;
+}
+
+.test-hourglass__sand-stream {
+  stroke-dasharray: 4 6;
+  animation: hourglassStreamFlow 1.1s linear infinite;
+}
+
+.test-hourglass__sand-grain--1 {
+  animation: hourglassGrainFall 1.4s ease-in infinite;
+}
+
+.test-hourglass__sand-grain--2 {
+  animation: hourglassGrainFall 1.4s ease-in 0.35s infinite;
+}
+
+.test-hourglass__sand-grain--3 {
+  animation: hourglassGrainFall 1.4s ease-in 0.7s infinite;
 }
 
 .test-timer-count {
@@ -2915,19 +2965,15 @@ body.test-modal-open {
   font-size: 12px;
 }
 
-@keyframes hourglassSandTop {
-  from { transform: scaleY(1); }
-  to { transform: scaleY(0.05); }
+@keyframes hourglassStreamFlow {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -20; }
 }
 
-@keyframes hourglassSandBottom {
-  from { transform: scaleY(0.08); }
-  to { transform: scaleY(1); }
-}
-
-@keyframes hourglassStream {
-  0%, 100% { opacity: 0.35; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(3px); }
+@keyframes hourglassGrainFall {
+  0% { opacity: 0; transform: translateY(-2px); }
+  20% { opacity: 0.95; }
+  100% { opacity: 0; transform: translateY(14px); }
 }
 
 .test-modal__dialog h2 {
