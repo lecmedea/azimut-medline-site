@@ -4,6 +4,46 @@
 
 ---
 
+## 2026-07-13 — Мобильные правки, PIN на всех страницах, компас, деплой
+
+**Автор:** Grok
+
+### Мобильная вёрстка (`css/responsive.css`, cache `?v=20260713-mobile-fix`)
+- Компактная шапка на `max-width: 1180px` / `560px`: меньше логотип, скрыт `.brand-text`, `padding-top` 64px → 56px.
+- Меню: overlay `position: fixed` под шапкой + закреплённые `header-actions` внизу (без «вылета» шапки).
+- «Наши специалисты»: `background-size: cover` для `.specialists-section .doctor-photo` (без растягивания).
+- Подвал на мобиле: сброшен `translateX(-35%)` у `.footer-brand-stack` — логотип и текст по центру.
+- Кнопка «Наверх» `.scroll-top-btn` на всех страницах (`js/main.js`, только mobile ≤860px).
+
+### Контент и контакты
+- Email везде: `info@azimutclinic.ru` (было `info@azimutmedline.ru`).
+- `contacts.html`: реквизиты Сбербанк как в подвале (убран Экспобанк).
+
+### Компас (`js/main.js`)
+- Работает на мобиле: геолокация + `deviceorientation` → стрелка на клинику (55.660607, 37.538170).
+
+### AI-помощник
+- Иконка toggle: `assets/icons/iconly/doctor.svg` в стиле site iconly (`css/chatbot.css`, `js/chatbot.js`).
+
+### PIN-gate (все 14 HTML-страниц)
+- Добавлены `css/access-gate.css`, `js/access-gate.js`.
+- Сессия **20 минут** (`SESSION_MS = 20 * 60 * 1000`), повторный ввод по истечении.
+- Скрипт массового обновления: `scripts/apply-mobile-site-fixes.py`.
+
+### Статьи
+- `scripts/audit-article-images.py` — проверка/генерация локальных hero JPG при отсутствии.
+- На момент правки все индексированные обложки уже были на диске (0 новых).
+
+### Publish
+```bash
+/usr/bin/python3 /Users/polzovatel/azimut-medline-site/scripts/github_push.py
+```
+
+### Файлы
+`css/responsive.css`, `css/style.css`, `css/chatbot.css`, `css/access-gate.css`, `js/main.js`, `js/chatbot.js`, `js/access-gate.js`, `contacts.html`, все `*.html`, `scripts/apply-mobile-site-fixes.py`, `scripts/audit-article-images.py`, `docs/agent-handoff-log.md`.
+
+---
+
 ## 2026-07-13 — Лайфхаки, обложки JPG, связка статей с тестами, Филипп Филипович
 
 **Автор:** Grok
