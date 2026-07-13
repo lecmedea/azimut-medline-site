@@ -24,7 +24,7 @@ if HOSTS.exists():
 if not TOKEN:
     sys.exit("GitHub token not found in ~/.config/gh/hosts.yml")
 
-COMMIT_MSG = "Mobile fixes, PIN gate 20m, compass, doctor chat icon, email"
+COMMIT_MSG = "Philipp avatar icon, CIS SEO indexing, sitemap lastmod"
 
 
 def collect_files() -> list[str]:
@@ -64,6 +64,8 @@ def collect_files() -> list[str]:
         "robots.txt",
         "scripts/github_push.py",
         "scripts/generate-batch20-and-seo.py",
+        "scripts/update-seo-cis.py",
+        "assets/icons/philipp-filippovich-avatar.jpg",
     ):
         add(ROOT / rel)
 
