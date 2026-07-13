@@ -4,6 +4,36 @@
 
 ---
 
+## 2026-07-13 — Мобильное меню, баннеры, обложки статей, часы тестов, Яндекс.Карта
+
+**Автор:** Grok
+
+### Мобильное меню (`js/main.js`, `css/responsive.css`, cache `?v=20260713-polish`)
+- Портал `.main-nav` + `.header-actions` в `body` при открытии (обход Safari `backdrop-filter` containing block).
+- Затемнение `.nav-backdrop`, список без «карточек», кнопка «Записаться» закреплена внизу overlay.
+- `window.AzimutNav.close()` для Escape и клика по ссылкам.
+
+### Главная — баннеры (`index.html`, `assets/banners/`)
+- Три фотореалистичных баннера 4:3: `consultation-warm.jpg`, `home-visit-care.jpg`, `online-session-calm.jpg`.
+- Новые тексты: круглосуточная поддержка, выездная помощь, онлайн-консультации.
+
+### Статьи — обложки (`assets/blog/*-hero.jpg`)
+- Заменены 40 placeholder-градиентов (batch20 + batch21) на фотореалистичные hero 16:9.
+- Индексы `data/articles-batch20-index.js`, `data/articles-batch21-index.js` без изменений путей.
+
+### Тесты — песочные часы (`js/tests.js`, `css/style.css`)
+- Новый SVG с градиентным стеклом и песком; `--test-progress` синхронизируется с таймером (верх опустошается, низ наполняется).
+
+### Контакты — карта (`contacts.html`)
+- Вместо `.map-placeholder` — iframe Яндекс.Карт (55.660607, 37.538170, Старокалужское ш., 62).
+
+### Publish
+```bash
+/usr/bin/python3 /Users/polzovatel/azimut-medline-site/scripts/push-site-polish.py
+```
+
+---
+
 ## 2026-07-13 — Мобильные правки, PIN на всех страницах, компас, деплой
 
 **Автор:** Grok
@@ -20,7 +50,8 @@
 - `contacts.html`: реквизиты Сбербанк как в подвале (убран Экспобанк).
 
 ### Компас (`js/main.js`)
-- Работает на мобиле: геолокация + `deviceorientation` → стрелка на клинику (55.660607, 37.538170).
+- **Мобилка (≤860px):** геолокация + `deviceorientation` → стрелка на клинику (55.660607, 37.538170).
+- **Десктоп (>860px):** только следование за курсором мыши, без геолокации.
 
 ### AI-помощник
 - Иконка toggle: `assets/icons/iconly/doctor.svg` в стиле site iconly (`css/chatbot.css`, `js/chatbot.js`).
