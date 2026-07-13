@@ -1,6 +1,6 @@
 (function () {
   const PIN = "2206";
-  const SESSION_MS = 2 * 60 * 60 * 1000;
+  const SESSION_MS = 20 * 60 * 1000;
   const STORAGE_KEY = "azimut_pin_access_until";
 
   const getAccessUntil = () => {
@@ -66,7 +66,7 @@
       <div class="pin-gate-panel">
         <img class="pin-gate-logo" src="assets/logo-header-transparent.png" alt="Азимут Клиник">
         <h1 class="pin-gate-title" id="pin-gate-title">Закрытый просмотр</h1>
-        <p class="pin-gate-text">Сайт временно открыт только для команды. Введите PIN-код, чтобы продолжить.</p>
+        <p class="pin-gate-text">Сайт временно открыт только для команды. Введите PIN-код, чтобы продолжить. Повторный ввод потребуется через 20 минут.</p>
         <form class="pin-gate-form">
           <label class="visually-hidden" for="pin-gate-input">PIN-код</label>
           <input class="pin-gate-input" id="pin-gate-input" name="pin" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="4" placeholder="PIN-код" aria-describedby="pin-gate-error">
