@@ -101,20 +101,82 @@
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         closeDropdowns();
-        document.body.classList.remove("nav-open");
-        $(".nav-toggle")?.setAttribute("aria-expanded", "false");
+        window.AzimutNav?.close?.();
       }
     });
   }
 
   function initMenu() {
     const toggle = $(".nav-toggle");
-    if (!toggle) return;
+    const headerInner = $(".header-inner");
+    const nav = $(".main-nav");
+    const actions = $(".header-actions");
+    if (!toggle || !headerInner || !nav) return;
+
+    let backdrop = $(".nav-backdrop");
+    if (!backdrop) {
+      backdrop = document.createElement("div");
+      backdrop.className = "nav-backdrop";
+      backdrop.hidden = true;
+      backdrop.setAttribute("aria-hidden", "true");
+      document.body.appendChild(backdrop);
+    }
+
+    let portal = $(".mobile-nav-portal");
+    if (!portal) {
+      portal = document.createElement("div");
+      portal.className = "mobile-nav-portal";
+      portal.setAttribute("aria-hidden", "true");
+      document.body.appendChild(portal);
+    }
+
+    const navAnchor = document.createComment("main-nav-anchor");
+    const actionsAnchor = document.createComment("header-actions-anchor");
+    headerInner.insertBefore(navAnchor, nav);
+    if (actions) headerInner.insertBefore(actionsAnchor, actions);
+
+    const restoreNav = () => {
+      if (navAnchor.parentNode) {
+        navAnchor.parentNode.insertBefore(nav, navAnchor.nextSibling);
+      }
+      if (actions && actionsAnchor.parentNode) {
+        actionsAnchor.parentNode.insertBefore(actions, actionsAnchor.nextSibling);
+      }
+    };
+
+    const closeMenu = () => {
+      if (!document.body.classList.contains("nav-open")) return;
+      document.body.classList.remove("nav-open");
+      backdrop.hidden = true;
+      portal.setAttribute("aria-hidden", "true");
+      toggle.setAttribute("aria-expanded", "false");
+      closeDropdowns();
+      restoreNav();
+    };
+
+    const openMenu = () => {
+      portal.appendChild(nav);
+      if (actions) portal.appendChild(actions);
+      document.body.classList.add("nav-open");
+      backdrop.hidden = false;
+      portal.setAttribute("aria-hidden", "false");
+      toggle.setAttribute("aria-expanded", "true");
+    };
+
     toggle.addEventListener("click", () => {
-      const isOpen = document.body.classList.toggle("nav-open");
-      toggle.setAttribute("aria-expanded", String(isOpen));
-      if (!isOpen) closeDropdowns();
+      if (document.body.classList.contains("nav-open")) closeMenu();
+      else openMenu();
     });
+
+    backdrop.addEventListener("click", closeMenu);
+
+    $$(".main-nav a").forEach((link) => {
+      link.addEventListener("click", () => {
+        if (matchMedia("(max-width: 1180px)").matches) closeMenu();
+      });
+    });
+
+    window.AzimutNav = { close: closeMenu };
   }
 
   function initCompass() {
