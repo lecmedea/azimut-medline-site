@@ -45,15 +45,18 @@
       const button = $(".mobile-nav-accordion", item);
       let closeTimer;
 
+      const isMobileMenu = () =>
+        matchMedia("(max-width: 1180px)").matches && document.body.classList.contains("nav-open");
+
       const openDesktop = () => {
-        if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+        if (!matchMedia("(hover: hover) and (pointer: fine)").matches || isMobileMenu()) return;
         clearTimeout(closeTimer);
         closeDropdowns(item);
         setDropdown(item, true);
       };
 
       const scheduleCloseDesktop = () => {
-        if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+        if (!matchMedia("(hover: hover) and (pointer: fine)").matches || isMobileMenu()) return;
         clearTimeout(closeTimer);
         closeTimer = setTimeout(() => setDropdown(item, false), 450);
       };
@@ -62,23 +65,33 @@
       item.addEventListener("mouseleave", scheduleCloseDesktop);
 
       item.addEventListener("focusin", () => {
+        if (!matchMedia("(hover: hover) and (pointer: fine)").matches || isMobileMenu()) return;
         clearTimeout(closeTimer);
         closeDropdowns(item);
         setDropdown(item, true);
       });
 
       item.addEventListener("focusout", (event) => {
+        if (!matchMedia("(hover: hover) and (pointer: fine)").matches || isMobileMenu()) return;
         if (!item.contains(event.relatedTarget)) {
           closeTimer = setTimeout(() => setDropdown(item, false), 180);
         }
       });
 
       if (button) {
+        let accordionIntent = null;
+
+        button.addEventListener("pointerdown", () => {
+          if (!matchMedia("(max-width: 1180px)").matches) return;
+          accordionIntent = !item.classList.contains("dropdown-open");
+        });
+
         button.addEventListener("click", (event) => {
           event.preventDefault();
           event.stopPropagation();
           if (!matchMedia("(max-width: 1180px)").matches) return;
-          const willOpen = !item.classList.contains("dropdown-open");
+          const willOpen = accordionIntent ?? !item.classList.contains("dropdown-open");
+          accordionIntent = null;
           closeDropdowns(item);
           setDropdown(item, willOpen);
         });
