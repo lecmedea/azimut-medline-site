@@ -920,11 +920,54 @@
 
   function renderHourglass() {
     return `
-      <svg class="test-hourglass" viewBox="0 0 54 74" aria-hidden="true">
-        <path class="test-hourglass__glass" d="M12 6h30l-12 16 12 16-12 16 12 16H12l12-16-12-16 12-16z"/>
-        <rect class="test-hourglass__sand-top" x="18" y="10" width="18" height="14" rx="2"/>
-        <rect class="test-hourglass__sand-stream" x="25" y="34" width="4" height="8" rx="2"/>
-        <rect class="test-hourglass__sand-bottom" x="18" y="50" width="18" height="6" rx="2"/>
+      <svg class="test-hourglass" viewBox="0 0 88 120" aria-hidden="true" style="--test-progress: 0">
+        <defs>
+          <linearGradient id="hgGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="rgba(255,252,245,0.92)"/>
+            <stop offset="45%" stop-color="rgba(236,224,205,0.35)"/>
+            <stop offset="100%" stop-color="rgba(255,250,241,0.78)"/>
+          </linearGradient>
+          <linearGradient id="hgSand" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#d4b48a"/>
+            <stop offset="55%" stop-color="#c6a27a"/>
+            <stop offset="100%" stop-color="#a8845d"/>
+          </linearGradient>
+          <linearGradient id="hgSandDeep" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#b99059"/>
+            <stop offset="100%" stop-color="#8f6d45"/>
+          </linearGradient>
+          <clipPath id="hgTopBulb">
+            <path d="M24 18h40l-18 24 18 2H24l18-2-18-24z"/>
+          </clipPath>
+          <clipPath id="hgBottomBulb">
+            <path d="M24 76h40l-18 22H24l-18-22 18-2z"/>
+          </clipPath>
+          <filter id="hgGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="1.2" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <rect class="test-hourglass__cap test-hourglass__cap--top" x="18" y="8" width="52" height="8" rx="3"/>
+        <rect class="test-hourglass__cap test-hourglass__cap--bottom" x="18" y="104" width="52" height="8" rx="3"/>
+        <path class="test-hourglass__frame" d="M20 16h48l-20 26 20 2-20 2 20 26H20l20-26-20-2 20-2z" fill="url(#hgGlass)" stroke="#b08a62" stroke-width="1.6"/>
+        <g clip-path="url(#hgTopBulb)">
+          <rect class="test-hourglass__sand-top" x="22" y="18" width="44" height="30" fill="url(#hgSand)"/>
+          <ellipse class="test-hourglass__sand-top-surface" cx="44" cy="48" rx="17" ry="4.5" fill="#d8bc96"/>
+        </g>
+        <g class="test-hourglass__stream-wrap">
+          <line class="test-hourglass__sand-stream" x1="44" y1="46" x2="44" y2="74" stroke="url(#hgSandDeep)" stroke-width="3.2" stroke-linecap="round"/>
+          <circle class="test-hourglass__sand-grain test-hourglass__sand-grain--1" cx="44" cy="58" r="1.3" fill="#c6a27a"/>
+          <circle class="test-hourglass__sand-grain test-hourglass__sand-grain--2" cx="42.5" cy="64" r="1.1" fill="#b99059"/>
+          <circle class="test-hourglass__sand-grain test-hourglass__sand-grain--3" cx="45.2" cy="69" r="1.2" fill="#ae8b66"/>
+        </g>
+        <g clip-path="url(#hgBottomBulb)">
+          <rect class="test-hourglass__sand-bottom" x="22" y="78" width="44" height="24" fill="url(#hgSandDeep)"/>
+          <ellipse class="test-hourglass__sand-bottom-surface" cx="44" cy="78" rx="16" ry="3.5" fill="#c6a27a"/>
+        </g>
+        <path class="test-hourglass__shine" d="M30 20c8 10 6 24 4 34M58 22c-6 12-4 24-2 34" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round" filter="url(#hgGlow)"/>
       </svg>
     `;
   }
@@ -1160,10 +1203,14 @@
     }
 
     function startTimer(test, container) {
-      let remaining = getTestTimeLimitSeconds(test);
+      const limit = getTestTimeLimitSeconds(test);
+      let remaining = limit;
       const timerNode = container.querySelector("[data-test-timer]");
+      const hourglass = container.querySelector(".test-hourglass");
       const update = () => {
-        if (timerNode) timerNode.textContent = formatTimer(remaining);
+        const progress = Math.min(1, Math.max(0, 1 - remaining / limit));
+        if (hourglass) hourglass.style.setProperty("--test-progress", String(progress));
+        if (timerNode) timerNode.textContent = formatTimer(Math.max(0, remaining));
         if (remaining <= 0) {
           stopTimer();
           const form = container.querySelector("[data-test-form]");
