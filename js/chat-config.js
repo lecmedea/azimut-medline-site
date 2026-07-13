@@ -8,6 +8,6 @@ window.AZIMUT_CHAT_CONFIG = {
   provider: "auto",
   agentName: "Филипп Филипович",
   agentTitle: "Филипп Филипович",
-  endpoint: "",
+  endpoint: "https://azimut-medline-site.vercel.app/api/chat",
   fallbackPhone: "8 (925) 112 77 99"
 };
