@@ -120,9 +120,24 @@
   function initCompass() {
     const compass = $(".compass-card");
     if (!compass) return;
-    if (matchMedia("(max-width: 860px)").matches) return;
-    let usesDeviceOrientation = false;
+
+    const CLINIC = { lat: 55.660607, lon: 37.538170 };
     let currentNeedleAngle = -90;
+    let clinicBearing = null;
+    let deviceHeading = null;
+    let usesDeviceOrientation = false;
+
+    const toRad = (deg) => deg * Math.PI / 180;
+    const toDeg = (rad) => rad * 180 / Math.PI;
+
+    const calcBearing = (lat1, lon1, lat2, lon2) => {
+      const phi1 = toRad(lat1);
+      const phi2 = toRad(lat2);
+      const delta = toRad(lon2 - lon1);
+      const y = Math.sin(delta) * Math.cos(phi2);
+      const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(delta);
+      return (toDeg(Math.atan2(y, x)) + 360) % 360;
+    };
 
     const setNeedleAngle = (angle, mode) => {
       const normalizedAngle = ((angle % 360) + 360) % 360;
@@ -132,8 +147,36 @@
       if (delta < -180) delta += 360;
       currentNeedleAngle += delta * 0.22;
       compass.style.setProperty("--needle-angle", `${currentNeedleAngle}deg`);
+      compass.classList.toggle("is-routing", mode === "routing");
       compass.classList.toggle("is-orientation", mode === "orientation");
       compass.classList.toggle("is-following", mode === "pointer");
+    };
+
+    const updateClinicNeedle = () => {
+      if (clinicBearing === null) return;
+      if (deviceHeading !== null) {
+        const screenAngle = screen.orientation?.angle || window.orientation || 0;
+        setNeedleAngle(clinicBearing - deviceHeading - 90 + screenAngle, "routing");
+        return;
+      }
+      setNeedleAngle(clinicBearing - 90, "routing");
+    };
+
+    const requestClinicBearing = () => {
+      if (!navigator.geolocation) return;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          clinicBearing = calcBearing(
+            position.coords.latitude,
+            position.coords.longitude,
+            CLINIC.lat,
+            CLINIC.lon
+          );
+          updateClinicNeedle();
+        },
+        () => {},
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+      );
     };
 
     const normalizeHeading = (event) => {
@@ -146,15 +189,16 @@
       return null;
     };
 
-    const updateNorthNeedle = (event) => {
+    const updateOrientationNeedle = (event) => {
       const heading = normalizeHeading(event);
       if (heading === null) return;
       usesDeviceOrientation = true;
-      const screenAngle = screen.orientation?.angle || window.orientation || 0;
-      setNeedleAngle(-heading - 90 + screenAngle, "orientation");
+      deviceHeading = heading;
+      updateClinicNeedle();
     };
 
     const startOrientationCompass = async () => {
+      requestClinicBearing();
       if (!window.DeviceOrientationEvent) return;
       if (typeof DeviceOrientationEvent.requestPermission === "function") {
         try {
@@ -164,23 +208,53 @@
           return;
         }
       }
-      window.addEventListener("deviceorientation", updateNorthNeedle, true);
+      window.addEventListener("deviceorientation", updateOrientationNeedle, true);
     };
 
-    const updateNeedle = (event) => {
-      if (usesDeviceOrientation) return;
+    const updatePointerNeedle = (event) => {
+      if (usesDeviceOrientation || clinicBearing !== null) return;
       const rect = compass.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
       const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * 180 / Math.PI;
       setNeedleAngle(angle, "pointer");
     };
+
     if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      window.addEventListener("mousemove", updateNeedle);
+      window.addEventListener("mousemove", updatePointerNeedle);
     }
+
     startOrientationCompass();
     compass.addEventListener("click", startOrientationCompass);
-    compass.addEventListener("touchstart", startOrientationCompass, { passive: true, once: true });
+    compass.addEventListener("touchstart", () => startOrientationCompass(), { passive: true });
+  }
+
+  function initScrollTop() {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "scroll-top-btn";
+    button.setAttribute("aria-label", "Наверх страницы");
+    button.innerHTML = '<span aria-hidden="true">↑</span>';
+    button.hidden = true;
+    document.body.appendChild(button);
+
+    const mobileQuery = matchMedia("(max-width: 860px)");
+    const updateVisibility = () => {
+      if (!mobileQuery.matches) {
+        button.hidden = true;
+        return;
+      }
+      button.hidden = window.scrollY < 280;
+    };
+
+    button.addEventListener("click", () => {
+      const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+      window.scrollTo({ top: 0, behavior });
+    });
+
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    mobileQuery.addEventListener("change", updateVisibility);
+    updateVisibility();
   }
 
   function initHomeDepthParallax() {
@@ -493,6 +567,7 @@
     initMenu();
     initDropdowns();
     initCompass();
+    initScrollTop();
     initHomeDepthParallax();
     initModals();
     initAccordions();
