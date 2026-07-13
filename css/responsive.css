@@ -159,14 +159,25 @@
   .mobile-nav-accordion {
     display: grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
-    justify-self: center;
-    border: 1px solid rgba(185, 144, 89, 0.22);
+    width: 44px;
+    height: 44px;
+    margin-right: 8px;
+    justify-self: end;
+    align-self: center;
+    border: 1px solid rgba(185, 144, 89, 0.28);
     border-radius: 50%;
     background: var(--paper);
     color: var(--teal);
     cursor: pointer;
+    z-index: 2;
+    pointer-events: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-nav-accordion:active {
+    transform: scale(0.96);
+    background: rgba(255, 250, 241, 0.92);
   }
 
   .mobile-nav-accordion .nav-arrow {
@@ -220,6 +231,15 @@
     border-color: rgba(219, 232, 232, 0.9);
     overflow: visible;
     pointer-events: auto;
+  }
+
+  .nav-item.dropdown-open {
+    background: rgba(255, 250, 241, 0.55);
+  }
+
+  .nav-dropdown-link {
+    min-height: 44px;
+    padding: 10px 14px;
   }
 
   .nav-dropdown-link:hover,
