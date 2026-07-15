@@ -638,11 +638,13 @@ button:focus-visible {
     url("../assets/generated/blog-hero-bg-wide.jpg") center / cover;
 }
 
-.hero-with-video {
-  background: #1a2230;
+.home-video-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
 }
 
-.hero-video {
+.home-video-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -653,18 +655,35 @@ button:focus-visible {
   pointer-events: none;
 }
 
-.hero-video-overlay {
+.home-video-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(255, 249, 238, 0.94) 0%, rgba(255, 249, 238, 0.78) 38%, rgba(255, 249, 238, 0.28) 72%, rgba(255, 249, 238, 0.12) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 42%);
+    linear-gradient(90deg, rgba(255, 249, 238, 0.90) 0%, rgba(255, 249, 238, 0.72) 34%, rgba(255, 249, 238, 0.22) 68%, rgba(255, 249, 238, 0.08) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.10), transparent 48%);
 }
 
-.hero-with-video .hero-grid,
-.hero-with-video .hero-content {
+.home-video-stage > .hero,
+.home-video-stage > .hero-banners-section {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+}
+
+.hero-over-video {
+  background: transparent;
+}
+
+.hero-over-video::after {
+  z-index: 1;
+}
+
+.hero-over-video .hero-grid,
+.hero-over-video .hero-content,
+.hero-over-video .hero-grid-premium,
+.hero-over-video .hero-visual {
   position: relative;
   z-index: 2;
 }
@@ -672,6 +691,11 @@ button:focus-visible {
 .home-depth-bg--video::before {
   opacity: 0;
   visibility: hidden;
+}
+
+.home-depth-bg--video::after {
+  background:
+    linear-gradient(180deg, transparent 0 62%, rgba(251, 247, 238, 0.88) 100%);
 }
 
 .home-depth-bg {
@@ -2023,7 +2047,11 @@ button:focus-visible {
   position: relative;
   padding: 0;
   overflow: hidden;
-  background: #101820;
+  background: transparent;
+}
+
+.hero-banners-over-video {
+  background: transparent;
 }
 
 .hero-banners-section::before {
@@ -2039,10 +2067,11 @@ button:focus-visible {
 .banner-carousel-viewport {
   position: relative;
   width: 100%;
-  aspect-ratio: 21 / 8;
-  min-height: clamp(180px, 32vw, 420px);
+  aspect-ratio: 2538 / 868;
+  min-height: clamp(200px, 30vw, 400px);
+  max-height: 420px;
   overflow: hidden;
-  background: #101820;
+  background: transparent;
 }
 
 .banner-carousel-track {
@@ -2072,7 +2101,9 @@ button:focus-visible {
   object-fit: cover;
   object-position: center center;
   border: 0;
-  background: #101820;
+  background: transparent;
+  transform: scale(1.02);
+  transform-origin: center center;
 }
 
 .banner-carousel-dots {
@@ -2080,7 +2111,7 @@ button:focus-visible {
   justify-content: center;
   gap: 8px;
   padding: 14px 0 18px;
-  background: linear-gradient(180deg, rgba(16, 24, 32, 0.2), rgba(16, 24, 32, 0.92));
+  background: linear-gradient(180deg, rgba(255, 249, 238, 0.08), rgba(255, 249, 238, 0.72));
 }
 
 .banner-carousel-dot {
