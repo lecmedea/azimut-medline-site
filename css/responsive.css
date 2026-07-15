@@ -148,8 +148,15 @@
   }
 
   .nav-link::after {
-    left: 14px;
-    right: 14px;
+    display: none;
+  }
+
+  .nav-dropdown-link::before {
+    display: none;
+  }
+
+  .nav-dropdown-link {
+    padding-left: 14px;
   }
 
   .nav-link .nav-arrow {
@@ -301,6 +308,15 @@
 
   .hero {
     padding-top: 48px;
+  }
+
+  .banner-carousel-viewport {
+    aspect-ratio: 16 / 10;
+    min-height: 200px;
+  }
+
+  .software-download-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-grid,
