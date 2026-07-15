@@ -311,8 +311,9 @@
   }
 
   .banner-carousel-viewport {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
     min-height: 200px;
+    max-height: none;
   }
 
   .software-download-grid {
