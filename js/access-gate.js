@@ -1,4 +1,16 @@
 (function () {
+  const PUBLIC_HOSTS = new Set([
+    "azimutclinic.ru",
+    "www.azimutclinic.ru",
+    "lecmedea.github.io",
+    "localhost",
+    "127.0.0.1",
+  ]);
+  const host = window.location.hostname.replace(/^www\./, "");
+  if (PUBLIC_HOSTS.has(host) || PUBLIC_HOSTS.has(window.location.hostname)) {
+    return;
+  }
+
   const PIN = "2206";
   const SESSION_MS = 20 * 60 * 1000;
   const STORAGE_KEY = "azimut_pin_access_until";
