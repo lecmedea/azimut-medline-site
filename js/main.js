@@ -610,6 +610,7 @@
     const candidates = $$([
       ".section-heading",
       ".premium-accordion",
+      ".banner-carousel",
       ".banner-rotator",
       ".doctor-card",
       ".condition-card",
@@ -648,6 +649,52 @@
     renderArticles
   };
 
+  function initBannerCarousel() {
+    const root = document.querySelector("[data-banner-carousel]");
+    if (!root) return;
+
+    const slides = [...root.querySelectorAll(".banner-slide")];
+    const dotsHost = root.querySelector("[data-banner-dots]");
+    if (!slides.length) return;
+
+    let index = slides.findIndex((slide) => slide.classList.contains("is-active"));
+    if (index < 0) index = 0;
+
+    const dots = slides.map((_, i) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = `banner-carousel-dot${i === index ? " is-active" : ""}`;
+      dot.setAttribute("aria-label", `Баннер ${i + 1}`);
+      dot.addEventListener("click", () => {
+        index = i;
+        paint();
+        restart();
+      });
+      dotsHost?.append(dot);
+      return dot;
+    });
+
+    let timer = null;
+
+    const paint = () => {
+      slides.forEach((slide, i) => slide.classList.toggle("is-active", i === index));
+      dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
+    };
+
+    const next = () => {
+      index = (index + 1) % slides.length;
+      paint();
+    };
+
+    const restart = () => {
+      if (timer) window.clearInterval(timer);
+      timer = window.setInterval(next, 5200);
+    };
+
+    paint();
+    restart();
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     setActiveNav();
     initMenu();
@@ -659,5 +706,6 @@
     initAccordions();
     renderBlocks();
     initRevealMotion();
+    initBannerCarousel();
   });
 })();
