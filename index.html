@@ -19,6 +19,7 @@
   <meta name="description" content="Центр ментального здоровья Азимут Клиник: психиатрия, наркология, психологическая помощь и диагностика. Анонимно, круглосуточно, в клинике, на дому и онлайн.">
   <meta name="keywords" content="психиатр, психолог, нарколог, ментальное здоровье, клиника Москва, Азимут Клиник, помощь круглосуточно">
   <link rel="canonical" href="https://azimutclinic.ru/">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="https://azimutclinic.ru/sitemap.xml">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Азимут Клиник">
   <meta property="og:title" content="Центр ментального здоровья Азимут Клиник">
@@ -28,14 +29,14 @@
   <meta property="og:locale" content="ru_RU">
   <title>Центр ментального здоровья Азимут Клиник</title>
   <link rel="icon" href="assets/logo-main.jpg">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalClinic","name":"Азимут Клиник","alternateName":"Центр ментального здоровья Азимут Клиник","url":"https://azimutclinic.ru/","logo":"https://azimutclinic.ru/assets/logo-main.jpg","image":"https://azimutclinic.ru/assets/logo-main.jpg","telephone":"+79251127799","email":"info@azimutclinic.ru","address":{"@type":"PostalAddress","streetAddress":"ш. Старокалужское, дом 62","addressLocality":"Москва","postalCode":"117630","addressCountry":"RU"},"openingHours":"Mo-Su 00:00-24:00","medicalSpecialty":["Psychiatric","Psychologic","Addiction Medicine"],"sameAs":["https://azimutclinic.ru/"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalClinic","name":"Азимут Клиник","alternateName":["Центр ментального здоровья Азимут Клиник","Azimut Clinic","Азимут Клиник Москва"],"description":"Центр ментального здоровья в Москве: психиатрия, наркология, психологическая помощь круглосуточно.","url":"https://azimutclinic.ru/","logo":"https://azimutclinic.ru/assets/logo-main.jpg","image":"https://azimutclinic.ru/assets/logo-main.jpg","telephone":"+79251127799","email":"info@azimutclinic.ru","address":{"@type":"PostalAddress","streetAddress":"ш. Старокалужское, дом 62","addressLocality":"Москва","postalCode":"117630","addressRegion":"Москва","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":55.660607,"longitude":37.538170},"openingHours":"Mo-Su 00:00-24:00","medicalSpecialty":["Psychiatric","Psychologic","Addiction Medicine"],"areaServed":{"@type":"City","name":"Москва"},"hasMap":"https://yandex.ru/maps/?ll=37.538170%2C55.660607&z=16","sameAs":["https://azimutclinic.ru/","https://azimutclinic.ru/software.html"]}</script>
   <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
-  <link rel="stylesheet" href="css/style.css?v=20260713-polish">
-  <link rel="stylesheet" href="css/responsive.css?v=20260713-nav-accordion2">
+  <link rel="stylesheet" href="css/style.css?v=20260716-home-media">
+  <link rel="stylesheet" href="css/responsive.css?v=20260716-home-media">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/audio-player.css?v=20260713-mobile-dock">
   <link rel="stylesheet" href="css/chatbot.css?v=20260713-philipp-icon">
-  <script src="js/access-gate.js?v=20260713-mobile-fix"></script>
+  <script src="js/access-gate.js?v=20260716-public"></script>
 </head>
 <body>
   <header class="site-header">
@@ -59,6 +60,7 @@
             <a class="nav-dropdown-link" href="partnership.html" role="menuitem">Сотрудничество / условия партнёрства</a>
           </div>
         </div>
+        <div class="nav-item"><a class="nav-link" href="software.html">Наше ПО</a></div>
         <div class="nav-item has-dropdown">
           <a class="nav-link" href="blog.html" aria-haspopup="true" aria-expanded="false">Блог <span class="nav-arrow" aria-hidden="true">⌄</span></a>
           <button class="mobile-nav-accordion" type="button" aria-label="Открыть подразделы Блог" aria-expanded="false"><span class="nav-arrow" aria-hidden="true">⌄</span></button>
@@ -124,8 +126,12 @@
   </header>
 
   <main>
-    <div class="home-depth-bg" data-parallax-bg>
-    <section class="hero clarity-section">
+    <div class="home-depth-bg home-depth-bg--video" data-parallax-bg>
+    <section class="hero clarity-section hero-with-video">
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" poster="assets/banners/banner-01.jpg">
+        <source src="assets/video/hero-bg.mp4" type="video/mp4">
+      </video>
+      <div class="hero-video-overlay" aria-hidden="true"></div>
       <div class="container hero-grid hero-grid-premium">
         <div class="hero-content">
           <p class="eyebrow">Анонимная медицинская помощь 24/7</p>
@@ -157,34 +163,22 @@
       </div>
     </section>
 
-    <section class="section hero-banners-section" aria-label="Информационные баннеры">
-      <div class="container">
-        <div class="banner-rotator">
-          <article class="demo-banner demo-banner-one">
-            <img class="banner-photo" src="assets/banners/consultation-warm.jpg" alt="" width="220" height="165" decoding="async" aria-hidden="true">
-            <div class="banner-copy">
-              <span>Круглосуточная поддержка</span>
-              <h2>Когда важно, чтобы на связи был живой специалист</h2>
-              <p>Администратор ответит в любое время суток, уточнит ситуацию и предложит безопасный маршрут помощи без давления.</p>
-            </div>
-          </article>
-          <article class="demo-banner demo-banner-two">
-            <img class="banner-photo" src="assets/banners/home-visit-care.jpg" alt="" width="220" height="165" decoding="async" aria-hidden="true">
-            <div class="banner-copy">
-              <span>Выездная помощь</span>
-              <h2>Врач или психолог приедет туда, где человеку спокойнее</h2>
-              <p>Организуем выезд по Москве, области и соседним регионам — для семьи, кризисной ситуации или первого контакта с лечением.</p>
-            </div>
-          </article>
-          <article class="demo-banner demo-banner-three">
-            <img class="banner-photo" src="assets/banners/online-session-calm.jpg" alt="" width="220" height="165" decoding="async" aria-hidden="true">
-            <div class="banner-copy">
-              <span>Онлайн-консультации</span>
-              <h2>Бережный разговор из домашней обстановки</h2>
-              <p>Видеосвязь с психологом или психиатром по всей России: конфиденциально, без поездки и с тем же вниманием к деталям.</p>
-            </div>
-          </article>
+    <section class="section hero-banners-section" aria-label="Баннеры Азимут Клиник">
+      <div class="banner-carousel" data-banner-carousel aria-roledescription="carousel" aria-label="Актуальные предложения клиники">
+        <div class="banner-carousel-viewport">
+          <div class="banner-carousel-track">
+            <figure class="banner-slide is-active"><img src="assets/banners/banner-01.jpg" alt="Азимут Клиник — центр ментального здоровья" width="3448" height="1500" decoding="async"></figure>
+            <figure class="banner-slide"><img src="assets/banners/banner-02.jpg" alt="Азимут Клиник — психиатрия и психология" width="3448" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="banner-slide"><img src="assets/banners/banner-03.jpg" alt="Азимут Клиник — помощь круглосуточно" width="3448" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="banner-slide"><img src="assets/banners/banner-04.jpg" alt="Азимут Клиник — консультации и терапия" width="3448" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="banner-slide"><img src="assets/banners/banner-05.jpg" alt="Азимут Клиник — наркология" width="3448" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="banner-slide"><img src="assets/banners/banner-06.jpg" alt="Азимут Клиник — поддержка семьи" width="2738" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="banner-slide"><img src="assets/banners/banner-07.jpg" alt="Азимут Клиник — выездная помощь" width="3448" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="banner-slide"><img src="assets/banners/banner-08.jpg" alt="Азимут Клиник — онлайн-консультации" width="3448" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="banner-slide"><img src="assets/banners/banner-09.jpg" alt="Азимут Клиник — маршрут к внутренней опоре" width="3448" height="1500" loading="lazy" decoding="async"></figure>
+          </div>
         </div>
+        <div class="banner-carousel-dots" data-banner-dots aria-hidden="true"></div>
       </div>
     </section>
 
@@ -513,6 +507,7 @@
         <a href="doctors.html">Направления и врачи</a>
         <a href="blog.html">Блог</a>
         <a href="partnership.html">Сотрудничество</a>
+        <a href="software.html">Наше ПО</a>
         <a href="tel:+79251127799">Позвонить круглосуточно</a>
       </nav>
     </div>
@@ -520,7 +515,7 @@
 
   <script src="data/doctors.js?v=20260710-montserrat"></script>
   <script src="js/bitrix24-placeholder.js"></script>
-  <script src="js/main.js?v=20260713-nav-accordion2"></script>
+  <script src="js/main.js?v=20260716-home-media"></script>
   <script src="js/azimut-animations.js"></script>
   <script src="js/forms.js"></script>
   <script src="js/chat-config.js?v=20260713-philipp-icon"></script>
