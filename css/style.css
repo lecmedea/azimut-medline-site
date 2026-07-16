@@ -653,6 +653,12 @@ button:focus-visible {
   object-fit: cover;
   object-position: center center;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.home-video-bg.is-ready {
+  opacity: 1;
 }
 
 .home-video-overlay {
@@ -893,7 +899,7 @@ button:focus-visible {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  opacity: 0.94;
+  opacity: 1;
 }
 
 .route-line {
@@ -2069,7 +2075,6 @@ button:focus-visible {
   width: 100%;
   aspect-ratio: 2538 / 868;
   min-height: clamp(200px, 30vw, 400px);
-  max-height: 420px;
   overflow: hidden;
   background: transparent;
 }
@@ -2098,11 +2103,12 @@ button:focus-visible {
   display: block;
   width: 100%;
   height: 100%;
+  aspect-ratio: 2538 / 868;
   object-fit: cover;
   object-position: center center;
   border: 0;
   background: transparent;
-  transform: scale(1.02);
+  transform: scale(1.08);
   transform-origin: center center;
 }
 
