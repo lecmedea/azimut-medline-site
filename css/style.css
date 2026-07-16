@@ -653,11 +653,6 @@ button:focus-visible {
   object-fit: cover;
   object-position: center center;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-}
-
-.home-video-bg.is-ready {
   opacity: 1;
 }
 
@@ -900,6 +895,9 @@ button:focus-visible {
   height: 100%;
   object-fit: contain;
   opacity: 1;
+  filter: none;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .route-line {
@@ -2007,6 +2005,14 @@ button:focus-visible {
 
 .hero-grid-premium {
   display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.hero-over-video .hero-copy {
   padding: clamp(24px, 4vw, 44px);
   border: 1px solid rgba(185, 144, 89, 0.30);
   border-radius: 28px;
@@ -2014,6 +2020,12 @@ button:focus-visible {
     linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 246, 230, 0.72)),
     radial-gradient(circle at 100% 0%, rgba(185, 144, 89, 0.16), transparent 36%);
   box-shadow: 0 28px 80px rgba(74, 58, 35, 0.10);
+}
+
+.hero-over-video .hero-visual {
+  background: transparent;
+  isolation: isolate;
+  z-index: 3;
 }
 
 .hero-headline-row {
@@ -2073,8 +2085,11 @@ button:focus-visible {
 .banner-carousel-viewport {
   position: relative;
   width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
   aspect-ratio: 2538 / 868;
-  min-height: clamp(200px, 30vw, 400px);
+  min-height: clamp(160px, 22vw, 320px);
+  max-height: min(42vh, 360px);
   overflow: hidden;
   background: transparent;
 }
@@ -2104,12 +2119,10 @@ button:focus-visible {
   width: 100%;
   height: 100%;
   aspect-ratio: 2538 / 868;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
   border: 0;
   background: transparent;
-  transform: scale(1.08);
-  transform-origin: center center;
 }
 
 .banner-carousel-dots {
