@@ -343,6 +343,21 @@
     updateVisibility();
   }
 
+  function initHomeVideo() {
+    const video = $(".home-video-bg");
+    if (!video) return;
+
+    const markReady = () => video.classList.add("is-ready");
+
+    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      markReady();
+      return;
+    }
+
+    video.addEventListener("canplay", markReady, { once: true });
+    video.addEventListener("loadeddata", markReady, { once: true });
+  }
+
   function initHomeDepthParallax() {
     const sections = $$("[data-parallax-bg], [data-parallax-bg-secondary]");
     if (!sections.length) return;
@@ -701,6 +716,7 @@
     initDropdowns();
     initCompass();
     initScrollTop();
+    initHomeVideo();
     initHomeDepthParallax();
     initModals();
     initAccordions();
