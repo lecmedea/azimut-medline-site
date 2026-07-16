@@ -13,7 +13,7 @@ REPO = "lecmedea/azimut-medline-site"
 BRANCH = "main"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TOKEN = ""
-COMMIT_MSG = "Fix video background layering and crop homepage banners"
+COMMIT_MSG = "Fix hero video flash, crop banners, compass opacity"
 
 HOSTS = pathlib.Path.home() / ".config/gh/hosts.yml"
 if HOSTS.exists():
@@ -31,6 +31,7 @@ def collect_files() -> list[str]:
         "index.html",
         "css/style.css",
         "css/responsive.css",
+        "js/main.js",
         "scripts/push-video-layers-fix.py",
     ]
     for i in range(1, 10):
