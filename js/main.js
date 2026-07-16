@@ -347,15 +347,14 @@
     const video = $(".home-video-bg");
     if (!video) return;
 
-    const markReady = () => video.classList.add("is-ready");
-
-    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-      markReady();
-      return;
-    }
-
-    video.addEventListener("canplay", markReady, { once: true });
-    video.addEventListener("loadeddata", markReady, { once: true });
+    video.classList.add("is-ready");
+    const play = () => {
+      const p = video.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    };
+    play();
+    video.addEventListener("loadeddata", play, { once: true });
+    video.addEventListener("canplay", play, { once: true });
   }
 
   function initHomeDepthParallax() {
