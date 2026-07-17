@@ -402,8 +402,8 @@
 
 @media (max-width: 640px) {
   .ai-chatbot {
-    right: 10px;
-    bottom: 48px;
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   }
 
   .ai-chatbot-toggle {
