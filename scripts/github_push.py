@@ -24,7 +24,7 @@ if HOSTS.exists():
 if not TOKEN:
     sys.exit("GitHub token not found in ~/.config/gh/hosts.yml")
 
-COMMIT_MSG = "Home video banners SEO cleanup 2026-07-17"
+COMMIT_MSG = "Offer completion fixes 2026-07-18"
 
 DELETE_FILES = [
     "assets/video/1368210.gif",
@@ -55,6 +55,7 @@ def collect_files() -> list[str]:
         "js/tests-batch200.js",
         "js/blog.js",
         "js/main.js",
+        "js/audio-player.js",
         "js/chatbot.js",
         "js/chat-config.js",
         "api/chat.js",
@@ -75,7 +76,9 @@ def collect_files() -> list[str]:
         "docs/amo-crm-funnel-2026-07-17.md",
         "docs/osmed-audit-2026-07-17.md",
         "docs/codex-skills-research-2026-07-17.md",
+        "docs/offer-completion-report-2026-07-18.md",
         "scripts/generate-batch20-and-seo.py",
+        "scripts/generate_mobile_banners.py",
         "scripts/update-seo-cis.py",
         "assets/icons/philipp-filippovich-avatar.jpg",
     ):
@@ -83,6 +86,7 @@ def collect_files() -> list[str]:
 
     for i in range(1, 10):
         add(ROOT / f"assets/banners-tight/banner-{i:02d}.jpg")
+        add(ROOT / f"assets/banners-mobile/banner-{i:02d}.jpg")
 
     for pattern in ("data/articles*.js",):
         for path in sorted(ROOT.glob(pattern)):
