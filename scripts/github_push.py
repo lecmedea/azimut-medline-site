@@ -24,7 +24,14 @@ if HOSTS.exists():
 if not TOKEN:
     sys.exit("GitHub token not found in ~/.config/gh/hosts.yml")
 
-COMMIT_MSG = "Philipp avatar icon, CIS SEO indexing, sitemap lastmod"
+COMMIT_MSG = "Home video banners SEO cleanup 2026-07-17"
+
+DELETE_FILES = [
+    "assets/video/1368210.gif",
+    "assets/video/1368210.mp4",
+    *[f"assets/banners/banner-{i:02d}.jpg" for i in range(1, 10)],
+    *[f"assets/banners-cropped/banner-{i:02d}.jpg" for i in range(1, 10)],
+]
 
 
 def collect_files() -> list[str]:
@@ -63,11 +70,19 @@ def collect_files() -> list[str]:
         "sitemap.xml",
         "robots.txt",
         "scripts/github_push.py",
+        "assets/video/hero-bg.mp4",
+        "docs/site-analysis-2026-07-17.md",
+        "docs/amo-crm-funnel-2026-07-17.md",
+        "docs/osmed-audit-2026-07-17.md",
+        "docs/codex-skills-research-2026-07-17.md",
         "scripts/generate-batch20-and-seo.py",
         "scripts/update-seo-cis.py",
         "assets/icons/philipp-filippovich-avatar.jpg",
     ):
         add(ROOT / rel)
+
+    for i in range(1, 10):
+        add(ROOT / f"assets/banners-tight/banner-{i:02d}.jpg")
 
     for pattern in ("data/articles*.js",):
         for path in sorted(ROOT.glob(pattern)):
@@ -117,9 +132,19 @@ def file_api_put(path: str, content: bytes, message: str, sha: str | None) -> di
     return api("PUT", f"/repos/{REPO}/contents/{path}", payload)
 
 
+def file_api_delete(path: str, message: str, sha: str) -> dict:
+    payload = {
+        "message": message,
+        "sha": sha,
+        "branch": BRANCH,
+    }
+    return api("DELETE", f"/repos/{REPO}/contents/{path}", payload)
+
+
 def main() -> None:
     updated = 0
     skipped = 0
+    deleted = 0
 
     for rel in FILES:
         local = ROOT / rel
@@ -141,7 +166,25 @@ def main() -> None:
         updated += 1
         print(f"OK {rel}")
 
-    print(f"Done: {updated} files pushed, {skipped} skipped → {BRANCH}")
+    for rel in DELETE_FILES:
+        try:
+            meta = api("GET", f"/repos/{REPO}/contents/{rel}?ref={BRANCH}")
+        except urllib.error.HTTPError as err:
+            if err.code == 404:
+                skipped += 1
+                print(f"SKIP already absent: {rel}")
+                continue
+            raise
+        sha = meta.get("sha")
+        if not sha:
+            skipped += 1
+            print(f"SKIP no sha: {rel}")
+            continue
+        file_api_delete(rel, f"{COMMIT_MSG} delete obsolete ({rel})", sha)
+        deleted += 1
+        print(f"DELETE {rel}")
+
+    print(f"Done: {updated} files pushed, {deleted} deleted, {skipped} skipped → {BRANCH}")
 
 
 if __name__ == "__main__":
