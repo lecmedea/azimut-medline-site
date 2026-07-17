@@ -12,6 +12,7 @@
   <meta name="ICBM" content="55.660607, 37.538170">
   <meta name="language" content="Russian">
   <meta name="content-language" content="ru">
+  <meta name="theme-color" content="#fbf7ee">
   <link rel="alternate" hreflang="ru" href="https://azimutclinic.ru/">
   <link rel="alternate" hreflang="ru-RU" href="https://azimutclinic.ru/">
   <link rel="alternate" hreflang="x-default" href="https://azimutclinic.ru/">
@@ -29,16 +30,20 @@
   <meta property="og:locale" content="ru_RU">
   <title>Центр ментального здоровья Азимут Клиник</title>
   <link rel="icon" href="assets/logo-main.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalClinic","name":"Азимут Клиник","alternateName":["Центр ментального здоровья Азимут Клиник","Azimut Clinic","Азимут Клиник Москва"],"description":"Центр ментального здоровья в Москве: психиатрия, наркология, психологическая помощь круглосуточно.","url":"https://azimutclinic.ru/","logo":"https://azimutclinic.ru/assets/logo-main.jpg","image":"https://azimutclinic.ru/assets/logo-main.jpg","telephone":"+79251127799","email":"info@azimutclinic.ru","address":{"@type":"PostalAddress","streetAddress":"ш. Старокалужское, дом 62","addressLocality":"Москва","postalCode":"117630","addressRegion":"Москва","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":55.660607,"longitude":37.538170},"openingHours":"Mo-Su 00:00-24:00","medicalSpecialty":["Psychiatric","Psychologic","Addiction Medicine"],"areaServed":{"@type":"City","name":"Москва"},"hasMap":"https://yandex.ru/maps/?ll=37.538170%2C55.660607&z=16","sameAs":["https://azimutclinic.ru/","https://azimutclinic.ru/software.html"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Азимут Клиник","url":"https://azimutclinic.ru/","inLanguage":"ru-RU","publisher":{"@type":"MedicalOrganization","name":"Азимут Клиник","url":"https://azimutclinic.ru/"}}</script>
   <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
-  <link rel="stylesheet" href="css/style.css?v=20260716-static-revert">
-  <link rel="stylesheet" href="css/responsive.css?v=20260716-home-media">
+  <link rel="stylesheet" href="css/style.css?v=20260717-home-banners-video">
+  <link rel="stylesheet" href="css/responsive.css?v=20260717-home-banners-video">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/audio-player.css?v=20260713-mobile-dock">
   <link rel="stylesheet" href="css/chatbot.css?v=20260713-philipp-icon">
   <script src="js/access-gate.js?v=20260716-public"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Перейти к содержанию</a>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="Азимут Клиник">
@@ -125,8 +130,12 @@
     </div>
   </header>
 
-  <main>
-    <div class="home-depth-bg" data-parallax-bg>
+  <main id="main-content">
+    <div class="home-depth-bg home-depth-bg--video home-video-stage" data-parallax-bg>
+      <video class="home-video-bg" aria-hidden="true" autoplay muted loop playsinline preload="metadata" poster="assets/generated/home-flow-bg-tall.jpg">
+        <source src="assets/video/hero-bg.mp4" type="video/mp4">
+      </video>
+      <div class="home-video-overlay" aria-hidden="true"></div>
 
     <section class="hero clarity-section">
       <div class="container hero-grid hero-grid-premium">
@@ -161,10 +170,36 @@
     </section>
 
     <section class="section hero-banners-section" aria-label="Баннеры Азимут Клиник">
-      <div class="banner-carousel banner-carousel--placeholder" data-banner-carousel aria-roledescription="carousel" aria-label="Актуальные предложения клиники">
+      <div class="banner-carousel" data-banner-carousel aria-roledescription="carousel" aria-label="Актуальные предложения клиники">
         <div class="banner-carousel-viewport">
           <div class="banner-carousel-track">
-            <!-- Слоты под будущие баннеры -->
+            <figure class="banner-slide is-active" aria-label="Вернуться к себе — возможно">
+              <img src="assets/banners-tight/banner-01.jpg" width="2027" height="666" alt="Вернуться к себе возможно. Ментальное здоровье — способность жить полноценно и строить гармоничные отношения." loading="eager" decoding="async" fetchpriority="high">
+            </figure>
+            <figure class="banner-slide" aria-label="Сон — основа восстановления">
+              <img src="assets/banners-tight/banner-02.jpg" width="2658" height="546" alt="Сон — основа восстановления. Если вы долго не можете уснуть или часто просыпаетесь, специалист поможет разобраться в причинах." loading="lazy" decoding="async">
+            </figure>
+            <figure class="banner-slide" aria-label="Отношениям иногда нужен переводчик">
+              <img src="assets/banners-tight/banner-03.jpg" width="2652" height="555" alt="Отношениям иногда нужен переводчик. Семейная терапия помогает восстановить диалог и снизить напряжение." loading="lazy" decoding="async">
+            </figure>
+            <figure class="banner-slide" aria-label="Консультация психиатра">
+              <img src="assets/banners-tight/banner-04.jpg" width="2658" height="585" alt="Консультация психиатра — квалифицированная медицинская помощь, оценка состояния и понятный план дальнейших действий." loading="lazy" decoding="async">
+            </figure>
+            <figure class="banner-slide" aria-label="Восстановление ресурса">
+              <img src="assets/banners-tight/banner-05.jpg" width="2660" height="551" alt="Восстановление ресурса при эмоциональном выгорании с помощью проверенных методик и при необходимости медикаментозной поддержки." loading="lazy" decoding="async">
+            </figure>
+            <figure class="banner-slide" aria-label="Комплексный подход">
+              <img src="assets/banners-tight/banner-06.jpg" width="2688" height="565" alt="Комплексный подход к диагностике и лечению: консультация психолога, психотерапевта или психиатра." loading="lazy" decoding="async">
+            </figure>
+            <figure class="banner-slide" aria-label="Когда вы не понимаете ребёнка">
+              <img src="assets/banners-tight/banner-07.jpg" width="1863" height="639" alt="Когда вы не понимаете, что происходит с ребёнком. Специалист подскажет, какие изменения требуют внимания." loading="lazy" decoding="async">
+            </figure>
+            <figure class="banner-slide" aria-label="Когда эмоции становятся слишком громкими">
+              <img src="assets/banners-tight/banner-08.jpg" width="2688" height="589" alt="Когда эмоции становятся слишком громкими. Консультация специалиста поможет найти причину и вернуть устойчивость." loading="lazy" decoding="async">
+            </figure>
+            <figure class="banner-slide" aria-label="Профессиональная помощь">
+              <img src="assets/banners-tight/banner-09.jpg" width="2688" height="578" alt="Профессиональная помощь, когда справляться в одиночку больше нет сил. В Азимут Клиник работают сертифицированные специалисты." loading="lazy" decoding="async">
+            </figure>
           </div>
         </div>
         <div class="banner-carousel-dots" data-banner-dots aria-hidden="true"></div>
@@ -257,7 +292,6 @@
         <p class="notice premium-notice">Цены являются предварительными и уточняются администратором. Итоговая стоимость зависит от состояния пациента, адреса, времени обращения и выбранного формата помощи.</p>
       </div>
     </section>
-    </div>
 
     <section class="section conditions-section">
       <div class="container">
@@ -505,7 +539,7 @@
 
   <script src="data/doctors.js?v=20260710-montserrat"></script>
   <script src="js/bitrix24-placeholder.js"></script>
-  <script src="js/main.js?v=20260716-static-revert"></script>
+  <script src="js/main.js?v=20260717-home-banners-video"></script>
   <script src="js/azimut-animations.js"></script>
   <script src="js/forms.js"></script>
   <script src="js/chat-config.js?v=20260713-philipp-icon"></script>
