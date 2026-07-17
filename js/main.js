@@ -343,18 +343,61 @@
     updateVisibility();
   }
 
-  function initHomeVideo() {
-    const video = $(".home-video-bg");
-    if (!video) return;
+  function initBlogJoystick() {
+    const pageName = location.pathname.split("/").pop() || "index.html";
+    if (pageName !== "blog.html") return;
 
-    video.classList.add("is-ready");
-    const play = () => {
-      const p = video.play();
-      if (p && typeof p.catch === "function") p.catch(() => {});
+    document.body.classList.add("blog-utility-mode");
+
+    const joystick = document.createElement("div");
+    joystick.className = "azimut-joystick";
+    joystick.innerHTML = `
+      <button class="azimut-joystick-main" type="button" aria-label="Открыть быстрые действия" aria-expanded="false">
+        <span aria-hidden="true">✦</span>
+      </button>
+      <div class="azimut-joystick-actions" aria-label="Быстрые действия блога">
+        <button class="azimut-joystick-action" type="button" data-joystick-action="audio" aria-label="Открыть аудиоплеер"><span aria-hidden="true">♪</span></button>
+        <button class="azimut-joystick-action" type="button" data-joystick-action="top" aria-label="Наверх страницы"><span aria-hidden="true">↑</span></button>
+        <button class="azimut-joystick-action" type="button" data-joystick-action="chat" aria-label="Открыть Филиппа Филипповича"><span aria-hidden="true">Ф</span></button>
+      </div>
+    `;
+    document.body.appendChild(joystick);
+
+    const main = $(".azimut-joystick-main", joystick);
+    const setOpen = (open) => {
+      joystick.classList.toggle("is-open", open);
+      main.setAttribute("aria-expanded", String(open));
     };
-    play();
-    video.addEventListener("loadeddata", play, { once: true });
-    video.addEventListener("canplay", play, { once: true });
+
+    main.addEventListener("click", () => setOpen(!joystick.classList.contains("is-open")));
+
+    joystick.addEventListener("click", (event) => {
+      const action = event.target.closest("[data-joystick-action]");
+      if (!action) return;
+      const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+
+      if (action.dataset.joystickAction === "top") {
+        window.scrollTo({ top: 0, behavior });
+        setOpen(false);
+      }
+
+      if (action.dataset.joystickAction === "chat") {
+        $(".ai-chatbot-toggle")?.click();
+        setOpen(false);
+      }
+
+      if (action.dataset.joystickAction === "audio") {
+        const willOpen = !document.body.classList.contains("joystick-audio-open");
+        document.body.classList.toggle("joystick-audio-open", willOpen);
+        if (willOpen) window.AzimutAudio?.openPanel?.();
+        else window.AzimutAudio?.closePanel?.();
+        setOpen(false);
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
+    });
   }
 
   function initHomeDepthParallax() {
@@ -714,7 +757,7 @@
     initDropdowns();
     initCompass();
     initScrollTop();
-    initHomeVideo();
+    initBlogJoystick();
     initHomeDepthParallax();
     initModals();
     initAccordions();
