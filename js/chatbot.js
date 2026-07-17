@@ -86,10 +86,12 @@
     const phone = findPhone(message);
     if (!phone) return;
     const leadData = buildChatLead(phone, message);
-    if (window.AzimutBitrix?.sendChatLeadToBitrix24) {
+    if (window.AzimutCRM?.sendChatLead) {
+      window.AzimutCRM.sendChatLead(leadData);
+    } else if (window.AzimutBitrix?.sendChatLeadToBitrix24) {
       window.AzimutBitrix.sendChatLeadToBitrix24(leadData);
     } else {
-      console.log("Здесь будет отправка лида из AI-чата в Битрикс24", leadData);
+      console.log("amoCRM payload from AI chat is ready", leadData);
     }
   }
 
