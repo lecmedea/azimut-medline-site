@@ -49,7 +49,7 @@ body {
   font-size: 16px;
   font-weight: 300;
   line-height: 1.6;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 body::before {
@@ -81,6 +81,24 @@ img {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: 1200;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: #584021;
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(74, 58, 35, 0.22);
+  transform: translateY(-140%);
+  transition: transform 180ms ease;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
 }
 
 p {
@@ -653,7 +671,14 @@ button:focus-visible {
   object-fit: cover;
   object-position: center center;
   pointer-events: none;
-  opacity: 1;
+  opacity: 0;
+  filter: saturate(0.94) contrast(1.03);
+  transform: scale(1.02);
+  transition: opacity 900ms ease;
+}
+
+.home-video-bg.is-ready {
+  opacity: 0.72;
 }
 
 .home-video-overlay {
@@ -662,8 +687,8 @@ button:focus-visible {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(255, 249, 238, 0.90) 0%, rgba(255, 249, 238, 0.72) 34%, rgba(255, 249, 238, 0.22) 68%, rgba(255, 249, 238, 0.08) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.10), transparent 48%);
+    linear-gradient(90deg, rgba(255, 249, 238, 0.86) 0%, rgba(255, 249, 238, 0.68) 36%, rgba(255, 249, 238, 0.20) 72%, rgba(255, 249, 238, 0.10) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 249, 238, 0.06) 46%, rgba(251, 247, 238, 0.74) 100%);
 }
 
 .home-video-stage > .hero,
@@ -771,7 +796,6 @@ button:focus-visible {
 }
 
 .home-depth-bg .hero-banners-section,
-.home-depth-bg .premium-accordion-section,
 .home-extended-bg .premium-accordion-section,
 .home-extended-bg .you-alone-section,
 .home-extended-bg .order-panel-section {
@@ -779,8 +803,6 @@ button:focus-visible {
 }
 
 .home-depth-bg .hero-grid-premium,
-.home-depth-bg .banner-rotator,
-.home-depth-bg .premium-accordion,
 .home-extended-bg .split-layout,
 .home-extended-bg .premium-accordion,
 .home-extended-bg .order-panel {
@@ -802,8 +824,6 @@ button:focus-visible {
   }
 
   .home-depth-bg .hero-grid-premium,
-  .home-depth-bg .banner-rotator,
-  .home-depth-bg .premium-accordion,
   .home-depth-bg .hero-visual,
   .home-extended-bg .split-layout,
   .home-extended-bg .premium-accordion,
@@ -2014,22 +2034,17 @@ button:focus-visible {
   box-shadow: 0 28px 80px rgba(74, 58, 35, 0.10);
 }
 
-.banner-carousel--placeholder .banner-carousel-viewport {
-  min-height: clamp(120px, 18vw, 220px);
-  max-height: 220px;
-  border: 1px dashed rgba(185, 144, 89, 0.35);
-  border-radius: 20px;
-  background: rgba(255, 249, 238, 0.45);
-}
-
-.banner-carousel--placeholder .banner-carousel-dots {
-  display: none;
+.home-video-stage .hero-grid-premium {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(255, 246, 230, 0.58)),
+    radial-gradient(circle at 100% 0%, rgba(185, 144, 89, 0.18), transparent 38%);
+  backdrop-filter: blur(6px);
 }
 
 .hero-headline-row {
   display: grid;
-  grid-template-columns: minmax(0, 720px) minmax(260px, 330px);
-  gap: clamp(48px, 7vw, 92px);
+  grid-template-columns: minmax(0, 700px) minmax(300px, 380px);
+  gap: clamp(44px, 6vw, 82px);
   align-items: start;
   justify-content: space-between;
 }
@@ -2061,7 +2076,7 @@ button:focus-visible {
 
 .hero-banners-section {
   position: relative;
-  padding: 0;
+  padding: clamp(22px, 3vw, 44px) 0 clamp(54px, 7vw, 84px);
   overflow: hidden;
   background: transparent;
 }
@@ -2085,9 +2100,9 @@ button:focus-visible {
   width: 100%;
   max-width: 1180px;
   margin: 0 auto;
-  aspect-ratio: 2538 / 868;
-  min-height: clamp(160px, 22vw, 320px);
-  max-height: min(42vh, 360px);
+  aspect-ratio: 2688 / 589;
+  min-height: clamp(150px, 19vw, 260px);
+  max-height: min(38vh, 310px);
   overflow: hidden;
   background: transparent;
 }
@@ -2116,19 +2131,19 @@ button:focus-visible {
   display: block;
   width: 100%;
   height: 100%;
-  aspect-ratio: 2538 / 868;
   object-fit: contain;
   object-position: center center;
   border: 0;
   background: transparent;
+  filter: drop-shadow(0 22px 42px rgba(74, 58, 35, 0.12));
 }
 
 .banner-carousel-dots {
   display: flex;
   justify-content: center;
   gap: 8px;
-  padding: 14px 0 18px;
-  background: linear-gradient(180deg, rgba(255, 249, 238, 0.08), rgba(255, 249, 238, 0.72));
+  padding: 16px 0 0;
+  background: transparent;
 }
 
 .banner-carousel-dot {
@@ -2137,7 +2152,8 @@ button:focus-visible {
   border: 0;
   border-radius: 50%;
   padding: 0;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.56);
+  box-shadow: 0 0 0 1px rgba(174, 139, 102, 0.18);
   cursor: pointer;
   transition: transform 200ms ease, background 200ms ease;
 }
@@ -2145,91 +2161,6 @@ button:focus-visible {
 .banner-carousel-dot.is-active {
   background: #d5b98b;
   transform: scale(1.15);
-}
-
-.banner-rotator {
-  position: relative;
-  z-index: 1;
-  min-height: 238px;
-  border: 0;
-  border-radius: 26px;
-  background:
-    linear-gradient(125deg, rgba(255, 255, 255, 0.86), rgba(255, 250, 241, 0.58)),
-    repeating-linear-gradient(90deg, rgba(139, 57, 31, 0.07) 0 1px, transparent 1px 32px);
-  box-shadow: 0 28px 76px rgba(90, 60, 33, 0.12);
-  overflow: hidden;
-}
-
-.banner-photo {
-  width: 100%;
-  max-width: 220px;
-  aspect-ratio: 4 / 3;
-  border: 0;
-  border-radius: 20px;
-  object-fit: cover;
-  box-shadow:
-    0 16px 34px rgba(74, 58, 35, 0.16),
-    0 0 0 1px rgba(174, 139, 102, 0.14) inset;
-  animation: iconFloat 6s ease-in-out infinite;
-}
-
-.banner-icon {
-  width: clamp(68px, 8vw, 108px);
-  height: clamp(68px, 8vw, 108px);
-  padding: 10px;
-  border: 0;
-  border-radius: 22px;
-  background: rgba(255, 250, 241, 0.76);
-  object-fit: contain;
-  mix-blend-mode: multiply;
-  animation: iconFloat 6s ease-in-out infinite;
-}
-
-.banner-copy {
-  display: grid;
-  gap: 8px;
-}
-
-.demo-banner-two {
-  animation-delay: 5s;
-}
-
-.demo-banner-three {
-  animation-delay: 10s;
-}
-
-.demo-banner span {
-  color: var(--teal);
-  font-size: 12px;
-  font-weight: 300;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.demo-banner h2 {
-  max-width: 760px;
-  margin: 0;
-  font-size: clamp(24px, 3vw, 34px);
-}
-
-.demo-banner p {
-  max-width: 660px;
-  margin: 0;
-}
-
-@keyframes bannerRotate {
-  0%, 6% {
-    opacity: 0;
-    transform: translateX(18px);
-  }
-  10%, 30% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  36%, 100% {
-    opacity: 0;
-    transform: translateX(-18px);
-  }
 }
 
 @keyframes heroLightSweep {
@@ -2241,27 +2172,25 @@ button:focus-visible {
   }
 }
 
-@keyframes bannerSheen {
-  0%, 48% {
-    transform: translateX(-82%);
-  }
-  66%, 100% {
-    transform: translateX(82%);
-  }
-}
-
-@keyframes iconFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
 .hero-visual .compass-card {
-  width: min(286px, 100%);
+  width: min(350px, 100%);
   margin: 0 auto;
+}
+
+.hero-visual .compass-card::before {
+  content: "";
+  position: absolute;
+  inset: 7%;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 250, 241, 0.78) 0 44%, rgba(255, 250, 241, 0.30) 64%, transparent 72%),
+    radial-gradient(circle, rgba(174, 139, 102, 0.26), transparent 66%);
+  box-shadow: 0 24px 70px rgba(113, 83, 47, 0.20);
+}
+
+.hero-visual .compass-image {
+  filter: drop-shadow(0 20px 34px rgba(82, 62, 35, 0.22)) contrast(1.08) saturate(1.08);
 }
 
 .hero-proof-list {
