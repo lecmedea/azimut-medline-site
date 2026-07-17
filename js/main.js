@@ -625,7 +625,6 @@
       ".section-heading",
       ".premium-accordion",
       ".banner-carousel",
-      ".banner-rotator",
       ".doctor-card",
       ".condition-card",
       ".photo-frame",
