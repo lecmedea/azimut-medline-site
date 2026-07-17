@@ -16,9 +16,10 @@
       index = Math.min(Math.max(Number(saved.index || 0), 0), tracks.length - 1);
       audio.volume = saved.volume == null ? 0.75 : Number(saved.volume);
       audio.muted = Boolean(saved.muted);
-      collapsed = Boolean(saved.collapsed);
+      collapsed = true;
     } catch {
       audio.volume = 0.75;
+      collapsed = true;
     }
   }
 
@@ -145,6 +146,12 @@
     if (miniRoot) miniRoot.classList.toggle("is-collapsed", collapsed);
   }
 
+  function setCollapsed(nextCollapsed) {
+    collapsed = Boolean(nextCollapsed);
+    saveState();
+    renderState();
+  }
+
   function bind(root) {
     root.addEventListener("click", (event) => {
       const action = event.target.closest("[data-player]");
@@ -156,7 +163,7 @@
       if (type === "prev") setTrack(index - 1, !audio.paused);
       if (type === "next") setTrack(index + 1, !audio.paused);
       if (type === "mute") { audio.muted = !audio.muted; saveState(); renderState(); }
-      if (type === "collapse") { collapsed = !collapsed; saveState(); renderState(); }
+      if (type === "collapse") setCollapsed(!collapsed);
     });
 
     root.addEventListener("input", (event) => {
@@ -176,6 +183,12 @@
     document.querySelectorAll('[data-audio-player="full"]').forEach(createFullPlayer);
     createMiniPlayer();
     roots().forEach(bind);
+    window.AzimutAudio = {
+      openPanel: () => setCollapsed(false),
+      closePanel: () => setCollapsed(true),
+      togglePanel: () => setCollapsed(!collapsed),
+      isCollapsed: () => collapsed
+    };
     setTrack(index, false);
     ["play", "pause", "timeupdate", "durationchange", "volumechange", "loadedmetadata"].forEach((event) => audio.addEventListener(event, renderState));
     audio.addEventListener("ended", () => setTrack(index + 1, false));
