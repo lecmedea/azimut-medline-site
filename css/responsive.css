@@ -265,7 +265,7 @@
   }
 
   .hero-headline-row {
-    grid-template-columns: minmax(0, 1fr) minmax(230px, 280px);
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
     gap: 42px;
   }
 
@@ -274,7 +274,7 @@
   }
 
   .hero-visual .compass-card {
-    width: min(250px, 100%);
+    width: min(306px, 100%);
   }
 }
 
@@ -579,30 +579,6 @@
   .brand-logo-main {
     width: min(100%, 148px);
     max-height: 40px;
-  }
-
-  .banner-rotator {
-    min-height: 250px;
-  }
-
-  .demo-banner {
-    grid-template-columns: 1fr;
-    align-content: center;
-    justify-items: start;
-    gap: 14px;
-    padding: 22px 20px 26px;
-  }
-
-  .banner-photo {
-    width: min(100%, 200px);
-    max-width: none;
-    border-radius: 16px;
-  }
-
-  .banner-icon {
-    width: 70px;
-    height: 70px;
-    border-radius: 18px;
   }
 
   .brand-logo-mark {
