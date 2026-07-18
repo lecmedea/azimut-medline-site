@@ -151,7 +151,7 @@ def create_team_banner_portraits(normal_paths: list[Path], size: tuple[int, int]
     w, h = size
 
     if w > h:
-        title_font = font(DISPLAY, 92)
+        title_font = font(BODY, 88)
         sub_font = font(BODY, 34)
         small_font = font(BODY, 24)
         left = 120
@@ -179,7 +179,7 @@ def create_team_banner_portraits(normal_paths: list[Path], size: tuple[int, int]
             crop = cover_crop(im, (card_w, card_h), anchor_y=0.3)
             paste_rounded(banner, crop, positions[i], 34, shadow=True)
     else:
-        title_font = font(DISPLAY, 70)
+        title_font = font(BODY, 70)
         sub_font = font(BODY, 31)
         small_font = font(BODY, 24)
         left = 72
