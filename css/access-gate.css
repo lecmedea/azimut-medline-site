@@ -31,7 +31,7 @@ html.pin-gate-locked body > :not(.pin-gate) {
   padding: 24px;
   background:
     linear-gradient(120deg, rgba(255, 250, 241, 0.96), rgba(246, 236, 220, 0.88)),
-    url("../assets/images/onyx-warm-bg.png") center / cover;
+    url("../assets/images/onyx-warm-bg.jpg") center / cover;
 }
 
 .pin-gate-panel {
