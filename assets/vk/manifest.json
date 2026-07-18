@@ -1,0 +1,99 @@
+{
+  "source": "Figma board PtsbRBlzNZ8c0hAbXeopNp (visual structure)",
+  "brand": "Azimut Clinic / azimutclinic.ru",
+  "count": 13,
+  "assets": [
+    {
+      "file": "01-avatar-400x400.jpg",
+      "size": [
+        400,
+        400
+      ]
+    },
+    {
+      "file": "02-cover-desktop-1590x530.jpg",
+      "size": [
+        1590,
+        530
+      ]
+    },
+    {
+      "file": "03-cover-mobile-1080x1920.jpg",
+      "size": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "file": "04-menu-about-1200x800.jpg",
+      "size": [
+        1200,
+        800
+      ]
+    },
+    {
+      "file": "05-menu-services-1200x800.jpg",
+      "size": [
+        1200,
+        800
+      ]
+    },
+    {
+      "file": "06-menu-prices-1200x800.jpg",
+      "size": [
+        1200,
+        800
+      ]
+    },
+    {
+      "file": "07-menu-contacts-1200x800.jpg",
+      "size": [
+        1200,
+        800
+      ]
+    },
+    {
+      "file": "08-action-appointment-1080x1350.jpg",
+      "size": [
+        1080,
+        1350
+      ]
+    },
+    {
+      "file": "09-action-question-1080x1350.jpg",
+      "size": [
+        1080,
+        1350
+      ]
+    },
+    {
+      "file": "10-action-reviews-1080x1350.jpg",
+      "size": [
+        1080,
+        1350
+      ]
+    },
+    {
+      "file": "11-topic-psychiatry-1200x675.jpg",
+      "size": [
+        1200,
+        675
+      ]
+    },
+    {
+      "file": "12-topic-psychology-1200x675.jpg",
+      "size": [
+        1200,
+        675
+      ]
+    },
+    {
+      "file": "13-topic-addiction-1200x675.jpg",
+      "size": [
+        1200,
+        675
+      ]
+    }
+  ],
+  "notes": "Тексты и визуальные направления адаптированы под центр ментального здоровья; фото и логотип взяты из репозитория сайта."
+}

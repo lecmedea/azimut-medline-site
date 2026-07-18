@@ -47,8 +47,14 @@
 
   async function handleLead(form, status) {
     const payload = normalizeLead(form);
-    await (window.AzimutBitrix ? window.AzimutBitrix.sendLead(payload) : Promise.resolve());
-    status.textContent = "Заявка подготовлена. В рабочей интеграции она будет отправлена в CRM.";
+    if (window.AzimutCRM?.sendLead) {
+      await window.AzimutCRM.sendLead(payload);
+    } else if (window.AzimutBitrix?.sendLead) {
+      await window.AzimutBitrix.sendLead(payload);
+    } else {
+      throw new Error("CRM bridge is not loaded");
+    }
+    status.textContent = "Спасибо. Заявка отправлена администратору Азимут Клиник.";
     form.reset();
   }
 

@@ -1,0 +1,28 @@
+{
+  "version": "2026-07-18",
+  "brand": "Azimut Clinic",
+  "colorProfile": "sRGB",
+  "methodology": {
+    "coverDesktop": "1590x530, keep critical content inside the central safe area and below the top 85 px",
+    "coverLive": "1080x1920, keep critical content at least 200 px from top and bottom",
+    "avatar": "400x400, verify readability as a 200x200 thumbnail",
+    "menu": "376x256, keep labels centered because mobile may crop side edges",
+    "post": "1080x1350 vertical feed creative",
+    "service": "1000x1000 square service card"
+  },
+  "files": [
+    "vk-avatar-community-400x400.png",
+    "vk-cover-community-desktop-1590x530.png",
+    "vk-cover-live-mobile-1080x1920.png",
+    "vk-menu-about-clinic-376x256.png",
+    "vk-menu-services-376x256.png",
+    "vk-menu-prices-376x256.png",
+    "vk-menu-contacts-376x256.png",
+    "vk-post-appointment-1080x1350.png",
+    "vk-post-ask-question-1080x1350.png",
+    "vk-post-patient-reviews-1080x1350.png",
+    "vk-service-psychiatry-1000x1000.png",
+    "vk-service-psychology-1000x1000.png",
+    "vk-service-addiction-1000x1000.png"
+  ]
+}

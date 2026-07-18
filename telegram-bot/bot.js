@@ -6,9 +6,11 @@ const DEEPSEEK_API_URL = process.env.DEEPSEEK_API_URL || "https://api.deepseek.c
 const DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL || "deepseek-chat";
 const CLINIC_NAME = process.env.CLINIC_NAME || "Азимут Клиник";
 const CLINIC_PHONE = process.env.CLINIC_PHONE || "+79251127799";
-const CLINIC_SITE_URL = process.env.CLINIC_SITE_URL || "https://lecmedea.github.io/azimut-medline-site/";
+const CLINIC_SITE_URL = process.env.CLINIC_SITE_URL || "https://azimutclinic.ru/";
 const BOT_LOGO_URL = process.env.BOT_LOGO_URL || `${CLINIC_SITE_URL.replace(/\/$/, "")}/assets/azimut-clinic-logo.png`;
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || "";
+const AMO_LEAD_ENDPOINT = process.env.AMO_LEAD_ENDPOINT || "";
+const AMO_LEAD_API_KEY = process.env.AMO_LEAD_API_KEY || "";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
@@ -334,6 +336,12 @@ async function finishLead(chatId, lead) {
   lead.source = "Telegram bot";
   console.log("Telegram clinic lead:", JSON.stringify(lead, null, 2));
 
+  try {
+    await submitLeadToCrm(chatId, lead);
+  } catch (error) {
+    console.error("amoCRM lead submission failed:", error.message);
+  }
+
   if (ADMIN_CHAT_ID) {
     await sendMessage(ADMIN_CHAT_ID, [
       "🆕 <b>Новая заявка из Telegram-бота</b>",
@@ -358,6 +366,39 @@ async function finishLead(chatId, lead) {
       [{ text: "🤖 Задать вопрос AI", data: "ai:start" }]
     ])
   });
+}
+
+async function submitLeadToCrm(chatId, lead) {
+  if (!AMO_LEAD_ENDPOINT) {
+    console.warn("AMO_LEAD_ENDPOINT is not configured; the lead stays in logs/admin chat only.");
+    return null;
+  }
+
+  const response = await fetch(AMO_LEAD_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(AMO_LEAD_API_KEY ? { "X-Azimut-Key": AMO_LEAD_API_KEY } : {})
+    },
+    body: JSON.stringify({
+      NAME: lead.name,
+      PHONE: lead.phone,
+      SELECTED_SERVICE: lead.service,
+      COMMENTS: lead.comment,
+      SOURCE_ID: "Telegram bot @azimut_clinic_bot",
+      FORM_NAME: "telegram-bot",
+      PAGE_URL: "https://t.me/azimut_clinic_bot",
+      TELEGRAM_CHAT_ID: String(chatId),
+      submittedAt: lead.createdAt
+    })
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) {
+    throw new Error(data.error || `CRM endpoint returned HTTP ${response.status}`);
+  }
+  console.log(`amoCRM lead created: ${data.leadId}`);
+  return data;
 }
 
 async function handleAiMessage(chatId, text) {
