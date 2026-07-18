@@ -340,18 +340,6 @@
     opacity: 0.38;
   }
 
-  .home-wave-stage .hero-visual::before {
-    inset: -18px -8px -28px;
-    border-radius: 24px;
-    opacity: 0.62;
-    transform: rotate(-0.6deg);
-  }
-
-  .home-wave-stage .hero-visual::after {
-    inset: 6px 18px -2px;
-    opacity: 0.72;
-  }
-
   .hero-content h1 {
     font-size: 41px;
   }
@@ -499,7 +487,7 @@
     transform: none;
   }
 
-  .doctor-card:hover .doctor-photo-frame .doctor-photo-smile,
+  .doctor-card.doctor-smile-loaded:hover .doctor-photo-frame .doctor-photo-smile,
   .article-card:hover .article-image,
   .photo-frame:hover img,
   .photo-stack:hover img {
