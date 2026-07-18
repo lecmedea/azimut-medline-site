@@ -293,7 +293,9 @@ function setupDashboard_(sheet) {
     .setOption('title', 'Топ UTM-кампаний').setOption('legend', { position: 'none' })
     .setOption('colors', [COLORS.gold]).setPosition(41, 1, 0, 0)
     .setOption('width', 800).setOption('height', 380).build();
-  sheet.insertChart(sourceChart).insertChart(trendChart).insertChart(utmChart);
+  sheet.insertChart(sourceChart);
+  sheet.insertChart(trendChart);
+  sheet.insertChart(utmChart);
 }
 
 function setupHelp_(sheet) {

@@ -31,8 +31,8 @@ Telegram-канал «Азимут Клиник» уже виден в amoCRM к
 ## Что осталось включить в интерфейсах
 
 1. Создать приватную официальную интеграцию amoCRM и получить долгосрочный `AMOCRM_ACCESS_TOKEN`. Если amoCRM покажет отказ от технической поддержки, требуется отдельное подтверждение владельца аккаунта до принятия.
-2. Опубликовать `google-apps-script/Code.gs` как Web App и записать секрет в Script Properties.
-3. В Vercel задать `AMOCRM_ACCESS_TOKEN`, `LEADS_WEBHOOK_URL`, `LEADS_WEBHOOK_SECRET`, `AMO_WEBHOOK_KEY` и `AMO_LEAD_API_KEY`.
+2. Google Web App опубликован, защищённый `LEADS_WEBHOOK_SECRET` записан в Script Properties. URL Web App: `https://script.google.com/macros/s/AKfycbznsQAlR3Iho0-JPwxZq11_7-LhcoFnq2yCPS_8glcxQAnm2G65ZIXwu_gdkApU2AONAg/exec`.
+3. В Vercel для Production и Preview заданы `LEADS_WEBHOOK_URL` и `LEADS_WEBHOOK_SECRET`; production пересобран. После создания интеграции остаётся добавить `AMOCRM_ACCESS_TOKEN`, а при включении обратного webhook — `AMO_WEBHOOK_KEY`.
 4. В amoCRM добавить URL `/api/amo-webhook?key=...` и настроить Salesbot существующего Telegram-канала. Не менять Telegram webhook напрямую.
 5. При необходимости заполнить `AMOCRM_FIELD_MAP` реальными ID пользовательских полей.
 6. Отправить две тестовые заявки: с сайта и из Telegram; проверить amoCRM, email и обе строки в Google Sheets.
