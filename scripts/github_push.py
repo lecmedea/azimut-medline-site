@@ -24,7 +24,7 @@ if HOSTS.exists():
 if not TOKEN:
     sys.exit("GitHub token not found in ~/.config/gh/hosts.yml")
 
-COMMIT_MSG = "Team portraits compass and home fixes 2026-07-18"
+COMMIT_MSG = "Homepage performance and DNS-ready fixes 2026-07-18"
 
 DELETE_FILES = [
     "assets/video/1368210.gif",
@@ -83,6 +83,9 @@ def collect_files() -> list[str]:
         "scripts/prepare_staff_assets.py",
         "scripts/update-seo-cis.py",
         "assets/icons/philipp-filippovich-avatar.jpg",
+        "assets/images/onyx-warm-bg.jpg",
+        "assets/generated/hero-compass-cutout.webp",
+        "assets/generated/footer-logo-watermark.webp",
         "assets/generated/mental-health-map-bg.jpg",
     ):
         add(ROOT / rel)
