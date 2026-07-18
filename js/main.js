@@ -200,23 +200,8 @@
     if (!compass) return;
 
     const mobileQuery = matchMedia("(max-width: 860px)");
-    const CLINIC = { lat: 55.660607, lon: 37.538170 };
     let currentNeedleAngle = -90;
-    let clinicBearing = null;
-    let deviceHeading = null;
-    let orientationBound = false;
-
-    const toRad = (deg) => deg * Math.PI / 180;
-    const toDeg = (rad) => rad * 180 / Math.PI;
-
-    const calcBearing = (lat1, lon1, lat2, lon2) => {
-      const phi1 = toRad(lat1);
-      const phi2 = toRad(lat2);
-      const delta = toRad(lon2 - lon1);
-      const y = Math.sin(delta) * Math.cos(phi2);
-      const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(delta);
-      return (toDeg(Math.atan2(y, x)) + 360) % 360;
-    };
+    let mobilePulseTimer = null;
 
     const setNeedleAngle = (angle, mode) => {
       const normalizedAngle = ((angle % 360) + 360) % 360;
@@ -224,77 +209,12 @@
       let delta = normalizedAngle - normalizedCurrent;
       if (delta > 180) delta -= 360;
       if (delta < -180) delta += 360;
-      currentNeedleAngle += delta * 0.22;
+      const ease = mode === "pointer" ? 0.24 : 1;
+      currentNeedleAngle += delta * ease;
       compass.style.setProperty("--needle-angle", `${currentNeedleAngle}deg`);
       compass.classList.toggle("is-routing", mode === "routing");
       compass.classList.toggle("is-orientation", mode === "orientation");
       compass.classList.toggle("is-following", mode === "pointer");
-    };
-
-    const updateClinicNeedle = () => {
-      if (!mobileQuery.matches || clinicBearing === null) return;
-      if (deviceHeading !== null) {
-        const screenAngle = screen.orientation?.angle || window.orientation || 0;
-        setNeedleAngle(clinicBearing - deviceHeading - 90 + screenAngle, "routing");
-        return;
-      }
-      setNeedleAngle(clinicBearing - 90, "routing");
-    };
-
-    const requestClinicBearing = () => {
-      if (!mobileQuery.matches || !navigator.geolocation) return;
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          clinicBearing = calcBearing(
-            position.coords.latitude,
-            position.coords.longitude,
-            CLINIC.lat,
-            CLINIC.lon
-          );
-          updateClinicNeedle();
-        },
-        () => {},
-        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
-      );
-    };
-
-    const normalizeHeading = (event) => {
-      if (typeof event.webkitCompassHeading === "number") {
-        return event.webkitCompassHeading;
-      }
-      if (typeof event.alpha === "number") {
-        return 360 - event.alpha;
-      }
-      return null;
-    };
-
-    const updateOrientationNeedle = (event) => {
-      if (!mobileQuery.matches) return;
-      const heading = normalizeHeading(event);
-      if (heading === null) return;
-      deviceHeading = heading;
-      updateClinicNeedle();
-    };
-
-    const bindOrientation = () => {
-      if (orientationBound || !window.DeviceOrientationEvent) return;
-      window.addEventListener("deviceorientation", updateOrientationNeedle, true);
-      orientationBound = true;
-    };
-
-    const startMobileCompass = async () => {
-      if (!mobileQuery.matches) return;
-      requestClinicBearing();
-      if (!window.DeviceOrientationEvent) return;
-      if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        try {
-          const permission = await DeviceOrientationEvent.requestPermission();
-          if (permission !== "granted") return;
-        } catch {
-          return;
-        }
-      }
-      bindOrientation();
     };
 
     const updatePointerNeedle = (event) => {
@@ -306,13 +226,26 @@
       setNeedleAngle(angle, "pointer");
     };
 
-    window.addEventListener("mousemove", updatePointerNeedle);
-    compass.addEventListener("click", startMobileCompass);
-    compass.addEventListener("touchstart", () => startMobileCompass(), { passive: true });
+    const pulseMobileCompass = () => {
+      if (!mobileQuery.matches) return;
+      setNeedleAngle(-90, "routing");
+      window.clearTimeout(mobilePulseTimer);
+      mobilePulseTimer = window.setTimeout(() => {
+        compass.classList.remove("is-routing", "is-orientation", "is-following");
+      }, 1200);
+    };
 
-    if (mobileQuery.matches) {
-      startMobileCompass();
-    }
+    const resetNeedle = () => {
+      currentNeedleAngle = -90;
+      compass.style.setProperty("--needle-angle", "-90deg");
+      compass.classList.remove("is-routing", "is-orientation", "is-following");
+    };
+
+    window.addEventListener("mousemove", updatePointerNeedle, { passive: true });
+    compass.addEventListener("click", pulseMobileCompass);
+    compass.addEventListener("touchstart", pulseMobileCompass, { passive: true });
+    mobileQuery.addEventListener("change", resetNeedle);
+    resetNeedle();
   }
 
   function initScrollTop() {
@@ -601,7 +534,10 @@
       .slice(0, limit || undefined);
     target.innerHTML = items.map((item) => `
       <article class="doctor-card">
-        ${item.photo ? `<div class="doctor-photo" role="img" aria-label="${item.role}" style="background-image: url('${item.photo}'); background-position: ${item.photoPosition || "50% 50%"}"></div>` : ""}
+        ${item.photo ? `<div class="doctor-photo-frame" role="img" aria-label="${item.role}">
+          <div class="doctor-photo doctor-photo-primary" style="background-image: url('${item.photo}'); background-position: ${item.photoPosition || "50% 50%"}"></div>
+          ${item.smilePhoto ? `<div class="doctor-photo doctor-photo-smile" aria-hidden="true" style="background-image: url('${item.smilePhoto}'); background-position: ${item.photoPosition || "50% 50%"}"></div>` : ""}
+        </div>` : ""}
         <p class="eyebrow">${item.role}</p>
         <h3 class="${item.compactName ? "doctor-name-compact" : ""}">${item.name}</h3>
         <p><strong>${item.experience}</strong></p>
@@ -710,6 +646,7 @@
     if (!root) return;
 
     const slides = [...root.querySelectorAll(".banner-slide")];
+    const viewport = root.querySelector(".banner-carousel-viewport");
     const dotsHost = root.querySelector("[data-banner-dots]");
     if (!slides.length) return;
 
@@ -737,15 +674,36 @@
       dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
     };
 
-    const next = () => {
-      index = (index + 1) % slides.length;
+    const go = (step) => {
+      index = (index + step + slides.length) % slides.length;
       paint();
     };
+
+    const next = () => go(1);
+    const prev = () => go(-1);
 
     const restart = () => {
       if (timer) window.clearInterval(timer);
       timer = window.setInterval(next, 5200);
     };
+
+    if (viewport) {
+      [
+        ["prev", "Предыдущий баннер", prev],
+        ["next", "Следующий баннер", next]
+      ].forEach(([side, label, handler]) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `banner-edge-control banner-edge-control--${side}`;
+        button.setAttribute("aria-label", label);
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          handler();
+          restart();
+        });
+        viewport.append(button);
+      });
+    }
 
     paint();
     restart();
