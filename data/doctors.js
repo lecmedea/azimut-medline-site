@@ -4,32 +4,36 @@ window.AZIMUT_DOCTORS = [
     role: "Врач-психиатр, психотерапевт",
     experience: "Стаж: 12 лет",
     focus: "Сильна в аккуратной диагностике тревоги, депрессивных состояний и панических атак. Объясняет план помощи простым языком и помогает пациенту почувствовать контроль над ситуацией уже на первом этапе.",
-    photo: "assets/images/doctors-crops/doctor one.jpg",
-    photoPosition: "50% 18%"
+    photo: "assets/images/staff-portraits/staff-01.jpg",
+    smilePhoto: "assets/images/staff-portraits/staff-01-smile.jpg",
+    photoPosition: "50% 20%"
   },
   {
-    name: "Анна Романова",
+    name: "Специалист по зависимостям",
     role: "Врач-психиатр-нарколог",
     experience: "Стаж: 10 лет",
-    focus: "Помогает при зависимом поведении, кризисных состояниях и семейных обращениях. Её сильная сторона — спокойный контакт без осуждения и понятный маршрут помощи для пациента и близких.",
-    photo: "assets/images/doctors-crops/doctor two.jpg",
-    photoPosition: "50% 18%"
+    focus: "Помогает при зависимом поведении, кризисных состояниях и семейных обращениях. Его сильная сторона — спокойный контакт без осуждения и понятный маршрут помощи для пациента и близких.",
+    photo: "assets/images/staff-portraits/staff-02.jpg",
+    smilePhoto: "assets/images/staff-portraits/staff-02-smile.jpg",
+    photoPosition: "50% 20%"
   },
   {
     name: "Мария Лебедева",
     role: "Врач-психотерапевт",
     experience: "Стаж: 11 лет",
     focus: "Работает с тревогой, эмоциональным истощением и кризисами в отношениях. Ее сильная сторона — внимательное клиническое мышление и очень бережный контакт: пациенту не нужно быть «готовым», достаточно начать разговор.",
-    photo: "assets/images/doctors-crops/doctor-three.jpg",
-    photoPosition: "50% 18%"
+    photo: "assets/images/staff-portraits/staff-03.jpg",
+    smilePhoto: "assets/images/staff-portraits/staff-03-smile.jpg",
+    photoPosition: "50% 20%"
   },
   {
     name: "Виктор Геннадьевич",
     role: "Клинический психолог",
     experience: "Стаж: 14 лет",
     focus: "Помогает при тревоге, выгорании, кризисах идентичности и сложных семейных ситуациях. Его сильная сторона — точная клиническая диагностика и спокойная работа с человеком без давления и лишней драматизации.",
-    photo: "assets/images/doctors-crops/viktor-gennadievich.png",
-    photoPosition: "50% 20%",
+    photo: "assets/images/staff-portraits/staff-06.jpg",
+    smilePhoto: "assets/images/staff-portraits/staff-06-smile.jpg",
+    photoPosition: "50% 22%",
     compactName: true
   },
   {
@@ -37,31 +41,26 @@ window.AZIMUT_DOCTORS = [
     role: "Клинический психолог",
     experience: "Стаж: от 5 лет",
     focus: "Психологическое тестирование, диагностика состояния, подростковые трудности.",
-    photo: "assets/images/doctors-crops/clinical-psychologist.png",
-    photoPosition: "50% 18%"
+    photo: "assets/images/staff-portraits/staff-05.jpg",
+    smilePhoto: "assets/images/staff-portraits/staff-05-smile.jpg",
+    photoPosition: "50% 22%"
   },
   {
     name: "Психолог",
     role: "Психолог",
     experience: "Стаж: от 5 лет",
     focus: "Эмоциональное выгорание, семейные кризисы, тревога, консультации родственников.",
-    photo: "assets/images/doctors-crops/psychologist.png",
-    photoPosition: "50% 18%"
+    photo: "assets/images/staff-portraits/staff-04.jpg",
+    smilePhoto: "assets/images/staff-portraits/staff-04-smile.jpg",
+    photoPosition: "50% 22%"
   },
   {
-    name: "Наталия Васильева",
-    role: "Директор клиники",
-    experience: "Организация помощи и контроль качества",
-    focus: "Координация работы центра, сопровождение партнёрских направлений и забота о пациентском маршруте.",
-    photo: "assets/images/director-clinic.jpg",
-    photoPosition: "50% 16%"
-  },
-  {
-    name: "Психотерапевт",
-    role: "Психотерапевт",
-    experience: "Стаж: от 5 лет",
-    focus: "Длительное сопровождение, кризисные состояния, подбор безопасного маршрута помощи.",
-    photo: "assets/images/doctors-crops/psychiatrist.png",
-    photoPosition: "50% 18%"
+    name: "Специалист клиники",
+    role: "Врач-психотерапевт",
+    experience: "Стаж: уточняется",
+    focus: "Работает с тревожными состояниями, эмоциональным напряжением и запросами на бережную психотерапевтическую поддержку.",
+    photo: "assets/images/staff-portraits/staff-07.jpg",
+    smilePhoto: "assets/images/staff-portraits/staff-07-smile.jpg",
+    photoPosition: "50% 22%"
   }
 ];
