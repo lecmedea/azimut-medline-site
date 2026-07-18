@@ -525,6 +525,49 @@
     target.innerHTML = (window.AZIMUT_PRICE_FAQ || []).map(([question, answer]) => `<div class="faq-item"><h3>${question}</h3><p>${answer}</p></div>`).join("");
   }
 
+  function attachDoctorPhotoLoading(target) {
+    const primaryPhotos = $$(".doctor-photo-primary[data-photo]", target);
+    const loadPrimaryPhoto = (photo) => {
+      if (photo.dataset.loaded === "true") return;
+      photo.style.backgroundImage = `url('${photo.dataset.photo}')`;
+      photo.dataset.loaded = "true";
+    };
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          loadPrimaryPhoto(entry.target);
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: "520px 0px", threshold: 0.01 });
+      primaryPhotos.forEach((photo) => observer.observe(photo));
+    } else {
+      primaryPhotos.forEach(loadPrimaryPhoto);
+    }
+
+    $$(".doctor-photo-smile[data-smile-photo]", target).forEach((photo) => {
+      const card = photo.closest(".doctor-card");
+      if (!card) return;
+
+      const loadSmilePhoto = () => {
+        if (photo.dataset.loaded === "true" || photo.dataset.loading === "true") return;
+        photo.dataset.loading = "true";
+        const preload = new Image();
+        preload.onload = () => {
+          photo.style.backgroundImage = `url('${photo.dataset.smilePhoto}')`;
+          photo.dataset.loaded = "true";
+          delete photo.dataset.loading;
+          card.classList.add("doctor-smile-loaded");
+        };
+        preload.src = photo.dataset.smilePhoto;
+      };
+
+      card.addEventListener("pointerenter", loadSmilePhoto, { once: true });
+      card.addEventListener("focusin", loadSmilePhoto, { once: true });
+    });
+  }
+
   function renderDoctors(target) {
     const limit = Number(target.dataset.limit || 0);
     const hideActions = target.dataset.hideActions === "true";
@@ -535,8 +578,8 @@
     target.innerHTML = items.map((item) => `
       <article class="doctor-card">
         ${item.photo ? `<div class="doctor-photo-frame" role="img" aria-label="${item.role}">
-          <div class="doctor-photo doctor-photo-primary" style="background-image: url('${item.photo}'); background-position: ${item.photoPosition || "50% 50%"}"></div>
-          ${item.smilePhoto ? `<div class="doctor-photo doctor-photo-smile" aria-hidden="true" style="background-image: url('${item.smilePhoto}'); background-position: ${item.photoPosition || "50% 50%"}"></div>` : ""}
+          <div class="doctor-photo doctor-photo-primary" data-photo="${item.photo}" style="background-position: ${item.photoPosition || "50% 50%"}"></div>
+          ${item.smilePhoto ? `<div class="doctor-photo doctor-photo-smile" aria-hidden="true" data-smile-photo="${item.smilePhoto}" style="background-position: ${item.photoPosition || "50% 50%"}"></div>` : ""}
         </div>` : ""}
         <p class="eyebrow">${item.role}</p>
         <h3 class="${item.compactName ? "doctor-name-compact" : ""}">${item.name}</h3>
@@ -545,6 +588,7 @@
         ${hideActions ? "" : `<a class="button button-secondary" href="contacts.html#appointment" data-select-service="${item.role}" data-select-price="">Записаться</a>`}
       </article>
     `).join("");
+    attachDoctorPhotoLoading(target);
   }
 
   function renderReviews(target) {
@@ -653,6 +697,25 @@
     let index = slides.findIndex((slide) => slide.classList.contains("is-active"));
     if (index < 0) index = 0;
 
+    const loadSlide = (slide) => {
+      if (!slide || slide.dataset.bannerLoaded === "true") return;
+      $$("source[data-srcset]", slide).forEach((source) => {
+        source.setAttribute("srcset", source.dataset.srcset);
+        source.removeAttribute("data-srcset");
+      });
+      const image = $("img[data-src]", slide);
+      if (image) {
+        image.src = image.dataset.src;
+        image.removeAttribute("data-src");
+      }
+      slide.dataset.bannerLoaded = "true";
+    };
+
+    const preloadCurrentSlides = () => {
+      loadSlide(slides[index]);
+      loadSlide(slides[(index + 1) % slides.length]);
+    };
+
     const dots = slides.map((_, i) => {
       const dot = document.createElement("button");
       dot.type = "button";
@@ -670,6 +733,7 @@
     let timer = null;
 
     const paint = () => {
+      preloadCurrentSlides();
       slides.forEach((slide, i) => slide.classList.toggle("is-active", i === index));
       dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
     };
@@ -705,6 +769,7 @@
       });
     }
 
+    preloadCurrentSlides();
     paint();
     restart();
   }
