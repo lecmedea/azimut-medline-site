@@ -24,7 +24,7 @@ if HOSTS.exists():
 if not TOKEN:
     sys.exit("GitHub token not found in ~/.config/gh/hosts.yml")
 
-COMMIT_MSG = "Offer completion fixes 2026-07-18"
+COMMIT_MSG = "Team portraits compass and home fixes 2026-07-18"
 
 DELETE_FILES = [
     "assets/video/1368210.gif",
@@ -51,6 +51,7 @@ def collect_files() -> list[str]:
         "css/style.css",
         "css/responsive.css",
         "css/blog.css",
+        "data/doctors.js",
         "js/tests.js",
         "js/tests-batch200.js",
         "js/blog.js",
@@ -79,8 +80,10 @@ def collect_files() -> list[str]:
         "docs/offer-completion-report-2026-07-18.md",
         "scripts/generate-batch20-and-seo.py",
         "scripts/generate_mobile_banners.py",
+        "scripts/prepare_staff_assets.py",
         "scripts/update-seo-cis.py",
         "assets/icons/philipp-filippovich-avatar.jpg",
+        "assets/generated/mental-health-map-bg.jpg",
     ):
         add(ROOT / rel)
 
@@ -88,11 +91,13 @@ def collect_files() -> list[str]:
         add(ROOT / f"assets/banners-tight/banner-{i:02d}.jpg")
         add(ROOT / f"assets/banners-mobile/banner-{i:02d}.jpg")
 
-    for pattern in ("data/articles*.js",):
-        for path in sorted(ROOT.glob(pattern)):
-            add(path)
+    for i in range(1, 8):
+        add(ROOT / f"assets/images/staff-portraits/staff-{i:02d}.jpg")
+        add(ROOT / f"assets/images/staff-portraits/staff-{i:02d}-smile.jpg")
+    add(ROOT / "assets/images/staff-portraits/team-banner-desktop.jpg")
+    add(ROOT / "assets/images/staff-portraits/team-banner-mobile.jpg")
 
-    for pattern in ("assets/blog/*-hero.svg", "assets/blog/*-hero.jpg", "assets/blog/*-hero.webp"):
+    for pattern in ("data/articles*.js",):
         for path in sorted(ROOT.glob(pattern)):
             add(path)
 
