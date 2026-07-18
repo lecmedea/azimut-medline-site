@@ -139,17 +139,21 @@ async function amoRequest(path, options = {}) {
   return data;
 }
 
-async function findOrCreateContact(name, phone) {
+async function findOrCreateContact(name, phone, email) {
   if (!phone) return null;
   const search = await amoRequest(`/api/v4/contacts?query=${encodeURIComponent(phone)}&limit=1`, { method: "GET" });
   const existing = search?._embedded?.contacts?.[0];
   if (existing?.id) return existing.id;
 
+  const customFields = [
+    { field_code: "PHONE", values: [{ value: phone, enum_code: "WORK" }] },
+    ...(email ? [{ field_code: "EMAIL", values: [{ value: email, enum_code: "WORK" }] }] : [])
+  ];
   const created = await amoRequest("/api/v4/contacts", {
     method: "POST",
     body: JSON.stringify([{
       name: name || "Пациент из заявки",
-      custom_fields_values: [{ field_code: "PHONE", values: [{ value: phone, enum_code: "WORK" }] }]
+      custom_fields_values: customFields
     }])
   });
   return created?._embedded?.contacts?.[0]?.id || null;
@@ -160,6 +164,48 @@ function routeStatusId(source) {
   const chatStatus = Number(process.env.AMOCRM_CHAT_STATUS_ID || 87274334);
   const siteStatus = Number(process.env.AMOCRM_SITE_STATUS_ID || 87274338);
   return isChat ? chatStatus : siteStatus;
+}
+
+async function sendToLeadRegistry(payload) {
+  const endpoint = clean(process.env.LEADS_WEBHOOK_URL, 2000);
+  const secret = clean(process.env.LEADS_WEBHOOK_SECRET, 2000);
+  if (!endpoint || !secret) throw new Error("Lead registry webhook is not configured");
+
+  const registryResponse = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...payload, secret })
+  });
+  const data = await registryResponse.json().catch(() => ({}));
+  if (!registryResponse.ok || !data.ok) {
+    throw new Error(data.error || `Lead registry HTTP ${registryResponse.status}`);
+  }
+  return data;
+}
+
+function registryPayload(body, normalized, crm) {
+  return {
+    ...body,
+    NAME: normalized.name,
+    PHONE: normalized.phone,
+    EMAIL: normalized.email,
+    SOURCE_ID: normalized.source,
+    SELECTED_SERVICE: normalized.service,
+    COMMENTS: normalized.comment,
+    FORM_NAME: normalized.formName,
+    PAGE_URL: normalized.pageUrl,
+    TELEGRAM_CHAT_ID: normalized.telegramChatId,
+    TELEGRAM_USERNAME: normalized.telegramUsername,
+    requestId: normalized.requestId,
+    submittedAt: normalized.submittedAt,
+    platform: /telegram|bot/i.test(normalized.source) ? "Telegram" : "Сайт",
+    amoLeadId: crm.leadId || "",
+    amoPipelineId: crm.pipelineId || "",
+    amoStatusId: crm.statusId || "",
+    crmResult: crm.ok ? "created" : "error",
+    deliveryResult: "email-and-sheet",
+    crmError: crm.error || ""
+  };
 }
 
 module.exports = async function amoLeadHandler(request, response) {
@@ -183,13 +229,16 @@ module.exports = async function amoLeadHandler(request, response) {
     const normalized = {
       name: clean(body.NAME ?? body.name, 200),
       phone: normalizePhone(body.PHONE ?? body.phone),
+      email: clean(body.EMAIL ?? body.email, 200),
       source: clean(body.SOURCE_ID ?? body.source ?? body.sourceId, 200),
       service: clean(body.SELECTED_SERVICE ?? body.SERVICE_TYPE ?? body.DIRECTION ?? body.service, 500),
       comment: clean(body.COMMENTS ?? body.comment ?? body.message, MAX_TEXT),
       formName: clean(body.FORM_NAME ?? body.formName, 200),
       pageUrl: clean(body.PAGE_URL ?? body.pageUrl, 1000),
       telegramChatId: clean(body.TELEGRAM_CHAT_ID ?? body.telegramChatId, 100),
-      telegramUsername: clean(body.TELEGRAM_USERNAME ?? body.telegramUsername, 100)
+      telegramUsername: clean(body.TELEGRAM_USERNAME ?? body.telegramUsername, 100),
+      requestId: clean(body.requestId ?? body.REQUEST_ID, 160) || `azimut-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      submittedAt: clean(body.submittedAt ?? body.createdAt, 100) || new Date().toISOString()
     };
 
     if (!normalized.phone) {
@@ -199,32 +248,62 @@ module.exports = async function amoLeadHandler(request, response) {
     const pipelineId = Number(process.env.AMOCRM_PIPELINE_ID || 11108006);
     const statusId = routeStatusId(normalized.source);
     const fieldMap = parseFieldMap();
-    const contactId = await findOrCreateContact(normalized.name, normalized.phone);
+    let crm = { ok: false, leadId: null, contactId: null, pipelineId, statusId, error: "" };
     const price = Number(String(body.SELECTED_PRICE ?? body.selectedPrice ?? "").replace(/[^0-9.,]/g, "").replace(",", "."));
     const leadName = `${/chat|telegram|бот|чат/i.test(normalized.source) ? "Чат" : "Сайт"}: ${normalized.name || normalized.phone}`.slice(0, 255);
 
-    const lead = {
-      name: leadName,
-      pipeline_id: pipelineId,
-      status_id: statusId,
-      custom_fields_values: configuredCustomFields(body, fieldMap),
-      ...(Number.isFinite(price) && price > 0 ? { price: Math.round(price) } : {}),
-      ...(contactId ? { _embedded: { contacts: [{ id: contactId }] } } : {})
-    };
+    try {
+      const contactId = await findOrCreateContact(normalized.name, normalized.phone, normalized.email);
+      const lead = {
+        name: leadName,
+        pipeline_id: pipelineId,
+        status_id: statusId,
+        custom_fields_values: configuredCustomFields(body, fieldMap),
+        ...(Number.isFinite(price) && price > 0 ? { price: Math.round(price) } : {}),
+        ...(contactId ? { _embedded: { contacts: [{ id: contactId }] } } : {})
+      };
+      const created = await amoRequest("/api/v4/leads", { method: "POST", body: JSON.stringify([lead]) });
+      const leadId = created?._embedded?.leads?.[0]?.id;
+      if (!leadId) throw new Error("amoCRM did not return the created lead ID");
+      const note = buildNote(body, normalized);
+      if (note) {
+        await amoRequest(`/api/v4/leads/${leadId}/notes`, {
+          method: "POST",
+          body: JSON.stringify([{ note_type: "common", params: { text: note } }])
+        });
+      }
+      crm = { ok: true, leadId, contactId, pipelineId, statusId, error: "" };
+    } catch (crmError) {
+      crm.error = String(crmError.message || crmError).slice(0, 1000);
+      crm.status = crmError.status;
+      console.error("amoCRM delivery failed:", crmError);
+    }
 
-    const created = await amoRequest("/api/v4/leads", { method: "POST", body: JSON.stringify([lead]) });
-    const leadId = created?._embedded?.leads?.[0]?.id;
-    if (!leadId) throw new Error("amoCRM did not return the created lead ID");
+    let registry = { ok: false, error: "" };
+    try {
+      registry = await sendToLeadRegistry(registryPayload(body, normalized, crm));
+    } catch (registryError) {
+      registry.error = String(registryError.message || registryError).slice(0, 1000);
+      console.error("Lead registry delivery failed:", registryError);
+    }
 
-    const note = buildNote(body, normalized);
-    if (note) {
-      await amoRequest(`/api/v4/leads/${leadId}/notes`, {
-        method: "POST",
-        body: JSON.stringify([{ note_type: "common", params: { text: note } }])
+    if (!crm.ok && !registry.ok) {
+      return sendJson(response, crm.status && crm.status < 500 ? crm.status : 500, {
+        ok: false,
+        error: "Не удалось зарегистрировать заявку. Позвоните 8 (925) 112-77-99.",
+        code: "ALL_DELIVERIES_FAILED"
       });
     }
 
-    return sendJson(response, 201, { ok: true, leadId, contactId, pipelineId, statusId });
+    return sendJson(response, crm.ok ? 201 : 202, {
+      ok: true,
+      captured: registry.ok,
+      leadId: crm.leadId,
+      contactId: crm.contactId,
+      pipelineId,
+      statusId,
+      warnings: [!crm.ok ? "AMOCRM_ERROR" : "", !registry.ok ? "REGISTRY_ERROR" : ""].filter(Boolean)
+    });
   } catch (error) {
     console.error("amoCRM lead endpoint error:", error);
     return sendJson(response, error.status && error.status < 500 ? error.status : 500, {
