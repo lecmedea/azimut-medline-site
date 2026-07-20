@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1040" role="img" aria-label="Старинная навигационная карта">
+  <defs>
+    <radialGradient id="paper" cx="48%" cy="44%" r="78%">
+      <stop offset="0%" stop-color="#f0dfb8"/>
+      <stop offset="48%" stop-color="#dec08a"/>
+      <stop offset="100%" stop-color="#a97945"/>
+    </radialGradient>
+    <radialGradient id="fade" cx="50%" cy="44%" r="72%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".22"/>
+      <stop offset="64%" stop-color="#d8a765" stop-opacity=".08"/>
+      <stop offset="100%" stop-color="#4c2d16" stop-opacity=".36"/>
+    </radialGradient>
+    <filter id="roughen">
+      <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="4" seed="9"/>
+      <feColorMatrix type="saturate" values=".18"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 .18"/>
+      </feComponentTransfer>
+      <feBlend mode="multiply" in2="SourceGraphic"/>
+    </filter>
+    <pattern id="paper-specks" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="6" r="1.2" fill="#70451f" opacity=".26"/>
+      <circle cx="22" cy="18" r=".8" fill="#70451f" opacity=".18"/>
+      <circle cx="30" cy="31" r="1" fill="#fff4d2" opacity=".18"/>
+    </pattern>
+    <style>
+      .ink { fill: none; stroke: #5f3b1f; stroke-linecap: round; stroke-linejoin: round; }
+      .thin { stroke-width: 2.2; opacity: .42; }
+      .coast { stroke-width: 5.5; }
+      .detail { stroke-width: 2.8; opacity: .72; }
+      .route { stroke: #7b2f1c; stroke-width: 6; stroke-dasharray: 16 19; }
+      .mark { stroke: #7b2f1c; stroke-width: 9; }
+      .fill-land { fill: #d4a96b; opacity: .24; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1040" rx="42" fill="url(#paper)"/>
+  <rect width="1600" height="1040" fill="url(#paper-specks)" opacity=".58"/>
+  <g filter="url(#roughen)">
+    <path class="ink thin" d="M-80 202C242 166 504 172 780 205s562 22 900-32"/>
+    <path class="ink thin" d="M-80 358C248 316 536 326 825 355s568 20 862-42"/>
+    <path class="ink thin" d="M-80 520C235 480 548 492 821 526s548 26 867-28"/>
+    <path class="ink thin" d="M-80 684C260 642 530 655 798 692s552 26 888-38"/>
+    <path class="ink thin" d="M-80 844C246 800 520 810 806 850s558 26 878-42"/>
+    <path class="ink thin" d="M140 -70C102 160 90 392 116 630s36 382 4 548"/>
+    <path class="ink thin" d="M380 -88C326 180 310 398 335 640s42 364 2 548"/>
+    <path class="ink thin" d="M622 -96C586 138 578 390 604 635s44 386 4 562"/>
+    <path class="ink thin" d="M870 -88C842 158 836 390 862 626s52 402 18 566"/>
+    <path class="ink thin" d="M1112 -94C1088 162 1084 390 1112 620s54 398 25 565"/>
+    <path class="ink thin" d="M1350 -80C1334 170 1338 395 1364 624s54 398 32 558"/>
+
+    <path class="fill-land" d="M-26 124C104 82 218 100 315 162c86 55 102 128 51 197-44 60-40 104 12 157 58 60 43 120-46 182-87 61-204 94-358 96Z"/>
+    <path class="ink coast" d="M-24 130C92 88 218 98 314 160c91 59 104 128 48 199-42 53-37 102 16 156 58 58 42 120-48 181-90 61-203 92-356 98"/>
+    <path class="ink detail" d="M86 192c54 20 84 58 88 112M92 676c80-44 128-96 146-156M214 404c48 10 84 38 108 84"/>
+
+    <path class="fill-land" d="M1190 84c120 6 214 43 284 112 64 63 90 142 72 236-12 66 16 128 86 184 70 57 88 132 52 225-45 117-158 174-338 171-86-1-145-28-176-80-35-58-30-124 16-198 40-64 31-128-28-190-80-84-102-182-66-295 17-53 50-108 98-165Z"/>
+    <path class="ink coast" d="M1190 86c120 6 216 44 285 113 63 63 88 142 72 235-12 65 17 128 86 184 70 57 87 132 51 224-45 117-158 174-338 171-86-1-145-27-176-80-34-58-29-124 17-198 39-64 30-128-29-190-80-84-102-181-66-294 18-55 50-110 98-165Z"/>
+    <path class="ink detail" d="M1248 188c82 15 143 56 183 124M1288 542c78-24 150-16 216 24M1246 842c72-44 128-49 168-16"/>
+
+    <path class="fill-land" d="M610 714c68-42 141-42 220 0 45 25 64 63 56 115-8 51-42 83-100 96-79 18-146-4-202-66-42-45-33-99 26-145Z"/>
+    <path class="ink coast" d="M610 714c68-42 141-42 220 0 45 25 64 63 56 115-8 51-42 83-100 96-79 18-146-4-202-66-42-45-33-99 26-145Z"/>
+    <path class="ink detail" d="M672 774c42-18 88-14 138 12M706 852c28 12 62 10 102-6"/>
+
+    <path class="ink thin" d="M125 192 1408 882"/>
+    <path class="ink thin" d="M185 858 1344 170"/>
+    <path class="ink thin" d="M450 94 1162 948"/>
+    <path class="ink thin" d="M1040 108 448 930"/>
+
+    <path class="route" d="M252 756C366 658 464 628 546 668s152 35 210-18c72-65 151-94 237-86s132-28 190-94"/>
+    <circle cx="252" cy="756" r="16" fill="#7b2f1c" opacity=".84"/>
+    <circle cx="546" cy="668" r="13" fill="#7b2f1c" opacity=".72"/>
+    <circle cx="990" cy="564" r="13" fill="#7b2f1c" opacity=".72"/>
+    <path class="mark" d="M1084 388l84 84M1168 388l-84 84"/>
+
+    <g transform="translate(1016 236)">
+      <circle class="ink detail" cx="0" cy="0" r="72"/>
+      <path class="ink detail" d="M0-116V116M-116 0H116"/>
+      <path fill="#5f3b1f" opacity=".52" d="M0-100 18-18 100 0 18 18 0 100-18 18-100 0-18-18Z"/>
+      <path fill="#f3dca8" opacity=".72" d="M0-78 10-10 78 0 10 10 0 78-10 10-78 0-10-10Z"/>
+      <text x="-8" y="-132" fill="#5f3b1f" font-family="Georgia, serif" font-size="30" font-weight="700">N</text>
+      <text x="-8" y="154" fill="#5f3b1f" font-family="Georgia, serif" font-size="30" font-weight="700">S</text>
+      <text x="132" y="10" fill="#5f3b1f" font-family="Georgia, serif" font-size="30" font-weight="700">E</text>
+      <text x="-154" y="10" fill="#5f3b1f" font-family="Georgia, serif" font-size="30" font-weight="700">W</text>
+    </g>
+  </g>
+  <rect width="1600" height="1040" rx="42" fill="url(#fade)"/>
+</svg>
