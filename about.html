@@ -25,12 +25,13 @@
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
-  <link rel="stylesheet" href="css/style.css?v=20260721-anon-plain">
-  <link rel="stylesheet" href="css/responsive.css?v=20260721-joystick-gear">
+  <link rel="stylesheet" href="css/style.css?v=20260721-batch2">
+  <link rel="stylesheet" href="css/responsive.css?v=20260721-batch2">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/audio-player.css?v=20260718-speed-fix">
   <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
   <script src="js/access-gate.js?v=20260713-mobile-fix"></script>
+  <link rel="stylesheet" href="css/cookie-consent.css?v=20260721-cookies">
 </head>
 <body>
   <header class="site-header">
@@ -144,11 +145,25 @@
         <div class="reviews-list" data-render="reviews"></div>
       </div>
     </section>
-    <section class="section">
+    <section class="section" id="licenses">
       <div class="container card-grid three-col">
-        <article class="info-card"><h3>Лицензия</h3><p>Раздел подготовлен под размещение медицинской лицензии, реквизитов и проверочных ссылок.</p></article>
-        <article class="info-card"><h3>Сертификаты</h3><p>Здесь можно добавить сертификаты специалистов, программы повышения квалификации и подтверждающие документы.</p></article>
-        <article class="info-card"><h3>Партнёрство</h3><p>Для организаций и специалистов доступна отдельная страница условий сотрудничества.</p><a href="partnership.html">Подробнее</a></article>
+        <article class="info-card">
+          <h3>Лицензия</h3>
+          <p>Рег. номер <strong>Л041-01137-77/03554111</strong> от 17.10.2025. Статус: действует. Проверка в реестре Росздравнадзора.</p>
+          <a class="button button-secondary" href="licenses.html">Смотреть лицензию и QR</a>
+        </article>
+        <article class="info-card">
+          <h3>Электронные выписки</h3>
+          <p>Выписки из реестра лицензий доступны для скачивания в PDF и содержат полный перечень работ и услуг.</p>
+          <a href="assets/docs/azimut-license-extract-1.pdf" download>PDF, часть 1</a>
+          ·
+          <a href="assets/docs/azimut-license-extract-2.pdf" download>PDF, часть 2</a>
+        </article>
+        <article class="info-card">
+          <h3>Партнёрство</h3>
+          <p>Для организаций и специалистов доступна отдельная страница условий сотрудничества.</p>
+          <a href="partnership.html">Подробнее</a>
+        </article>
       </div>
     </section>
   </main>
@@ -181,7 +196,8 @@
         <a href="privacy.html">Политика <span class="anon-emphasis">конфиденциальности</span></a>
         <a href="personal-data.html">Согласие на обработку персональных данных</a>
         <a href="terms.html">Пользовательское соглашение</a>
-        <a href="about.html">Лицензии и сертификаты</a>
+        <a href="licenses.html">Лицензии</a>
+        <a href="licenses.html">Проверка лицензии (реестр)</a>
         <a href="contacts.html">Контакты</a>
       </nav>
       <nav class="footer-column" aria-label="Разделы">
@@ -197,12 +213,13 @@
     </div>
   </footer>
   <script src="data/reviews.js"></script><script src="data/audio.js"></script>
-  <script src="js/main.js?v=20260721-joystick-all"></script>
-  <script src="js/azimut-animations.js"></script>
-  <script src="js/audio-player.js?v=20260718-speed-fix"></script>
-  <script src="js/crm-bridge.js?v=20260717-amo"></script>
-  <script src="js/forms.js?v=20260721-form-required"></script>
-  <script src="js/chat-config.js?v=20260713-philipp-icon"></script>
-  <script src="js/chatbot.js?v=20260713-philipp-icon"></script>
+  <script src="js/main.js?v=20260721-batch2" defer></script>
+  <script src="js/azimut-animations.js" defer></script>
+  <script src="js/audio-player.js?v=20260718-speed-fix" defer></script>
+  <script src="js/crm-bridge.js?v=20260717-amo" defer></script>
+  <script src="js/forms.js?v=20260721-form-required" defer></script>
+  <script src="js/chat-config.js?v=20260713-philipp-icon" defer></script>
+  <script src="js/chatbot.js?v=20260713-philipp-icon" defer></script>
+  <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
 </body>
 </html>
