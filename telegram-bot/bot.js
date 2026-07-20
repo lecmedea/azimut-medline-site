@@ -1,20 +1,65 @@
 /* eslint-disable no-console */
 "use strict";
 
+const fs = require("fs");
+const path = require("path");
+
+/** Load KEY=VALUE pairs from telegram-bot/.env into process.env (no extra deps). */
+function loadDotEnv(filePath) {
+  try {
+    if (!fs.existsSync(filePath)) return;
+    const text = fs.readFileSync(filePath, "utf8");
+    for (const rawLine of text.split(/\r?\n/)) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith("#") || !line.includes("=")) continue;
+      const eq = line.indexOf("=");
+      const key = line.slice(0, eq).trim();
+      let value = line.slice(eq + 1).trim();
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+      if (key && process.env[key] === undefined) process.env[key] = value;
+    }
+  } catch (error) {
+    console.warn("Could not read .env:", error.message);
+  }
+}
+
+loadDotEnv(path.join(__dirname, ".env"));
+
 const TELEGRAM_API = "https://api.telegram.org/bot";
 const DEEPSEEK_API_URL = process.env.DEEPSEEK_API_URL || "https://api.deepseek.com/chat/completions";
 const DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL || "deepseek-chat";
 const CLINIC_NAME = process.env.CLINIC_NAME || "Азимут Клиник";
 const CLINIC_PHONE = process.env.CLINIC_PHONE || "+79251127799";
-const CLINIC_SITE_URL = process.env.CLINIC_SITE_URL || "https://lecmedea.github.io/azimut-medline-site/";
-const BOT_LOGO_URL = process.env.BOT_LOGO_URL || `${CLINIC_SITE_URL.replace(/\/$/, "")}/assets/azimut-clinic-logo.png`;
+const CLINIC_SITE_URL = process.env.CLINIC_SITE_URL || "https://azimutclinic.ru/";
+const BOT_LOGO_URL = process.env.BOT_LOGO_URL || `${CLINIC_SITE_URL.replace(/\/$/, "")}/assets/images/bot-welcome-clinic.jpg`;
+const WELCOME_PHOTO_PATH =
+  process.env.WELCOME_PHOTO_PATH || path.join(__dirname, "assets", "welcome-clinic.jpg");
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || "";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 
-if (!TELEGRAM_BOT_TOKEN) {
-  console.error("Missing TELEGRAM_BOT_TOKEN. Create telegram-bot/.env or export the variable before start.");
+function isPlaceholderToken(token) {
+  if (!token || !String(token).trim()) return true;
+  const t = String(token).trim().toLowerCase();
+  if (t.includes("replace") || t.includes("your_") || t.includes("changeme") || t === "[sensitive]") return true;
+  // Real Bot API tokens look like 123456789:AA...
+  if (!/^\d{6,15}:[A-Za-z0-9_-]{20,}$/.test(String(token).trim())) return true;
+  return false;
+}
+
+if (isPlaceholderToken(TELEGRAM_BOT_TOKEN)) {
+  console.error(
+    "Missing or invalid TELEGRAM_BOT_TOKEN.\n" +
+      "1) Open @BotFather → your bot @azimut_clinic_bot → API Token\n" +
+      "2) Put it into telegram-bot/.env as TELEGRAM_BOT_TOKEN=123456:ABC...\n" +
+      "3) Run: bash telegram-bot/start-bot.sh"
+  );
   process.exit(1);
 }
 
@@ -193,6 +238,33 @@ async function telegram(method, payload) {
   return data.result;
 }
 
+/** sendPhoto with local file (multipart) — preferred for welcome image */
+async function telegramSendPhotoFile(chatId, filePath, caption, extra = {}) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Welcome photo not found: ${filePath}`);
+  }
+  const form = new FormData();
+  form.append("chat_id", String(chatId));
+  form.append("caption", caption);
+  form.append("parse_mode", "HTML");
+  if (extra.reply_markup) {
+    form.append("reply_markup", JSON.stringify(extra.reply_markup));
+  }
+  const buffer = fs.readFileSync(filePath);
+  const blob = new Blob([buffer], { type: "image/jpeg" });
+  form.append("photo", blob, path.basename(filePath));
+
+  const response = await fetch(`${TELEGRAM_API}${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+    method: "POST",
+    body: form
+  });
+  const data = await response.json().catch(() => null);
+  if (!response.ok || !data?.ok) {
+    throw new Error(`Telegram sendPhoto(file) failed: ${JSON.stringify(data)}`);
+  }
+  return data.result;
+}
+
 function textOptions(extra = {}) {
   return {
     parse_mode: "HTML",
@@ -240,17 +312,24 @@ async function sendWelcome(chatId, firstName = "") {
     "👇 Выберите действие ниже."
   ].join("\n");
 
+  const keyboard = { reply_markup: inlineKeyboard(MENU.main.rows) };
   try {
+    // 1) Local welcome photo (cabinet with Azimut logo)
+    if (fs.existsSync(WELCOME_PHOTO_PATH)) {
+      await telegramSendPhotoFile(chatId, WELCOME_PHOTO_PATH, caption, keyboard);
+      return;
+    }
+    // 2) Fallback: public URL
     await telegram("sendPhoto", {
       chat_id: chatId,
       photo: BOT_LOGO_URL,
       caption,
       parse_mode: "HTML",
-      reply_markup: inlineKeyboard(MENU.main.rows)
+      ...keyboard
     });
   } catch (error) {
-    console.warn("Logo was not sent, falling back to text welcome:", error.message);
-    await sendMessage(chatId, caption, { reply_markup: inlineKeyboard(MENU.main.rows) });
+    console.warn("Welcome photo was not sent, falling back to text:", error.message);
+    await sendMessage(chatId, caption, keyboard);
   }
 }
 
