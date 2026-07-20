@@ -1,12 +1,13 @@
 window.AZIMUT_DOCTORS = [
   {
-    name: "Екатерина Волкова",
-    role: "Врач-психиатр, психотерапевт",
-    experience: "Стаж: 12 лет",
-    focus: "Сильна в аккуратной диагностике тревоги, депрессивных состояний и панических атак. Объясняет план помощи простым языком и помогает пациенту почувствовать контроль над ситуацией уже на первом этапе.",
-    photo: "assets/images/staff-portraits/staff-01.jpg",
-    smilePhoto: "assets/images/staff-portraits/staff-01-smile.jpg",
-    photoPosition: "50% 20%"
+    name: "Виктор Геннадьевич",
+    role: "Клинический психолог",
+    experience: "Стаж: 14 лет",
+    focus: "Помогает при тревоге, выгорании, кризисах идентичности и сложных семейных ситуациях. Его сильная сторона — точная клиническая диагностика и спокойная работа с человеком без давления и лишней драматизации.",
+    photo: "assets/images/staff-portraits/staff-06.jpg",
+    smilePhoto: "assets/images/staff-portraits/staff-06-smile.jpg",
+    photoPosition: "50% 22%",
+    compactName: true
   },
   {
     name: "Специалист по зависимостям",
@@ -16,16 +17,6 @@ window.AZIMUT_DOCTORS = [
     photo: "assets/images/staff-portraits/staff-02.jpg",
     smilePhoto: "assets/images/staff-portraits/staff-02-smile.jpg",
     photoPosition: "50% 20%"
-  },
-  {
-    name: "Виктор Геннадьевич",
-    role: "Клинический психолог",
-    experience: "Стаж: 14 лет",
-    focus: "Помогает при тревоге, выгорании, кризисах идентичности и сложных семейных ситуациях. Его сильная сторона — точная клиническая диагностика и спокойная работа с человеком без давления и лишней драматизации.",
-    photo: "assets/images/staff-portraits/staff-06.jpg",
-    smilePhoto: "assets/images/staff-portraits/staff-06-smile.jpg",
-    photoPosition: "50% 22%",
-    compactName: true
   },
   {
     name: "Клинический психолог",
