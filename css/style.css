@@ -1224,14 +1224,15 @@ button:focus-visible {
   object-fit: cover;
 }
 
-/* Акцент на анонимности */
+/* Акцент на анонимности — только бордовый цвет, без подложки */
 .anon-emphasis {
-  color: var(--teal);
+  color: #9A4C39;
   font-weight: 650;
   letter-spacing: 0.01em;
-  background: linear-gradient(180deg, transparent 62%, rgba(174, 139, 102, 0.28) 0);
-  padding: 0 0.12em;
-  border-radius: 2px;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .compass-hint {
