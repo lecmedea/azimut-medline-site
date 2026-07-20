@@ -1743,6 +1743,19 @@ button:focus-visible {
   justify-self: start;
 }
 
+/* Submit locked until all lead fields are filled */
+.contact-form button[type="submit"]:disabled,
+.contact-form input[type="submit"]:disabled,
+.contact-form button[type="submit"].is-disabled,
+.appointment-dialog .contact-form button[type="submit"]:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.15);
+  box-shadow: none;
+  transform: none;
+}
+
 .form-status {
   min-height: 22px;
   margin: 0;
