@@ -4,7 +4,7 @@
 
   const storageKey = "azimut-audio-state";
   const audio = new Audio();
-  audio.preload = "metadata";
+  audio.preload = "none";
   let index = 0;
   let collapsed = false;
   let fullRoot;
