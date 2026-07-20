@@ -199,9 +199,35 @@
     const compass = $(".compass-card");
     if (!compass) return;
 
+    /** Clinic: Старокалужское ш., 62 */
+    const CLINIC = { lat: 55.660607, lon: 37.538170 };
     const mobileQuery = matchMedia("(max-width: 860px)");
+    const hint = $(".compass-hint");
+
     let currentNeedleAngle = -90;
-    let mobilePulseTimer = null;
+    let userLat = null;
+    let userLon = null;
+    let deviceHeading = null;
+    let orientationActive = false;
+    let geoWatchId = null;
+    let rafId = 0;
+
+    const setHint = (text) => {
+      if (hint) hint.innerHTML = text;
+    };
+
+    const toRad = (d) => (d * Math.PI) / 180;
+    const toDeg = (r) => (r * 180) / Math.PI;
+
+    /** Initial bearing from point A to B (degrees clockwise from true north). */
+    const bearingToClinic = (lat, lon) => {
+      const φ1 = toRad(lat);
+      const φ2 = toRad(CLINIC.lat);
+      const Δλ = toRad(CLINIC.lon - lon);
+      const y = Math.sin(Δλ) * Math.cos(φ2);
+      const x = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+      return (toDeg(Math.atan2(y, x)) + 360) % 360;
+    };
 
     const setNeedleAngle = (angle, mode) => {
       const normalizedAngle = ((angle % 360) + 360) % 360;
@@ -209,7 +235,7 @@
       let delta = normalizedAngle - normalizedCurrent;
       if (delta > 180) delta -= 360;
       if (delta < -180) delta += 360;
-      const ease = mode === "pointer" ? 0.24 : 1;
+      const ease = mode === "pointer" ? 0.24 : mode === "orientation" ? 0.28 : 1;
       currentNeedleAngle += delta * ease;
       compass.style.setProperty("--needle-angle", `${currentNeedleAngle}deg`);
       compass.classList.toggle("is-routing", mode === "routing");
@@ -217,35 +243,141 @@
       compass.classList.toggle("is-following", mode === "pointer");
     };
 
+    const updateOrientationNeedle = () => {
+      if (!mobileQuery.matches) return;
+      if (userLat == null || userLon == null || deviceHeading == null) return;
+      const bearing = bearingToClinic(userLat, userLon);
+      // CSS needle 0° points east (like CSS rotate from positive X); -90° points up/north.
+      // Device heading: 0 = north. Relative angle on screen: bearing - heading, then -90 for "up".
+      const relative = bearing - deviceHeading;
+      const cssAngle = relative - 90;
+      setNeedleAngle(cssAngle, "orientation");
+    };
+
+    const scheduleOrientationUpdate = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        updateOrientationNeedle();
+      });
+    };
+
+    const onDeviceOrientation = (event) => {
+      let heading = null;
+      if (typeof event.webkitCompassHeading === "number" && !Number.isNaN(event.webkitCompassHeading)) {
+        heading = event.webkitCompassHeading;
+      } else if (typeof event.alpha === "number" && event.absolute !== false) {
+        // alpha: 0 when device top points north (absolute) on many Android devices
+        heading = (360 - event.alpha) % 360;
+      } else if (typeof event.alpha === "number") {
+        heading = (360 - event.alpha) % 360;
+      }
+      if (heading == null || Number.isNaN(heading)) return;
+      deviceHeading = heading;
+      scheduleOrientationUpdate();
+    };
+
+    const startGeo = () => {
+      if (!navigator.geolocation || geoWatchId != null) return;
+      geoWatchId = navigator.geolocation.watchPosition(
+        (pos) => {
+          userLat = pos.coords.latitude;
+          userLon = pos.coords.longitude;
+          if (deviceHeading == null) {
+            // Without heading yet: point "up" toward bearing as if device faces north
+            const bearing = bearingToClinic(userLat, userLon);
+            setNeedleAngle(bearing - 90, "routing");
+            setHint("Ищем направление… поверните телефон");
+          } else {
+            setHint("Стрелка указывает на клинику · Старокалужское ш., 62");
+          }
+          scheduleOrientationUpdate();
+        },
+        () => {
+          setHint("Разрешите геолокацию, чтобы компас указывал на клинику");
+        },
+        { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
+      );
+    };
+
+    const startOrientation = async () => {
+      if (orientationActive) return;
+      try {
+        if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+          const state = await DeviceOrientationEvent.requestPermission();
+          if (state !== "granted") {
+            setHint("Нужен доступ к датчику ориентации (компас)");
+            return;
+          }
+        }
+      } catch {
+        setHint("Не удалось получить доступ к компасу устройства");
+        return;
+      }
+      window.addEventListener("deviceorientationabsolute", onDeviceOrientation, true);
+      window.addEventListener("deviceorientation", onDeviceOrientation, true);
+      orientationActive = true;
+      startGeo();
+      setHint("Компас активен · к Азимут Клиник");
+    };
+
     const updatePointerNeedle = (event) => {
       if (mobileQuery.matches) return;
       const rect = compass.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
-      const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * 180 / Math.PI;
+      const angle = (Math.atan2(event.clientY - cy, event.clientX - cx) * 180) / Math.PI;
       setNeedleAngle(angle, "pointer");
     };
 
-    const pulseMobileCompass = () => {
+    const onMobileActivate = (event) => {
       if (!mobileQuery.matches) return;
-      setNeedleAngle(-90, "routing");
-      window.clearTimeout(mobilePulseTimer);
-      mobilePulseTimer = window.setTimeout(() => {
-        compass.classList.remove("is-routing", "is-orientation", "is-following");
-      }, 1200);
+      // Prefer real compass; avoid accidental map open
+      if (event && event.type === "click") event.preventDefault?.();
+      startOrientation();
+      // Fallback deep link if sensors unavailable after short wait
+      window.setTimeout(() => {
+        if (deviceHeading == null && userLat == null) {
+          setHint(
+            'Коснитесь ещё раз или <a href="https://yandex.ru/maps/?rtext=~55.660607,37.538170" target="_blank" rel="noopener">откройте маршрут</a>'
+          );
+        }
+      }, 2500);
     };
 
     const resetNeedle = () => {
-      currentNeedleAngle = -90;
-      compass.style.setProperty("--needle-angle", "-90deg");
-      compass.classList.remove("is-routing", "is-orientation", "is-following");
+      if (!mobileQuery.matches) {
+        currentNeedleAngle = -90;
+        compass.style.setProperty("--needle-angle", "-90deg");
+        compass.classList.remove("is-routing", "is-orientation", "is-following");
+        if (hint) {
+          hint.textContent = "Коснитесь компаса и он мягко направит Вас к нам";
+        }
+      }
     };
 
     window.addEventListener("mousemove", updatePointerNeedle, { passive: true });
-    compass.addEventListener("click", pulseMobileCompass);
-    compass.addEventListener("touchstart", pulseMobileCompass, { passive: true });
-    mobileQuery.addEventListener("change", resetNeedle);
-    resetNeedle();
+    compass.addEventListener("click", onMobileActivate);
+    compass.addEventListener(
+      "touchstart",
+      (e) => {
+        if (mobileQuery.matches) onMobileActivate(e);
+      },
+      { passive: true }
+    );
+    mobileQuery.addEventListener("change", () => {
+      if (mobileQuery.matches) {
+        setHint("Коснитесь компаса — укажет путь к клинике");
+      } else {
+        resetNeedle();
+      }
+    });
+
+    if (mobileQuery.matches) {
+      setHint("Коснитесь компаса — укажет путь к клинике");
+    } else {
+      resetNeedle();
+    }
   }
 
   function initScrollTop() {
