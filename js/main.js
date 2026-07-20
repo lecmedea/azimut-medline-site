@@ -276,9 +276,12 @@
     updateVisibility();
   }
 
-  function initBlogJoystick() {
-    const pageName = location.pathname.split("/").pop() || "index.html";
-    if (pageName !== "blog.html") return;
+  function initSiteJoystick() {
+    // Джойстик на всех страницах сайта, кроме главной
+    const raw = (location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
+    const pageName = raw.split("?")[0].split("#")[0] || "index.html";
+    const isHome = pageName === "index.html" || pageName === "index" || pageName === "";
+    if (isHome) return;
 
     document.body.classList.add("blog-utility-mode");
 
@@ -290,7 +293,7 @@
           <img class="azimut-joystick-gear" src="assets/icons/joystick-gear.gif?v=20260721-slow2x" width="40" height="40" alt="" decoding="async">
         </span>
       </button>
-      <div class="azimut-joystick-actions" aria-label="Быстрые действия блога">
+      <div class="azimut-joystick-actions" aria-label="Быстрые действия">
         <button class="azimut-joystick-action" type="button" data-joystick-action="audio" aria-label="Открыть аудиоплеер"><span aria-hidden="true">♪</span></button>
         <button class="azimut-joystick-action" type="button" data-joystick-action="top" aria-label="Наверх страницы"><span aria-hidden="true">↑</span></button>
         <button class="azimut-joystick-action azimut-joystick-action--philipp" type="button" data-joystick-action="chat" aria-label="Открыть Филиппа Филипповича">
@@ -802,7 +805,7 @@
     initDropdowns();
     initCompass();
     initScrollTop();
-    initBlogJoystick();
+    initSiteJoystick();
     initHomeDepthParallax();
     initModals();
     initAccordions();
