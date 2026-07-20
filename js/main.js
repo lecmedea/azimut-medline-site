@@ -287,7 +287,7 @@
     joystick.innerHTML = `
       <button class="azimut-joystick-main" type="button" aria-label="Открыть быстрые действия" aria-expanded="false">
         <span class="azimut-joystick-main-icon" aria-hidden="true">
-          <img class="azimut-joystick-gear" src="assets/icons/joystick-gear.gif" width="40" height="40" alt="" decoding="async">
+          <img class="azimut-joystick-gear" src="assets/icons/joystick-gear.gif?v=20260721-slow2x" width="40" height="40" alt="" decoding="async">
         </span>
       </button>
       <div class="azimut-joystick-actions" aria-label="Быстрые действия блога">
