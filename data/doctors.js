@@ -46,13 +46,11 @@ window.AZIMUT_DOCTORS = [
     photoPosition: "50% 22%"
   },
   {
+    // photo staff-04 временно убран с сайта; файлы staff-04.jpg / staff-04-smile.jpg остаются в assets
     name: "Психолог",
     role: "Психолог",
     experience: "Стаж: от 5 лет",
-    focus: "Эмоциональное выгорание, семейные кризисы, тревога, консультации родственников.",
-    photo: "assets/images/staff-portraits/staff-04.jpg",
-    smilePhoto: "assets/images/staff-portraits/staff-04-smile.jpg",
-    photoPosition: "50% 22%"
+    focus: "Эмоциональное выгорание, семейные кризисы, тревога, консультации родственников."
   },
   {
     name: "Специалист клиники",
