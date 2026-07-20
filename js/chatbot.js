@@ -122,7 +122,6 @@
             <p>Помогу сориентироваться по услугам, ценам и записи</p>
           </div>
           <div class="ai-chatbot-actions">
-            <a class="ai-chatbot-telegram" href="https://t.me/azimut_clinic_bot?start=site" target="_blank" rel="noopener" aria-label="Продолжить в Telegram">Telegram</a>
             <button class="ai-chatbot-icon-btn" type="button" data-chat-close aria-label="Закрыть чат">×</button>
           </div>
         </header>
