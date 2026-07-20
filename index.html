@@ -35,8 +35,8 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalClinic","name":"Азимут Клиник","alternateName":["Центр ментального здоровья Азимут Клиник","Azimut Clinic","Азимут Клиник Москва"],"description":"Центр ментального здоровья в Москве: психиатрия, наркология, психологическая помощь круглосуточно.","url":"https://azimutclinic.ru/","logo":"https://azimutclinic.ru/assets/logo-main.jpg","image":"https://azimutclinic.ru/assets/logo-main.jpg","telephone":"+79251127799","email":"info@azimutclinic.ru","address":{"@type":"PostalAddress","streetAddress":"ш. Старокалужское, дом 62","addressLocality":"Москва","postalCode":"117630","addressRegion":"Москва","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":55.660607,"longitude":37.538170},"openingHours":"Mo-Su 00:00-24:00","medicalSpecialty":["Psychiatric","Psychologic","Addiction Medicine"],"areaServed":{"@type":"City","name":"Москва"},"hasMap":"https://yandex.ru/maps/?ll=37.538170%2C55.660607&z=16","sameAs":["https://azimutclinic.ru/"]}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Азимут Клиник","url":"https://azimutclinic.ru/","inLanguage":"ru-RU","publisher":{"@type":"MedicalOrganization","name":"Азимут Клиник","url":"https://azimutclinic.ru/"}}</script>
   <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
-  <link rel="stylesheet" href="css/style.css?v=20260718-speed-fix">
-  <link rel="stylesheet" href="css/responsive.css?v=20260718-speed-fix">
+  <link rel="stylesheet" href="css/style.css?v=20260721-dirs-anon">
+  <link rel="stylesheet" href="css/responsive.css?v=20260721-dirs-anon">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/audio-player.css?v=20260718-speed-fix">
   <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
@@ -136,11 +136,11 @@
     <section class="hero clarity-section">
       <div class="container hero-grid hero-grid-premium">
         <div class="hero-content">
-          <p class="eyebrow">Анонимная медицинская помощь 24/7</p>
+          <p class="eyebrow"><span class="anon-emphasis">Анонимная медицинская помощь</span> 24/7</p>
           <div class="hero-headline-row">
             <div class="hero-copy">
               <h1>С нами по Азимуту –– к себе!</h1>
-              <p class="lead">Психиатрия, наркология, психологическое тестирование и психологическая помощь для взрослых и подростков с 14 лет. Анонимно, комплексно, безопасно — в клинике, на дому и дистанционно.</p>
+              <p class="lead">Психиатрия, наркология, психологическое тестирование и психологическая помощь для взрослых и подростков старше 14 лет. <span class="anon-emphasis">Анонимно</span>, комплексно, безопасно — в клинике, на дому и дистанционно.</p>
               <p class="support-text">Бережный маршрут к внутренней устойчивости: от первого разговора до понятного плана помощи.</p>
               <div class="hero-actions">
                 <button class="button button-primary" type="button" data-modal-open="appointment-modal">Записаться на консультацию</button>
@@ -149,15 +149,16 @@
             </div>
             <div class="hero-visual" aria-label="Компас Азимут Клиник">
               <div class="compass-card">
-                <img class="compass-image" src="assets/generated/hero-compass-cutout.webp" alt="Компас Азимут">
+                <img class="compass-image" src="assets/generated/hero-compass-cutout.webp" alt="Компас Азимут" width="420" height="420" decoding="async" fetchpriority="high">
                 <div class="route-line" aria-hidden="true"></div>
               </div>
+              <p class="compass-hint">Коснитесь компаса и он мягко направит Вас к нам</p>
               <ul class="hero-proof-list">
-                <li>Анонимно</li>
+                <li><span class="anon-emphasis">Анонимно</span></li>
                 <li>Круглосуточно</li>
                 <li>Москва, МО и соседние области</li>
                 <li>Онлайн-консультации по РФ</li>
-                <li>Для взрослых и подростков с 14 лет</li>
+                <li>Для взрослых и подростков старше 14 лет</li>
               </ul>
             </div>
           </div>
@@ -247,17 +248,51 @@
     <section class="section premium-accordion-section">
       <div class="container">
         <div class="section-heading">
-          <span class="accent-chip">3 направления</span>
-          <p class="eyebrow">Клиника работает в 3 направлениях</p>
-          <h2>Три направления помощи — один понятный маршрут</h2>
+          <span class="accent-chip">5 направлений</span>
+          <p class="eyebrow">Клиника работает в 5 направлениях</p>
+          <h2>Пять направлений помощи — один понятный маршрут</h2>
           <p>Мы смотрим на ситуацию комплексно: учитываем состояние человека, обстоятельства, риски, запрос семьи и подбираем формат помощи, с которого безопаснее начать.</p>
         </div>
         <div class="accordion-stack" data-accordion-group>
           <details class="premium-accordion">
-            <summary><span class="accordion-icon">Н</span><span>Наркология</span></summary>
+            <summary><span class="accordion-icon">1</span><span>Психиатрия</span></summary>
             <div class="accordion-content">
-              <p>Анонимная помощь при зависимостях, запойных состояниях, интоксикации и поддержка родственников.</p>
-              <div class="accordion-media-slot" aria-label="Место для будущего тематического изображения наркологического направления"></div>
+              <p>Консультации и диагностика состояния при тревоге, панических атаках, депрессивных состояниях и кризисах.</p>
+              <div class="accordion-media-slot">
+                <picture>
+                  <source type="image/webp" srcset="assets/directions/psychiatry.webp">
+                  <img src="assets/directions/psychiatry.jpg" width="1280" height="720" alt="Психиатрия — абстрактный баннер направления" loading="lazy" decoding="async">
+                </picture>
+              </div>
+              <div class="accordion-columns">
+                <div>
+                  <h3>С чем помогаем</h3>
+                  <ul class="clean-list">
+                    <li>тревога и панические атаки;</li>
+                    <li>депрессивные состояния;</li>
+                    <li>подбор дальнейшего маршрута помощи;</li>
+                    <li>подростковые трудности старше 14 лет.</li>
+                  </ul>
+                </div>
+                <div class="price-note-card">
+                  <h3>Ориентиры по стоимости</h3>
+                  <p>Первичная консультация психиатра — 7 500 ₽</p>
+                  <p>Повторная консультация психиатра — 7 000 ₽</p>
+                  <p>Дистанционная консультация психиатра — 7 000 ₽</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">2</span><span>Наркология</span></summary>
+            <div class="accordion-content">
+              <p><span class="anon-emphasis">Анонимная помощь</span> при зависимостях, запойных состояниях, интоксикации и поддержка родственников.</p>
+              <div class="accordion-media-slot">
+                <picture>
+                  <source type="image/webp" srcset="assets/directions/narcology.webp">
+                  <img src="assets/directions/narcology.jpg" width="1280" height="720" alt="Наркология — абстрактный баннер направления" loading="lazy" decoding="async">
+                </picture>
+              </div>
               <div class="accordion-columns">
                 <div>
                   <h3>С чем помогаем</h3>
@@ -278,49 +313,88 @@
             </div>
           </details>
           <details class="premium-accordion">
-            <summary><span class="accordion-icon">Пс</span><span>Психиатрия</span></summary>
+            <summary><span class="accordion-icon">3</span><span>Психотерапия</span></summary>
             <div class="accordion-content">
-              <p>Консультации и диагностика состояния при тревоге, панических атаках, депрессивных состояниях и кризисах.</p>
-              <div class="accordion-media-slot" aria-label="Место для будущего тематического изображения психиатрического направления"></div>
-              <div class="accordion-columns">
-                <div>
-                  <h3>С чем помогаем</h3>
-                  <ul class="clean-list">
-                    <li>тревога и панические атаки;</li>
-                    <li>депрессивные состояния;</li>
-                    <li>подбор дальнейшего маршрута помощи;</li>
-                    <li>подростковые трудности с 14 лет.</li>
-                  </ul>
-                </div>
-                <div class="price-note-card">
-                  <h3>Ориентиры по стоимости</h3>
-                  <p>Первичная консультация психиатра — 7 500 ₽</p>
-                  <p>Повторная консультация психиатра — 7 000 ₽</p>
-                  <p>Дистанционная консультация психиатра — 7 000 ₽</p>
-                </div>
+              <p>Индивидуальная и семейная психотерапия при эмоциональном напряжении, кризисах и сложностях в отношениях — бережный диалог и понятный маршрут.</p>
+              <div class="accordion-media-slot">
+                <picture>
+                  <source type="image/webp" srcset="assets/directions/psychotherapy.webp">
+                  <img src="assets/directions/psychotherapy.jpg" width="1280" height="720" alt="Психотерапия — абстрактный баннер направления" loading="lazy" decoding="async">
+                </picture>
               </div>
-            </div>
-          </details>
-          <details class="premium-accordion">
-            <summary><span class="accordion-icon">П</span><span>Психология и тестирование</span></summary>
-            <div class="accordion-content">
-              <p>Психологическая поддержка, тестирование и помощь при эмоциональном напряжении, выгорании, семейных кризисах и подростковых трудностях.</p>
-              <div class="accordion-media-slot" aria-label="Место для будущего тематического изображения психологического направления"></div>
               <div class="accordion-columns">
                 <div>
                   <h3>С чем помогаем</h3>
                   <ul class="clean-list">
-                    <li>эмоциональное выгорание;</li>
-                    <li>семейные кризисы;</li>
-                    <li>психологическое тестирование;</li>
-                    <li>онлайн-помощь и консультации родственников.</li>
+                    <li>тревога и эмоциональное истощение;</li>
+                    <li>кризисы в отношениях;</li>
+                    <li>семейная психотерапия;</li>
+                    <li>повторные встречи онлайн и очно.</li>
                   </ul>
                 </div>
                 <div class="price-note-card">
                   <h3>Ориентиры по стоимости</h3>
                   <p>Индивидуальная психотерапия 45 минут — 7 500 ₽</p>
                   <p>Семейная психотерапия — 10 000 ₽</p>
+                  <p>Онлайн-консультация психотерапевта — 7 500 ₽</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">4</span><span>Психологическая помощь</span></summary>
+            <div class="accordion-content">
+              <p>Психологическая поддержка при выгорании, семейных кризисах, подростковых трудностях и запросах родственников — <span class="anon-emphasis">конфиденциально</span> и без давления.</p>
+              <div class="accordion-media-slot">
+                <picture>
+                  <source type="image/webp" srcset="assets/directions/psychology.webp">
+                  <img src="assets/directions/psychology.jpg" width="1280" height="720" alt="Психологическая помощь — абстрактный баннер направления" loading="lazy" decoding="async">
+                </picture>
+              </div>
+              <div class="accordion-columns">
+                <div>
+                  <h3>С чем помогаем</h3>
+                  <ul class="clean-list">
+                    <li>эмоциональное выгорание;</li>
+                    <li>семейные кризисы;</li>
+                    <li>поддержка подростков старше 14 лет;</li>
+                    <li>консультации родственников.</li>
+                  </ul>
+                </div>
+                <div class="price-note-card">
+                  <h3>Ориентиры по стоимости</h3>
+                  <p>Консультация психолога — по запросу</p>
+                  <p>Консультация родственников — по запросу</p>
+                  <p>Онлайн-помощь — по РФ</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          <details class="premium-accordion">
+            <summary><span class="accordion-icon">5</span><span>Психологическое тестирование</span></summary>
+            <div class="accordion-content">
+              <p>Структурированная оценка эмоционального состояния, когнитивных особенностей и рисков — с понятным разбором результатов.</p>
+              <div class="accordion-media-slot">
+                <picture>
+                  <source type="image/webp" srcset="assets/directions/testing.webp">
+                  <img src="assets/directions/testing.jpg" width="1280" height="720" alt="Психологическое тестирование — абстрактный баннер направления" loading="lazy" decoding="async">
+                </picture>
+              </div>
+              <div class="accordion-columns">
+                <div>
+                  <h3>С чем помогаем</h3>
+                  <ul class="clean-list">
+                    <li>оценка эмоционального состояния;</li>
+                    <li>диагностика перед маршрутом помощи;</li>
+                    <li>скрининговые и углублённые батареи;</li>
+                    <li>разбор результатов с специалистом.</li>
+                  </ul>
+                </div>
+                <div class="price-note-card">
+                  <h3>Ориентиры по стоимости</h3>
                   <p>Психологическое тестирование — от 8 000 ₽</p>
+                  <p>Диагностика состояния — по запросу</p>
+                  <p>Онлайн-формат — по согласованию</p>
                 </div>
               </div>
             </div>
@@ -435,7 +509,7 @@
             <summary><span class="accordion-icon luxury-route-icon" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path class="icon-fill" d="M24 9l15 7v11c0 10-6 16-15 20-9-4-15-10-15-20V16l15-7Z"/><path d="M24 9l15 7v11c0 10-6 16-15 20-9-4-15-10-15-20V16l15-7Z"/><path class="accent-line" d="M17 25l5 5 10-11"/></svg></span><span>Преимущества</span></summary>
             <div class="accordion-content">
               <ul class="clean-list">
-                <li>анонимность и конфиденциальность обращения;</li>
+                <li><span class="anon-emphasis">анонимность</span> и <span class="anon-emphasis">конфиденциальность</span> обращения;</li>
                 <li>круглосуточная связь;</li>
                 <li>помощь в разных форматах;</li>
                 <li>комплексный подход без давления на пациента.</li>
@@ -540,7 +614,7 @@
       <div class="footer-info">
         <div class="footer-info-head">
           <h3>Центр ментального здоровья Азимут Клиник</h3>
-          <p class="footer-tagline">Помощь доступна круглосуточно.</p>
+          <p class="footer-tagline">Помощь доступна круглосуточно</p>
         </div>
         <div class="footer-contact">
           <a class="footer-contact-link" href="tel:+79251127799">8 (925) 112 77 99</a>
@@ -554,7 +628,7 @@
       </div>
       <nav class="footer-column" aria-label="Документы">
         <h3>Документы</h3>
-        <a href="privacy.html">Политика конфиденциальности</a>
+        <a href="privacy.html">Политика <span class="anon-emphasis">конфиденциальности</span></a>
         <a href="personal-data.html">Согласие на обработку персональных данных</a>
         <a href="terms.html">Пользовательское соглашение</a>
         <a href="about.html">Лицензии и сертификаты</a>
@@ -572,9 +646,9 @@
     </div>
   </footer>
 
-  <script src="data/doctors.js?v=20260718-speed-fix"></script>
+  <script src="data/doctors.js?v=20260721-dirs-anon"></script>
   <script src="js/crm-bridge.js?v=20260717-amo"></script>
-  <script src="js/main.js?v=20260718-speed-fix"></script>
+  <script src="js/main.js?v=20260721-dirs-anon"></script>
   <script src="js/azimut-animations.js"></script>
   <script src="js/forms.js"></script>
   <script src="js/chat-config.js?v=20260713-philipp-icon"></script>
