@@ -286,12 +286,21 @@
     joystick.className = "azimut-joystick";
     joystick.innerHTML = `
       <button class="azimut-joystick-main" type="button" aria-label="Открыть быстрые действия" aria-expanded="false">
-        <span aria-hidden="true">✦</span>
+        <span class="azimut-joystick-main-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="22" fill="#AE8B66"/>
+            <circle cx="24" cy="24" r="14" fill="#fbf7ee"/>
+            <circle cx="24" cy="24" r="5" fill="#9A4C39"/>
+            <path d="M24 6v6M24 36v6M6 24h6M36 24h6" stroke="#fbf7ee" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </span>
       </button>
       <div class="azimut-joystick-actions" aria-label="Быстрые действия блога">
         <button class="azimut-joystick-action" type="button" data-joystick-action="audio" aria-label="Открыть аудиоплеер"><span aria-hidden="true">♪</span></button>
         <button class="azimut-joystick-action" type="button" data-joystick-action="top" aria-label="Наверх страницы"><span aria-hidden="true">↑</span></button>
-        <button class="azimut-joystick-action" type="button" data-joystick-action="chat" aria-label="Открыть Филиппа Филипповича"><span aria-hidden="true">Ф</span></button>
+        <button class="azimut-joystick-action azimut-joystick-action--philipp" type="button" data-joystick-action="chat" aria-label="Открыть Филиппа Филипповича">
+          <img src="assets/icons/philipp-filippovich-avatar.jpg" width="34" height="34" alt="" decoding="async">
+        </button>
       </div>
     `;
     document.body.appendChild(joystick);
