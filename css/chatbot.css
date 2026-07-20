@@ -180,15 +180,6 @@
   top: 0;
   right: 0;
   display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.ai-chatbot-telegram {
-  color: var(--teal);
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
 }
 
 .ai-chatbot-icon-btn {
