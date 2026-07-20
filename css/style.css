@@ -689,7 +689,7 @@ button:focus-visible {
     radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.66), transparent 25%),
     radial-gradient(circle at 74% 28%, rgba(213, 185, 139, 0.38), transparent 31%),
     radial-gradient(circle at 38% 82%, rgba(101, 158, 151, 0.18), transparent 26%),
-    url("../assets/generated/home-flow-bg-tall.jpg") center / cover no-repeat;
+    url("../assets/generated/home-flow-bg-tall.webp") center / cover no-repeat;
   filter: saturate(0.96) contrast(1.02);
   transform: translate3d(0, 0, 0) scale(1.04);
   animation: homeWaveDrift 18s ease-in-out infinite alternate;
@@ -775,7 +775,7 @@ button:focus-visible {
   pointer-events: none;
   background:
     linear-gradient(90deg, rgba(255, 249, 238, 0.96) 0%, rgba(255, 249, 238, 0.78) 42%, rgba(255, 249, 238, 0.14) 100%),
-    url("../assets/generated/home-flow-bg-tall.jpg") center calc(0% + var(--home-bg-y)) / cover no-repeat;
+    url("../assets/generated/home-flow-bg-tall.webp") center calc(0% + var(--home-bg-y)) / cover no-repeat;
   transform: translate3d(0, var(--home-bg-drift), 0) scale(1.04);
   transform-origin: center top;
   will-change: transform, background-position;
@@ -785,7 +785,7 @@ button:focus-visible {
   inset: -18vh 0 -18vh;
   background:
     linear-gradient(90deg, rgba(255, 249, 238, 0.92) 0%, rgba(255, 249, 238, 0.72) 44%, rgba(255, 249, 238, 0.24) 100%),
-    url("../assets/generated/home-flow-bg-tall.jpg") center calc(14% + var(--home-bg-y)) / cover no-repeat;
+    url("../assets/generated/home-flow-bg-tall.webp") center calc(14% + var(--home-bg-y)) / cover no-repeat;
 }
 
 .home-depth-bg::after,
@@ -1208,10 +1208,39 @@ button:focus-visible {
   margin: 16px 0 4px;
   border: 1px solid rgba(185, 144, 89, 0.22);
   border-radius: 16px;
+  overflow: hidden;
   background:
     linear-gradient(135deg, rgba(255, 250, 241, 0.82), rgba(236, 222, 198, 0.72)),
     radial-gradient(circle at 24% 30%, rgba(185, 144, 89, 0.24), transparent 32%),
     radial-gradient(circle at 82% 68%, rgba(185, 144, 89, 0.20), transparent 34%);
+}
+
+.accordion-media-slot picture,
+.accordion-media-slot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+  object-fit: cover;
+}
+
+/* Акцент на анонимности */
+.anon-emphasis {
+  color: var(--teal);
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  background: linear-gradient(180deg, transparent 62%, rgba(174, 139, 102, 0.28) 0);
+  padding: 0 0.12em;
+  border-radius: 2px;
+}
+
+.compass-hint {
+  margin: 10px 0 14px;
+  max-width: 22ch;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--muted);
+  text-align: center;
 }
 
 .card-grid,
