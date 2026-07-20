@@ -21,8 +21,8 @@
   <title>Цены на услуги — Азимут Клиник</title>
   <link rel="icon" href="assets/logo-main.jpg">
   <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
-  <link rel="stylesheet" href="css/style.css?v=20260718-speed-fix">
-  <link rel="stylesheet" href="css/responsive.css?v=20260718-speed-fix">
+  <link rel="stylesheet" href="css/style.css?v=20260720-price-accordion">
+  <link rel="stylesheet" href="css/responsive.css?v=20260720-price-accordion">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/audio-player.css?v=20260718-speed-fix">
   <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
@@ -104,7 +104,9 @@
   <main>
     <section class="page-hero clarity-section"><div class="container narrow"><p class="eyebrow">Стоимость</p><h1>Услуги и цены</h1><p class="lead">Цены взяты из актуального прайс-листа ООО «АЗИМУТ КЛИНИК». Итоговая стоимость зависит от состояния пациента, адреса, времени обращения и выбранного формата помощи.</p><div class="hero-actions"><a class="button button-primary" href="#price-form">Получить консультацию</a><a class="button button-secondary" href="tel:+79251127799">Позвонить круглосуточно</a></div></div></section>
 
-    <section class="section"><div class="container" data-render="prices"></div></section>
+    <section class="section" id="price-list" aria-label="Прайс-лист услуг">
+      <div class="container" data-render="prices"></div>
+    </section>
 
     <section class="section section-soft" id="price-form"><div class="container split-layout"><div><p class="eyebrow">Выбор услуги</p><h2>Оставьте заявку — администратор уточнит детали</h2><p>Оставьте контакты, и администратор уточнит выбранную услугу, стоимость и ближайший подходящий формат помощи.</p></div><form class="contact-form" data-form="lead" data-form-name="price_request"><label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required></label><label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required></label><label>Формат помощи<select name="service_type"><option>на дому</option><option>в клинике</option><option>онлайн</option><option>по телефону</option></select></label><label>Направление<select name="direction"><option>наркология</option><option>психиатрия</option><option>психология</option><option>психологическое тестирование</option><option>другое</option></select></label><label>Комментарий<textarea name="message" rows="4" placeholder="Какая услуга интересует"></textarea></label><label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label><button class="button button-primary" type="submit">Получить консультацию специалиста</button><p class="form-status" aria-live="polite"></p></form></div></section>
 
@@ -159,7 +161,7 @@
   <script src="data/prices.js"></script>
   <script src="data/audio.js"></script>
   <script src="js/crm-bridge.js?v=20260717-amo"></script>
-  <script src="js/main.js?v=20260718-speed-fix"></script>
+  <script src="js/main.js?v=20260720-price-accordion"></script>
   <script src="js/azimut-animations.js"></script>
   <script src="js/audio-player.js?v=20260718-speed-fix"></script>
   <script src="js/forms.js"></script>

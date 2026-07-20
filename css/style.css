@@ -26,27 +26,6 @@
   --azimut-gold-gradient: linear-gradient(145deg, #c6a27a 0%, #AE8B66 54%, #876845 100%);
 }
 
-.amo-native-form {
-  min-height: 420px;
-  overflow: hidden;
-}
-
-.amo-native-form--link {
-  min-height: 0;
-}
-
-.amo-native-form__privacy {
-  margin: 14px 0 0;
-  color: var(--muted, #6f6a63);
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.amo-native-form__privacy a {
-  color: inherit;
-  text-decoration: underline;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -2048,6 +2027,74 @@ button:focus-visible {
   justify-content: space-between;
 }
 
+/* Список услуг внутри аккордеона (prices + services) — строки, не карточки */
+.service-price-list {
+  display: grid;
+  gap: 0;
+  margin: 0 0 8px;
+  padding: 0 10px 12px;
+  border-top: 1px solid rgba(213, 185, 139, 0.35);
+}
+
+.service-price-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px 24px;
+  align-items: center;
+  padding: 16px 12px;
+  border-bottom: 1px solid rgba(232, 222, 207, 0.85);
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.service-price-row:last-child {
+  border-bottom: 0;
+}
+
+.service-price-row:hover {
+  background: rgba(255, 250, 241, 0.72);
+}
+
+.service-price-row-main {
+  min-width: 0;
+}
+
+.service-price-row-title {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--blue-dark);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.service-price-row-desc {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.service-price-row-aside {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.service-price-row-price {
+  display: inline-flex;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(204, 219, 186, 0.66);
+  color: var(--blue-dark);
+  font-size: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .price-mini-card span {
   color: var(--muted);
   font-weight: 300;
@@ -2330,172 +2377,35 @@ button:focus-visible {
   transform: scale(1.15);
 }
 
-.specialists-section {
+.team-banner-section {
+  padding: clamp(18px, 2.8vw, 36px) 0 clamp(54px, 7vw, 86px);
   background: transparent;
-  color: var(--ink);
 }
 
-.team-showcase {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(330px, 0.82fr) minmax(560px, 1.35fr);
-  min-height: 560px;
+.team-banner-link {
+  display: block;
+  border-radius: 26px;
   overflow: hidden;
-  border: 1px solid rgba(174, 139, 102, 0.24);
-  border-radius: 28px;
-  background: #f8edda url("../assets/images/staff-portraits/team-banner-bg.png") center / cover no-repeat;
   box-shadow: 0 28px 80px rgba(74, 58, 35, 0.16);
-  isolation: isolate;
   transform: translateZ(0);
   transition: transform var(--azimut-transition), box-shadow var(--azimut-transition);
 }
 
-.team-showcase:hover,
-.team-showcase:focus-visible {
+.team-banner-link:hover,
+.team-banner-link:focus-visible {
   transform: translateY(-4px);
   box-shadow: 0 34px 92px rgba(74, 58, 35, 0.22);
 }
 
-.team-showcase:focus-visible {
-  outline: 3px solid rgba(154, 76, 57, 0.42);
-  outline-offset: 5px;
+.team-banner-link picture,
+.team-banner-link img {
+  display: block;
+  width: 100%;
 }
 
-.team-showcase__copy {
-  position: relative;
-  z-index: 4;
-  align-self: center;
-  padding: clamp(38px, 5vw, 76px) 0 clamp(38px, 5vw, 76px) clamp(34px, 5.5vw, 86px);
-}
-
-.specialists-section .team-showcase__copy .eyebrow {
-  margin-bottom: 14px;
-  color: #9a7147;
-  font-size: 12px;
-  font-weight: 300;
-  letter-spacing: 0.16em;
-}
-
-.specialists-section .team-showcase__copy h2 {
-  margin: 0;
-  color: #513720;
-  font-family: "Montserrat", Inter, "Segoe UI", Arial, sans-serif;
-  font-size: clamp(38px, 4vw, 64px);
-  font-weight: 300;
-  line-height: 1.04;
-  letter-spacing: -0.035em;
-}
-
-.specialists-section .team-showcase__copy h2 span {
-  color: #a87643;
-}
-
-.specialists-section .team-showcase__copy > p:not(.eyebrow) {
-  max-width: 560px;
-  margin: 28px 0 30px;
-  color: #655443;
-  font-family: "Montserrat", Inter, "Segoe UI", Arial, sans-serif;
-  font-size: clamp(15px, 1.25vw, 19px);
-  font-weight: 300;
-  line-height: 1.65;
-}
-
-.team-showcase__button {
-  display: inline-flex;
-  align-items: center;
-  min-height: 48px;
-  padding: 12px 25px;
-  border: 1px solid rgba(146, 101, 57, 0.32);
-  border-radius: 999px;
-  background: #b78a5d;
-  color: #fffaf3;
-  font-family: "Montserrat", Inter, "Segoe UI", Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 300;
-  letter-spacing: 0.02em;
-}
-
-.team-showcase__portraits {
-  position: relative;
-  z-index: 2;
-  min-height: 560px;
-}
-
-.team-showcase__portrait {
-  position: absolute;
-  width: clamp(150px, 13.5vw, 224px);
-  aspect-ratio: 0.82;
-  border-radius: 24px;
+.team-banner-link img {
+  height: auto;
   object-fit: cover;
-  object-position: center 18%;
-  box-shadow: 0 18px 44px rgba(93, 65, 38, 0.18);
-}
-
-.team-showcase__portrait--1 { left: 3%; top: 8%; }
-.team-showcase__portrait--2 { left: 28%; top: 3%; z-index: 2; }
-.team-showcase__portrait--3 { left: 54%; top: 9%; }
-.team-showcase__portrait--4 { right: 1%; top: 17%; }
-.team-showcase__portrait--5 { left: 15%; bottom: 3%; }
-.team-showcase__portrait--6 { left: 43%; bottom: -2%; z-index: 3; }
-.team-showcase__portrait--7 { right: 5%; bottom: 1%; }
-
-@media (max-width: 980px) {
-  .team-showcase {
-    grid-template-columns: 1fr;
-    min-height: 1120px;
-  }
-
-  .team-showcase__copy {
-    align-self: start;
-    padding: 48px 42px 0;
-  }
-
-  .team-showcase__portraits {
-    min-height: 710px;
-  }
-
-  .team-showcase__portrait {
-    width: clamp(160px, 28vw, 250px);
-  }
-}
-
-@media (max-width: 620px) {
-  .team-showcase {
-    min-height: 1120px;
-    border-radius: 24px;
-  }
-
-  .team-showcase__copy {
-    padding: 38px 24px 0;
-  }
-
-  .specialists-section .team-showcase__copy h2 {
-    font-size: clamp(36px, 11vw, 52px);
-  }
-
-  .specialists-section .team-showcase__copy > p:not(.eyebrow) {
-    margin: 22px 0 24px;
-    font-size: 15px;
-  }
-
-  .team-showcase__portraits {
-    min-height: 690px;
-  }
-
-  .team-showcase__portrait {
-    width: 39vw;
-    min-width: 132px;
-    max-width: 178px;
-    border-radius: 20px;
-  }
-
-  .team-showcase__portrait--1 { left: 5%; top: 5%; }
-  .team-showcase__portrait--2 { left: 31%; top: 0; }
-  .team-showcase__portrait--3 { right: 4%; left: auto; top: 8%; }
-  .team-showcase__portrait--4 { left: 18%; right: auto; top: 33%; z-index: 3; }
-  .team-showcase__portrait--5 { right: 12%; left: auto; top: 36%; bottom: auto; }
-  .team-showcase__portrait--6 { left: 5%; bottom: 0; }
-  .team-showcase__portrait--7 { right: 5%; bottom: 0; }
 }
 
 @keyframes heroLightSweep {

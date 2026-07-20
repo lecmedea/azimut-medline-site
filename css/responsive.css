@@ -970,6 +970,25 @@ body.blog-utility-mode.joystick-audio-open .azimut-mini-player {
     padding: 16px;
   }
 
+  .service-price-list {
+    padding: 0 4px 10px;
+  }
+
+  .service-price-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px 10px;
+  }
+
+  .service-price-row-aside {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .service-price-row-aside .button {
+    flex: 0 0 auto;
+  }
+
   .order-actions,
   .order-actions .button {
     width: 100%;
