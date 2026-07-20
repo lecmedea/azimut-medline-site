@@ -18,15 +18,6 @@ window.AZIMUT_DOCTORS = [
     photoPosition: "50% 20%"
   },
   {
-    name: "Мария Лебедева",
-    role: "Врач-психотерапевт",
-    experience: "Стаж: 11 лет",
-    focus: "Работает с тревогой, эмоциональным истощением и кризисами в отношениях. Ее сильная сторона — внимательное клиническое мышление и очень бережный контакт: пациенту не нужно быть «готовым», достаточно начать разговор.",
-    photo: "assets/images/staff-portraits/staff-03.jpg",
-    smilePhoto: "assets/images/staff-portraits/staff-03-smile.jpg",
-    photoPosition: "50% 20%"
-  },
-  {
     name: "Виктор Геннадьевич",
     role: "Клинический психолог",
     experience: "Стаж: 14 лет",
@@ -44,13 +35,6 @@ window.AZIMUT_DOCTORS = [
     photo: "assets/images/staff-portraits/staff-05.jpg",
     smilePhoto: "assets/images/staff-portraits/staff-05-smile.jpg",
     photoPosition: "50% 22%"
-  },
-  {
-    // photo staff-04 временно убран с сайта; файлы staff-04.jpg / staff-04-smile.jpg остаются в assets
-    name: "Психолог",
-    role: "Психолог",
-    experience: "Стаж: от 5 лет",
-    focus: "Эмоциональное выгорание, семейные кризисы, тревога, консультации родственников."
   },
   {
     name: "Специалист клиники",
