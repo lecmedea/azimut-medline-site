@@ -220,6 +220,76 @@
   width: min(20%, 180px);
 }
 
+/* Per-room placement tweaks (perspective / empty walls differ) */
+[data-room-id="jp"] .museum-frame--a {
+  left: 14%;
+  top: 18%;
+  width: min(14%, 132px);
+}
+[data-room-id="jp"] .museum-frame--b {
+  right: 18%;
+  top: 20%;
+  width: min(12.5%, 120px);
+}
+[data-room-id="jp"] .museum-cabinet {
+  left: 8%;
+  bottom: 10%;
+  width: min(28%, 240px);
+}
+[data-room-id="jp"] .museum-table {
+  right: 14%;
+  bottom: 12%;
+  width: min(22%, 190px);
+}
+
+[data-room-id="fr"] .museum-frame--a {
+  left: 12%;
+  top: 20%;
+  width: min(14%, 140px);
+}
+[data-room-id="fr"] .museum-frame--b {
+  right: 28%;
+  top: 22%;
+  width: min(12.5%, 124px);
+}
+[data-room-id="fr"] .museum-cabinet {
+  left: 6%;
+  bottom: 8%;
+  width: min(26%, 250px);
+}
+[data-room-id="fr"] .museum-table {
+  right: 18%;
+  bottom: 9%;
+  width: min(18%, 168px);
+}
+
+[data-room-id="uk"] .museum-frame--a {
+  left: 18%;
+  top: 14%;
+  width: min(13%, 128px);
+}
+[data-room-id="uk"] .museum-frame--b {
+  right: 26%;
+  top: 16%;
+  width: min(12%, 118px);
+}
+[data-room-id="uk"] .museum-cabinet {
+  left: 4%;
+  bottom: 5%;
+  width: min(28%, 255px);
+}
+[data-room-id="uk"] .museum-table {
+  right: 8%;
+  bottom: 6%;
+  width: min(18%, 165px);
+}
+
+/* Soft integration: furniture sits in room light without hard cutout edges */
+.museum-cabinet img,
+.museum-table img {
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28));
+}
+
 .museum-tooltip {
   position: absolute;
   left: 50%;
