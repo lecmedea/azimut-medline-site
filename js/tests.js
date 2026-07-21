@@ -1062,6 +1062,7 @@
           `).join("")}
           <button class="button button-primary" type="submit">Показать результат</button>
           <p class="test-result" aria-live="polite"></p>
+          <div class="test-specialist-invite" data-test-specialist-invite hidden></div>
         </form>
       </div>
     `;
@@ -1084,6 +1085,52 @@
     `;
   }
 
+  function getDoctorById(id) {
+    return (window.AZIMUT_DOCTORS || []).find((doctor) => doctor.id === id) || null;
+  }
+
+  function resolveSpecialistForTest(test) {
+    const map = window.AZIMUT_TEST_SPECIALIST_MAP || {};
+    const direction = normalizeDirection(test.direction);
+    const preferredId = map[direction] || map.default;
+    let doctor = getDoctorById(preferredId);
+    if (!doctor && Array.isArray(window.AZIMUT_DOCTORS) && window.AZIMUT_DOCTORS.length) {
+      doctor = window.AZIMUT_DOCTORS.find((item) => (item.categories || []).some((c) => normalizeDirection(c) === direction))
+        || window.AZIMUT_DOCTORS[0];
+    }
+    return doctor;
+  }
+
+  function renderSpecialistInvite(form, test) {
+    const host = form.querySelector("[data-test-specialist-invite]");
+    if (!host) return;
+    const doctor = resolveSpecialistForTest(test);
+    if (!doctor) {
+      host.hidden = true;
+      host.classList.remove("is-visible");
+      host.innerHTML = "";
+      return;
+    }
+    const directionLabel = test.direction || "вашему запросу";
+    const lead = doctor.inviteLead || `Консультация по направлению «${directionLabel}»`;
+    host.innerHTML = `
+      <div class="test-specialist-invite__inner">
+        <div class="test-specialist-invite__photo" style="background-image:url('${escapeHtml(doctor.photo)}');background-position:${escapeHtml(doctor.photoPosition || "50% 18%")}" role="img" aria-label="${escapeHtml(doctor.name)}"></div>
+        <div>
+          <p class="test-specialist-invite__eyebrow">Рекомендуем специалиста</p>
+          <h3 class="test-specialist-invite__title">${escapeHtml(doctor.shortName || doctor.name)}</h3>
+          <p class="test-specialist-invite__text">${escapeHtml(lead)}. ${escapeHtml(doctor.role)}. Тест — лишь ориентир: врач уточнит картину лично и бережно.</p>
+          <div class="test-specialist-invite__actions">
+            <a class="button button-primary" href="contacts.html#appointment" data-select-service="${escapeHtml(doctor.role)}">Записаться к специалисту</a>
+            <a class="button button-secondary" href="doctors.html">Все врачи</a>
+          </div>
+        </div>
+      </div>
+    `;
+    host.hidden = false;
+    host.classList.add("is-visible");
+  }
+
   function attachScoring(root) {
     root.querySelectorAll("[data-test-form]").forEach((form) => {
       const test = tests.find((item) => item.id === form.dataset.testForm);
@@ -1091,15 +1138,22 @@
       form.addEventListener("submit", (event) => {
         event.preventDefault();
         const result = form.querySelector(".test-result");
+        const invite = form.querySelector("[data-test-specialist-invite]");
         const values = test.questions.map((_, index) => form.querySelector(`input[name="${test.id}-${index}"]:checked`)?.value);
         if (values.some((value) => value == null)) {
           result.textContent = "Ответьте на все вопросы, чтобы увидеть результат.";
           result.classList.add("is-visible");
+          if (invite) {
+            invite.hidden = true;
+            invite.classList.remove("is-visible");
+            invite.innerHTML = "";
+          }
           return;
         }
         const score = values.reduce((sum, value) => sum + Number(value), 0);
         result.textContent = `${score} баллов. ${test.result(score, values)} Результат не является диагнозом и нужен только для первичной ориентации.`;
         result.classList.add("is-visible");
+        renderSpecialistInvite(form, test);
         result.focus?.();
       });
     });
