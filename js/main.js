@@ -1132,6 +1132,138 @@
     return blocks.join("");
   }
 
+  function ensureDoctorProfileModal() {
+    let modal = document.querySelector('[data-modal="doctor-profile-modal"]');
+    if (modal) return modal;
+    const wrap = document.createElement("div");
+    wrap.innerHTML = `
+      <div class="doctor-profile-modal" data-modal="doctor-profile-modal" aria-hidden="true">
+        <div class="doctor-profile-modal__backdrop" data-modal-close></div>
+        <section class="doctor-profile-dialog" role="dialog" aria-modal="true" aria-labelledby="doctor-profile-title">
+          <button class="modal-close" type="button" data-modal-close aria-label="Закрыть карточку специалиста">×</button>
+          <div class="doctor-profile-hero">
+            <div class="doctor-profile-photo" data-doctor-profile-photo></div>
+            <div>
+              <p class="doctor-badge" data-doctor-profile-badge></p>
+              <h2 id="doctor-profile-title" data-doctor-profile-name></h2>
+              <p class="doctor-profile-role" data-doctor-profile-role></p>
+              <p class="doctor-profile-exp" data-doctor-profile-exp></p>
+            </div>
+          </div>
+          <div class="doctor-profile-body">
+            <p class="doctor-profile-focus" data-doctor-profile-focus></p>
+            <div data-doctor-profile-sections></div>
+            <div class="doctor-profile-actions">
+              <button class="button button-primary" type="button" data-doctor-profile-book>Записаться к специалисту</button>
+              <button class="button button-secondary" type="button" data-modal-close>Закрыть</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    `.trim();
+    modal = wrap.firstElementChild;
+    document.body.appendChild(modal);
+    return modal;
+  }
+
+  function openDoctorProfile(doctorId) {
+    const doctor = (window.AZIMUT_DOCTORS || []).find((item) => item.id === doctorId || item.name === doctorId);
+    if (!doctor) return;
+
+    const modal = ensureDoctorProfileModal();
+    const photo = modal.querySelector("[data-doctor-profile-photo]");
+    const badge = modal.querySelector("[data-doctor-profile-badge]");
+    const name = modal.querySelector("[data-doctor-profile-name]");
+    const role = modal.querySelector("[data-doctor-profile-role]");
+    const exp = modal.querySelector("[data-doctor-profile-exp]");
+    const focus = modal.querySelector("[data-doctor-profile-focus]");
+    const sections = modal.querySelector("[data-doctor-profile-sections]");
+    const book = modal.querySelector("[data-doctor-profile-book]");
+
+    if (photo) {
+      photo.style.backgroundImage = doctor.photo ? `url('${doctor.photo}')` : "";
+      photo.style.backgroundPosition = doctor.photoPosition || "50% 18%";
+    }
+    if (badge) badge.textContent = doctor.badge || doctor.role || "Специалист";
+    if (name) name.textContent = doctor.name || "";
+    if (role) role.textContent = doctor.role || "";
+    if (exp) exp.textContent = doctor.experience || "";
+    if (focus) focus.textContent = doctor.focus || doctor.homeHighlight || "";
+    if (sections) {
+      sections.innerHTML = [
+        renderDoctorSpecialties(doctor),
+        renderDoctorEducation(doctor),
+        renderDoctorCourses(doctor),
+        renderDoctorExtra(doctor)
+      ].join("");
+      // open key blocks by default in modal
+      sections.querySelectorAll("details.doctor-details").forEach((details, index) => {
+        if (index < 2) details.open = true;
+      });
+    }
+    if (book) {
+      book.dataset.modalOpen = "appointment-modal";
+      book.dataset.selectService = doctor.role || doctor.name || "";
+      book.dataset.selectDirection = (doctor.categories && doctor.categories[0]) || "";
+      book.dataset.formName = "doctor_profile";
+      book.dataset.selectPrice = "";
+    }
+
+    const lastFocus = document.activeElement;
+    modal._lastFocus = lastFocus;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    setTimeout(() => modal.querySelector(".modal-close")?.focus(), 60);
+  }
+
+  function closeDoctorProfile() {
+    const modal = document.querySelector('[data-modal="doctor-profile-modal"]');
+    if (!modal || !modal.classList.contains("is-open")) return;
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    if (!document.querySelector("[data-modal].is-open")) {
+      document.body.classList.remove("modal-open");
+    }
+    modal._lastFocus?.focus?.();
+  }
+
+  function initDoctorProfiles() {
+    ensureDoctorProfileModal();
+
+    document.addEventListener("click", (event) => {
+      const closer = event.target.closest('[data-modal="doctor-profile-modal"] [data-modal-close]');
+      if (closer) {
+        event.preventDefault();
+        closeDoctorProfile();
+        return;
+      }
+
+      const openBtn = event.target.closest("[data-doctor-open]");
+      if (openBtn) {
+        event.preventDefault();
+        openDoctorProfile(openBtn.dataset.doctorOpen || openBtn.closest("[data-doctor-id]")?.dataset.doctorId);
+        return;
+      }
+
+      const card = event.target.closest(".doctor-card[data-doctor-id]");
+      if (!card) return;
+      // Don't open profile when booking or nested interactive controls fire
+      if (event.target.closest("a, button, input, select, textarea, label, summary")) return;
+      openDoctorProfile(card.dataset.doctorId);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      closeDoctorProfile();
+    });
+
+    window.AzimutDoctors = {
+      open: openDoctorProfile,
+      close: closeDoctorProfile
+    };
+  }
+
   function renderDoctors(target) {
     const limit = Number(target.dataset.limit || 0);
     const hideActions = target.dataset.hideActions === "true";
@@ -1141,9 +1273,14 @@
       .filter((item) => !excludedDoctors.includes(item.name) && !excludedDoctors.includes(item.id))
       .slice(0, limit || undefined);
     target.innerHTML = items.map((item) => {
-      const displayFocus = detailed ? item.focus : (item.homeHighlight || item.focus);
+      const displayFocus = item.homeHighlight || item.focus;
+      const shortFocus = detailed
+        ? displayFocus
+        : (displayFocus || "").length > 140
+          ? `${displayFocus.slice(0, 137).trim()}…`
+          : displayFocus;
       return `
-      <article class="doctor-card${detailed ? " doctor-card--detailed" : ""}" data-doctor-id="${escapeDoctorHtml(item.id || "")}">
+      <article class="doctor-card doctor-card--clickable${detailed ? " doctor-card--detailed" : ""}" data-doctor-id="${escapeDoctorHtml(item.id || "")}" tabindex="0" role="button" aria-label="Открыть профиль: ${escapeDoctorHtml(item.name)}">
         ${item.photo ? `<div class="doctor-photo-frame" role="img" aria-label="${escapeDoctorHtml(item.role)}">
           <div class="doctor-photo doctor-photo-primary" data-photo="${escapeDoctorHtml(item.photo)}" style="background-position: ${escapeDoctorHtml(item.photoPosition || "50% 50%")}"></div>
           ${item.smilePhoto ? `<div class="doctor-photo doctor-photo-smile" aria-hidden="true" data-smile-photo="${escapeDoctorHtml(item.smilePhoto)}" style="background-position: ${escapeDoctorHtml(item.photoPosition || "50% 50%")}"></div>` : ""}
@@ -1152,13 +1289,26 @@
         <h3 class="${item.compactName ? "doctor-name-compact" : ""}">${escapeDoctorHtml(item.name)}</h3>
         <p class="doctor-role-line">${escapeDoctorHtml(item.role)}</p>
         <p class="doctor-exp"><strong>${escapeDoctorHtml(item.experience)}</strong></p>
-        <p class="doctor-focus">${escapeDoctorHtml(displayFocus)}</p>
-        ${detailed ? `${renderDoctorSpecialties(item)}${renderDoctorEducation(item)}${renderDoctorCourses(item)}${renderDoctorExtra(item)}` : ""}
-        ${hideActions ? "" : `<button class="button button-secondary" type="button" data-modal-open="appointment-modal" data-select-service="${escapeDoctorHtml(item.role)}" data-select-direction="${escapeDoctorHtml((item.categories && item.categories[0]) || "")}" data-form-name="doctor_card" data-select-price="">Записаться</button>`}
+        <p class="doctor-focus">${escapeDoctorHtml(shortFocus)}</p>
+        <p class="doctor-card__hint">Нажмите, чтобы открыть биографию</p>
+        <div class="doctor-card__actions">
+          <button class="button button-secondary" type="button" data-doctor-open="${escapeDoctorHtml(item.id || item.name)}">Подробнее</button>
+          ${hideActions ? "" : `<button class="button button-primary" type="button" data-modal-open="appointment-modal" data-select-service="${escapeDoctorHtml(item.role)}" data-select-direction="${escapeDoctorHtml((item.categories && item.categories[0]) || "")}" data-form-name="doctor_card" data-select-price="">Записаться</button>`}
+        </div>
       </article>
     `;
     }).join("");
     attachDoctorPhotoLoading(target);
+
+    // keyboard open
+    target.querySelectorAll(".doctor-card[data-doctor-id]").forEach((card) => {
+      card.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        if (event.target !== card) return;
+        event.preventDefault();
+        openDoctorProfile(card.dataset.doctorId);
+      });
+    });
   }
 
   function renderReviews(target) {
@@ -1360,6 +1510,7 @@
     // Parallax depth layers removed from hero — skip heavy scroll work on home shell
     initHomeDepthParallax();
     initModals();
+    initDoctorProfiles();
     initAccordions();
     renderBlocks();
     initRevealMotion();
