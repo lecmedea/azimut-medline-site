@@ -34,6 +34,8 @@
   <meta property="og:image" content="https://azimutclinic.ru/assets/brand/azimut-clinic-og.jpg">
   <meta property="og:locale" content="ru_RU">
   <title>Центр ментального здоровья Азимут Клиник</title>
+  <link rel="preload" as="image" href="assets/banners-tight/banner-01.webp" fetchpriority="high" type="image/webp">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalClinic","name":"Азимут Клиник","alternateName":["Центр ментального здоровья Азимут Клиник","Azimut Clinic","Азимут Клиник Москва"],"description":"Центр ментального здоровья в Москве: психиатрия, наркология, психологическая помощь круглосуточно.","url":"https://azimutclinic.ru/","logo":"https://azimutclinic.ru/assets/brand/azimut-clinic-emblem.jpg","image":"https://azimutclinic.ru/assets/brand/azimut-clinic-og.jpg","telephone":"+79251127799","email":"info@azimutclinic.ru","address":{"@type":"PostalAddress","streetAddress":"ш. Старокалужское, дом 62","addressLocality":"Москва","postalCode":"117630","addressRegion":"Москва","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":55.660607,"longitude":37.538170},"openingHours":"Mo-Su 00:00-24:00","medicalSpecialty":["Psychiatric","Psychologic","Addiction Medicine"],"areaServed":{"@type":"City","name":"Москва"},"hasMap":"https://yandex.ru/maps/?ll=37.538170%2C55.660607&z=16","sameAs":["https://azimutclinic.ru/"]}</script>
@@ -41,9 +43,8 @@
   <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
   <link rel="stylesheet" href="css/style.css?v=20260721-batch2">
   <link rel="stylesheet" href="css/responsive.css?v=20260721-batch2">
-  <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/audio-player.css?v=20260718-speed-fix">
-  <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
+  <link rel="stylesheet" href="css/animations.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="css/animations.css"></noscript>
   <script src="js/access-gate.js?v=20260716-public"></script>
   <link rel="stylesheet" href="css/cookie-consent.css?v=20260721-cookies">
 </head>
@@ -154,7 +155,7 @@
             </div>
             <div class="hero-visual" aria-label="Компас Азимут Клиник">
               <div class="compass-card">
-                <img class="compass-image" src="assets/generated/hero-compass-cutout.webp" alt="Компас Азимут" width="420" height="420" decoding="async" fetchpriority="high">
+                <img class="compass-image" src="assets/generated/hero-compass-cutout.webp" alt="Компас Азимут" width="420" height="420" decoding="async" >
                 <div class="route-line" aria-hidden="true"></div>
               </div>
               <p class="compass-hint">Коснитесь компаса и он мягко направит Вас к нам</p>
@@ -177,8 +178,10 @@
           <div class="banner-carousel-track">
             <figure class="banner-slide is-active" aria-label="Вернуться к себе — возможно">
               <picture>
+                <source media="(max-width: 720px)" type="image/webp" srcset="assets/banners-mobile/banner-01.webp">
                 <source media="(max-width: 720px)" srcset="assets/banners-mobile/banner-01.jpg">
-                <img src="assets/banners-tight/banner-01.jpg" width="2027" height="666" alt="Вернуться к себе возможно. Ментальное здоровье — способность жить полноценно и строить гармоничные отношения." loading="eager" decoding="async" fetchpriority="high">
+                <source type="image/webp" srcset="assets/banners-tight/banner-01.webp">
+                <img src="assets/banners-tight/banner-01.webp" width="1600" height="525" alt="Вернуться к себе возможно. Ментальное здоровье — способность жить полноценно и строить гармоничные отношения." loading="eager" decoding="async" fetchpriority="high">
               </picture>
             </figure>
             <figure class="banner-slide" aria-label="Сон — основа восстановления">
@@ -651,13 +654,55 @@
     </div>
   </footer>
 
-  <script src="data/doctors.js?v=20260721-batch2"></script>
-  <script src="js/crm-bridge.js?v=20260717-amo" defer></script>
-  <script src="js/main.js?v=20260721-batch2" defer></script>
-  <script src="js/azimut-animations.js" defer></script>
+  <script src="data/doctors.js?v=20260721-batch2" defer></script>
+  <script src="js/main.js?v=20260721-home-fast" defer></script>
   <script src="js/forms.js?v=20260721-form-required" defer></script>
-  <script src="js/chat-config.js?v=20260713-philipp-icon" defer></script>
-  <script src="js/chatbot.js?v=20260713-philipp-icon" defer></script>
   <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
+  <script>
+    // Homepage: defer non-critical JS until idle / first interaction
+    (function () {
+      var loaded = {};
+      function loadScript(src) {
+        if (loaded[src]) return;
+        loaded[src] = true;
+        var s = document.createElement("script");
+        s.src = src;
+        s.defer = true;
+        document.body.appendChild(s);
+      }
+      function loadCss(href) {
+        if (loaded[href]) return;
+        loaded[href] = true;
+        var l = document.createElement("link");
+        l.rel = "stylesheet";
+        l.href = href;
+        document.head.appendChild(l);
+      }
+      function loadSecondary() {
+        loadCss("css/chatbot.css?v=20260718-speed-fix");
+        loadScript("js/crm-bridge.js?v=20260717-amo");
+        loadScript("js/azimut-animations.js");
+        loadScript("js/chat-config.js?v=20260713-philipp-icon");
+        loadScript("js/chatbot.js?v=20260713-philipp-icon");
+      }
+      var fired = false;
+      function once() {
+        if (fired) return;
+        fired = true;
+        loadSecondary();
+        window.removeEventListener("scroll", once, { passive: true });
+        window.removeEventListener("pointerdown", once);
+        window.removeEventListener("keydown", once);
+      }
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(once, { timeout: 3500 });
+      } else {
+        setTimeout(once, 2800);
+      }
+      window.addEventListener("scroll", once, { passive: true });
+      window.addEventListener("pointerdown", once);
+      window.addEventListener("keydown", once);
+    })();
+  </script>
 </body>
 </html>
