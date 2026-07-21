@@ -1264,6 +1264,15 @@
     };
   }
 
+  /** «Фамилия Имя» без отчества — для карточек поверх фото. */
+  function doctorCardDisplayName(item) {
+    if (item.cardName) return String(item.cardName).trim();
+    const full = String(item.name || "").trim();
+    const parts = full.split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) return `${parts[0]} ${parts[1]}`;
+    return full;
+  }
+
   function renderDoctors(target) {
     const limit = Number(target.dataset.limit || 0);
     const hideActions = target.dataset.hideActions === "true";
@@ -1279,17 +1288,22 @@
         : (displayFocus || "").length > 140
           ? `${displayFocus.slice(0, 137).trim()}…`
           : displayFocus;
+      // На карточках (особенно поверх фото) — только фамилия+имя и направление
+      const cardName = doctorCardDisplayName(item);
       return `
-      <article class="doctor-card doctor-card--clickable${detailed ? " doctor-card--detailed" : ""}" data-doctor-id="${escapeDoctorHtml(item.id || "")}" tabindex="0" role="button" aria-label="Открыть профиль: ${escapeDoctorHtml(item.name)}">
+      <article class="doctor-card doctor-card--clickable doctor-card--minimal${detailed ? " doctor-card--detailed" : ""}" data-doctor-id="${escapeDoctorHtml(item.id || "")}" tabindex="0" role="button" aria-label="Открыть профиль: ${escapeDoctorHtml(item.name)}">
         ${item.photo ? `<div class="doctor-photo-frame" role="img" aria-label="${escapeDoctorHtml(item.role)}">
           <div class="doctor-photo doctor-photo-primary" data-photo="${escapeDoctorHtml(item.photo)}" style="background-position: ${escapeDoctorHtml(item.photoPosition || "50% 50%")}"></div>
           ${item.smilePhoto ? `<div class="doctor-photo doctor-photo-smile" aria-hidden="true" data-smile-photo="${escapeDoctorHtml(item.smilePhoto)}" style="background-position: ${escapeDoctorHtml(item.photoPosition || "50% 50%")}"></div>` : ""}
         </div>` : ""}
-        ${item.badge ? `<p class="doctor-badge">${escapeDoctorHtml(item.badge)}</p>` : `<p class="eyebrow">${escapeDoctorHtml(item.role)}</p>`}
-        <h3 class="${item.compactName ? "doctor-name-compact" : ""}">${escapeDoctorHtml(item.name)}</h3>
-        <p class="doctor-role-line">${escapeDoctorHtml(item.role)}</p>
-        <p class="doctor-exp"><strong>${escapeDoctorHtml(item.experience)}</strong></p>
-        <p class="doctor-focus">${escapeDoctorHtml(shortFocus)}</p>
+        <div class="doctor-card__caption">
+          <h3 class="doctor-card__name ${item.compactName ? "doctor-name-compact" : ""}">${escapeDoctorHtml(cardName)}</h3>
+          <p class="doctor-role-line">${escapeDoctorHtml(item.role)}</p>
+        </div>
+        ${detailed ? `
+        <p class="doctor-exp doctor-card__extra"><strong>${escapeDoctorHtml(item.experience)}</strong></p>
+        <p class="doctor-focus doctor-card__extra">${escapeDoctorHtml(shortFocus)}</p>
+        ` : ""}
         <p class="doctor-card__hint">Нажмите, чтобы открыть биографию</p>
         <div class="doctor-card__actions">
           <button class="button button-secondary" type="button" data-doctor-open="${escapeDoctorHtml(item.id || item.name)}">Подробнее</button>
