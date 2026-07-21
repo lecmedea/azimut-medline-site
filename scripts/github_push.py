@@ -123,7 +123,12 @@ def collect_files() -> list[str]:
         for path in sorted(ROOT.glob(pattern)):
             add(path)
 
-    for pattern in ("assets/creativity/*", "assets/entertainment/*", "assets/icons/joystick-gear.*"):
+    for pattern in (
+        "assets/creativity/*",
+        "assets/creativity/**/*",  # per-room furniture ru/jp/fr/uk
+        "assets/entertainment/*",
+        "assets/icons/joystick-gear.*",
+    ):
         for path in sorted(ROOT.glob(pattern)):
             if path.is_file() and path.name != ".DS_Store":
                 add(path)
