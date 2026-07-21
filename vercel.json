@@ -1,10 +1,21 @@
 {
+  "rewrites": [
+    {
+      "source": "/api/tg-proxy/(.*)",
+      "destination": "/api/tg-proxy?rest=$1"
+    }
+  ],
+  "functions": {
+    "api/tg-proxy.js": {
+      "maxDuration": 60
+    }
+  },
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+        { "key": "Access-Control-Allow-Methods", "value": "POST, GET, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, X-Azimut-Tg-Proxy, X-Azimut-Key" }
       ]
     }
   ]
