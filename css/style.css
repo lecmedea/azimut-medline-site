@@ -2253,12 +2253,18 @@ button:focus-visible {
     align-items: center;
     justify-content: center;
     position: absolute;
-    left: 50%;
-    bottom: 14px;
+    /* Mobile: сдвиг от центра — влево 15%, вверх 4% (от размера баннера) */
+    left: calc(50% - 15%);
+    bottom: calc(14px + 4%);
     transform: translateX(-50%);
     z-index: 5;
     min-width: 148px;
     margin: 0;
+  }
+
+  .banner-cta:hover,
+  .banner-cta:focus-visible {
+    transform: translateX(-50%) translateY(-1px);
   }
 
   .banner-slide {
