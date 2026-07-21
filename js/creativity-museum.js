@@ -2,38 +2,57 @@
  * Карусель из 4 ретро-гостиных + open/close мебель.
  */
 (function () {
+  const ASSET_V = "20260721-rooms-furn";
+
+  /** Per-room furniture paths (cabinet/table/frames match each living room). */
+  function roomAssets(id) {
+    const base = `assets/creativity/${id}`;
+    return {
+      cabinetClosed: `${base}/cabinet-closed.png?v=${ASSET_V}`,
+      cabinetOpen: `${base}/cabinet-open.png?v=${ASSET_V}`,
+      tableClosed: `${base}/table-closed.png?v=${ASSET_V}`,
+      tableOpen: `${base}/table-open.png?v=${ASSET_V}`,
+      frameA: `${base}/frame-canvas.png?v=${ASSET_V}`,
+      frameB: `${base}/frame-canvas-2.png?v=${ASSET_V}`
+    };
+  }
+
   const ROOMS = [
     {
       id: "ru",
       country: "Россия",
       title: "Светлая русская гостиная",
       blurb: "Крем, дерево, бордовая штора — тихий дом, куда хочется принести рисунок или стихи.",
-      bg: "assets/creativity/room-bg-ru.jpg?v=20260721-rooms",
-      alt: "Ретро-гостиная в русском стиле"
+      bg: `assets/creativity/room-bg-ru.jpg?v=${ASSET_V}`,
+      alt: "Ретро-гостиная в русском стиле",
+      assets: roomAssets("ru")
     },
     {
       id: "jp",
       country: "Япония",
       title: "Японская комната васи",
       blurb: "Татами, сёдзи и дерево — место для спокойных работ и коротких строк.",
-      bg: "assets/creativity/room-bg-jp.jpg?v=20260721-rooms",
-      alt: "Ретро-гостиная в японском стиле"
+      bg: `assets/creativity/room-bg-jp.jpg?v=${ASSET_V}`,
+      alt: "Ретро-гостиная в японском стиле",
+      assets: roomAssets("jp")
     },
     {
       id: "fr",
       country: "Франция",
       title: "Парижская квартира",
       blurb: "Лепнина, паркет «ёлочкой» и кружевные шторы — гостиная для дневников и акварели.",
-      bg: "assets/creativity/room-bg-fr.jpg?v=20260721-rooms",
-      alt: "Ретро-гостиная во французском стиле"
+      bg: `assets/creativity/room-bg-fr.jpg?v=${ASSET_V}`,
+      alt: "Ретро-гостиная во французском стиле",
+      assets: roomAssets("fr")
     },
     {
       id: "uk",
       country: "Англия",
       title: "Викторианский салон",
       blurb: "Тёмное дерево, камин и бордовый бархат — комната для историй и рукописей.",
-      bg: "assets/creativity/room-bg-uk.jpg?v=20260721-rooms",
-      alt: "Ретро-гостиная в английском стиле"
+      bg: `assets/creativity/room-bg-uk.jpg?v=${ASSET_V}`,
+      alt: "Ретро-гостиная в английском стиле",
+      assets: roomAssets("uk")
     }
   ];
 
@@ -65,29 +84,29 @@
   }
 
   function buildStageMarkup(room, index) {
-    const v = "20260721-imagine";
+    const a = room.assets || roomAssets(room.id);
     return `
       <div class="museum-stage museum-slide${index === 0 ? " is-active" : ""}" data-museum-slide="${index}" data-room-id="${room.id}" ${index === 0 ? "" : "hidden"}>
         <img class="museum-room" src="${room.bg}" width="1280" height="720" alt="${room.alt}" decoding="async" ${index === 0 ? "" : 'loading="lazy"'}>
 
         <button type="button" class="museum-hotspot museum-frame museum-frame--a" aria-label="${room.country}: картина слева">
-          <img src="assets/creativity/frame-canvas.png?v=${v}" alt="Картина в багете" loading="lazy" decoding="async">
+          <img src="${a.frameA}" alt="Картина в багете" loading="lazy" decoding="async">
           <span class="museum-tooltip">Здесь может висеть ваша картина</span>
         </button>
         <button type="button" class="museum-hotspot museum-frame museum-frame--b" aria-label="${room.country}: картина справа">
-          <img src="assets/creativity/frame-canvas-2.png?v=${v}" alt="Вторая картина" loading="lazy" decoding="async">
+          <img src="${a.frameB}" alt="Вторая картина" loading="lazy" decoding="async">
           <span class="museum-tooltip">И ваша тоже</span>
         </button>
 
         <button type="button" class="museum-hotspot museum-cabinet" data-toggle-pair aria-expanded="false" aria-label="${room.country}: шкаф — открыть">
-          <img class="museum-state is-default" src="assets/creativity/cabinet-closed.png?v=${v}" alt="Шкаф закрыт" loading="lazy" decoding="async" width="400" height="400">
-          <img class="museum-state is-open" src="assets/creativity/cabinet-open.png?v=${v}" alt="Шкаф открыт" loading="lazy" decoding="async" width="400" height="400" hidden>
+          <img class="museum-state is-default" src="${a.cabinetClosed}" alt="Шкаф закрыт" loading="lazy" decoding="async" width="400" height="400">
+          <img class="museum-state is-open" src="${a.cabinetOpen}" alt="Шкаф открыт" loading="lazy" decoding="async" width="400" height="400" hidden>
           <span class="museum-tooltip">Откройте — для стихов и открыток</span>
         </button>
 
         <button type="button" class="museum-hotspot museum-table" data-toggle-pair aria-expanded="false" aria-label="${room.country}: столик — открыть">
-          <img class="museum-state is-default" src="assets/creativity/table-closed.png?v=${v}" alt="Столик закрыт" loading="lazy" decoding="async" width="400" height="400">
-          <img class="museum-state is-open" src="assets/creativity/table-open.png?v=${v}" alt="Столик открыт" loading="lazy" decoding="async" width="400" height="400" hidden>
+          <img class="museum-state is-default" src="${a.tableClosed}" alt="Столик закрыт" loading="lazy" decoding="async" width="400" height="400">
+          <img class="museum-state is-open" src="${a.tableOpen}" alt="Столик открыт" loading="lazy" decoding="async" width="400" height="400" hidden>
           <span class="museum-tooltip">Откройте — для тетрадей</span>
         </button>
       </div>
