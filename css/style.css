@@ -608,19 +608,28 @@ button:focus-visible {
 }
 
 .button-primary {
+  background: #AE8B66;
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(113, 83, 47, 0.18);
+}
+
+.button-primary:hover {
+  background: #987553;
+}
+
+/* Только кнопки отправки форм заявок — изумрудно-зелёные */
+.contact-form button[type="submit"].button-primary,
+.appointment-dialog .contact-form button[type="submit"].button-primary {
   background: #0f766e;
   border-color: #0d9488;
   color: #fff;
   box-shadow: 0 12px 24px rgba(15, 118, 110, 0.28);
 }
 
-.button-primary:hover {
+.contact-form button[type="submit"].button-primary:hover:not(:disabled),
+.appointment-dialog .contact-form button[type="submit"].button-primary:hover:not(:disabled) {
   background: #0d9488;
   border-color: #14b8a6;
-}
-
-.button-primary:focus-visible {
-  outline-color: rgba(13, 148, 136, 0.45);
 }
 
 .button-secondary {
