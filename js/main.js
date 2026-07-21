@@ -528,36 +528,339 @@
     window.addEventListener("resize", requestUpdate);
   }
 
+  function loadScriptOnce(src) {
+    if (document.querySelector(`script[src="${src}"]`)) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.body.appendChild(script);
+    });
+  }
+
+  function ensureLeadPipeline() {
+    const jobs = [];
+    if (!window.AzimutCRM) {
+      jobs.push(loadScriptOnce("js/crm-bridge.js?v=20260721-amo-endpoint"));
+    }
+    if (!document.querySelector('script[src*="forms.js"]')) {
+      jobs.push(loadScriptOnce("js/forms.js?v=20260721-modal-lead"));
+    }
+    return Promise.all(jobs).catch((error) => {
+      console.warn("Lead pipeline scripts:", error);
+    });
+  }
+
+  function ensureAppointmentModal() {
+    if ($('[data-modal="appointment-modal"]')) return $('[data-modal="appointment-modal"]');
+
+    const wrap = document.createElement("div");
+    wrap.innerHTML = `
+      <div class="appointment-modal" data-modal="appointment-modal" aria-hidden="true">
+        <div class="appointment-modal-backdrop" data-modal-close></div>
+        <section class="appointment-dialog" role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title">
+          <button class="modal-close" type="button" data-modal-close aria-label="Закрыть окно записи">×</button>
+          <div>
+            <p class="eyebrow">Первичная запись</p>
+            <h2 id="appointment-modal-title">Записаться на консультацию</h2>
+            <p data-appointment-lead>Оставьте контакты — администратор бережно уточнит ситуацию и подскажет, с какого формата помощи лучше начать. Заявка поступит в amoCRM.</p>
+          </div>
+          <form class="contact-form" data-form="lead" data-form-name="site_modal">
+            <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required autocomplete="name"></label>
+            <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required autocomplete="tel"></label>
+            <label>Формат помощи<select name="service_type" required>
+              <option value="">Выберите…</option>
+              <option value="в клинике">в клинике</option>
+              <option value="на дому">на дому</option>
+              <option value="онлайн">онлайн</option>
+              <option value="по телефону">по телефону</option>
+            </select></label>
+            <label>Направление<select name="direction" required>
+              <option value="">Выберите…</option>
+              <option value="психиатрия">психиатрия</option>
+              <option value="психология">психология</option>
+              <option value="наркология">наркология</option>
+              <option value="психологическое тестирование">психологическое тестирование</option>
+              <option value="другое">другое</option>
+            </select></label>
+            <label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label>
+            <label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
+            <button class="button button-primary" type="submit">Отправить заявку</button>
+            <p class="form-status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+    `.trim();
+    const modal = wrap.firstElementChild;
+    document.body.appendChild(modal);
+    if (window.AzimutForms?.bindForm) {
+      const form = modal.querySelector("form[data-form]");
+      if (form) window.AzimutForms.bindForm(form);
+    }
+    return modal;
+  }
+
+  function ensureCallModal() {
+    if ($('[data-modal="call-modal"]')) return $('[data-modal="call-modal"]');
+    const wrap = document.createElement("div");
+    wrap.innerHTML = `
+      <div class="appointment-modal call-modal" data-modal="call-modal" aria-hidden="true">
+        <div class="appointment-modal-backdrop" data-modal-close></div>
+        <section class="appointment-dialog call-dialog" role="dialog" aria-modal="true" aria-labelledby="call-modal-title">
+          <button class="modal-close" type="button" data-modal-close aria-label="Закрыть окно звонка">×</button>
+          <p class="eyebrow">Круглосуточно</p>
+          <h2 id="call-modal-title">Позвонить в клинику</h2>
+          <p>Администратор бережно уточнит ситуацию и поможет записаться. Можно сразу оставить заявку в форме — она уйдёт в amoCRM.</p>
+          <div class="call-dialog-actions">
+            <a class="button button-primary" href="tel:+79251127799">Позвонить 8 (925) 112 77 99</a>
+            <button class="button button-secondary" type="button" data-modal-open="appointment-modal" data-select-service="Заказ звонка" data-select-format="по телефону">Оставить заявку</button>
+            <button class="button button-secondary" type="button" data-modal-close>Закрыть</button>
+          </div>
+        </section>
+      </div>
+    `.trim();
+    const modal = wrap.firstElementChild;
+    document.body.appendChild(modal);
+    return modal;
+  }
+
+  function prefillAppointmentForm(opener) {
+    const modal = ensureAppointmentModal();
+    const form = modal.querySelector("form[data-form]");
+    if (!form) return;
+
+    const service = opener?.dataset?.selectService || "";
+    const price = opener?.dataset?.selectPrice || "";
+    const format = opener?.dataset?.selectFormat || "";
+    const direction = opener?.dataset?.selectDirection || "";
+    const formName = opener?.dataset?.formName || "site_modal";
+
+    if (!form.elements.selected_service) {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "selected_service";
+      form.appendChild(input);
+    }
+    if (!form.elements.selected_price) {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "selected_price";
+      form.appendChild(input);
+    }
+
+    form.elements.selected_service.value = service;
+    form.elements.selected_price.value = price;
+    form.dataset.formName = formName;
+
+    if (format && form.elements.service_type) {
+      form.elements.service_type.value = format;
+    }
+    if (direction && form.elements.direction) {
+      const options = [...form.elements.direction.options].map((o) => o.value.toLowerCase());
+      const match = options.find((v) => v && direction.toLowerCase().includes(v));
+      if (match) form.elements.direction.value = match;
+      else if ([...form.elements.direction.options].some((o) => o.value === direction)) {
+        form.elements.direction.value = direction;
+      }
+    }
+
+    const title = modal.querySelector("#appointment-modal-title");
+    const lead = modal.querySelector("[data-appointment-lead]");
+    if (service && title) title.textContent = "Заявка: " + service;
+    else if (title) title.textContent = "Записаться на консультацию";
+    if (service && lead) {
+      lead.textContent = "Услуга «" + service + "» уже отмечена в заявке. Оставьте контакты — заявка уйдёт в amoCRM.";
+    } else if (lead) {
+      lead.textContent = "Оставьте контакты — администратор уточнит ситуацию. Заявка поступит в amoCRM.";
+    }
+
+    if (window.AzimutForms?.syncSubmitState) {
+      window.AzimutForms.syncSubmitState(form);
+    }
+  }
+
+  function isBookingTrigger(el) {
+    if (!(el instanceof Element)) return false;
+    if (el.closest("form")) return false;
+    if (el.matches("a[href^='tel:'], a[href^='mailto:']")) return false;
+    if (el.dataset.modalOpen === "call-modal") return false;
+    if (el.dataset.noBooking === "true") return false;
+
+    if (el.hasAttribute("data-modal-open") && el.dataset.modalOpen === "appointment-modal") return true;
+    if (el.hasAttribute("data-select-service")) return true;
+
+    const href = (el.getAttribute("href") || "").trim();
+    if (
+      href.includes("#appointment") ||
+      href === "#price-form" ||
+      href.endsWith("#price-form") ||
+      href === "#service-form" ||
+      href.endsWith("#service-form") ||
+      href === "services.html#home" ||
+      href.endsWith("services.html#home")
+    ) {
+      return true;
+    }
+
+    const text = (el.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
+    if (!el.classList.contains("button") && !el.classList.contains("banner-cta") && !el.classList.contains("header-utility-link") && !el.classList.contains("nav-dropdown-link")) {
+      return false;
+    }
+    return /записаться|оформить заявку|получить консультацию|заказать звонок|вызвать врача|вызвать специалиста|хочу оставить работу|форма обратной связи|записаться к специалисту|обсудить ситуацию/.test(text);
+  }
+
+  function bookingIntent(el) {
+    const text = (el.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
+    const href = (el.getAttribute("href") || "").trim();
+    const intent = {
+      service: el.dataset.selectService || "",
+      price: el.dataset.selectPrice || "",
+      format: el.dataset.selectFormat || "",
+      direction: el.dataset.selectDirection || "",
+      formName: el.dataset.formName || "site_modal"
+    };
+
+    if (/заказать звонок|заказ звонка/.test(text)) {
+      intent.service = intent.service || "Заказ звонка";
+      intent.format = intent.format || "по телефону";
+      intent.formName = "callback_request";
+    } else if (/вызвать врача|вызвать специалиста|на дому|services\.html#home/.test(text + href)) {
+      intent.service = intent.service || "Вызов специалиста на дом";
+      intent.format = intent.format || "на дому";
+      intent.formName = "home_visit";
+    } else if (/тестирован/.test(text)) {
+      intent.direction = intent.direction || "психологическое тестирование";
+      intent.formName = "test_invite";
+    } else if (/музей|творчеств/.test(text)) {
+      intent.service = intent.service || "Музей творчества";
+      intent.formName = "creativity_museum";
+    } else if (/партнёр|сотруднич/.test(text)) {
+      intent.formName = "partnership";
+    }
+
+    return intent;
+  }
+
   function initModals() {
-    const openers = $$("[data-modal-open]");
-    if (!openers.length) return;
+    ensureLeadPipeline();
+    ensureAppointmentModal();
+    ensureCallModal();
+
     let lastFocus = null;
 
     const closeModal = (modal) => {
+      if (!modal) return;
       modal.classList.remove("is-open");
       modal.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("modal-open");
+      if (!$("[data-modal].is-open")) document.body.classList.remove("modal-open");
       lastFocus?.focus();
     };
 
     const openModal = (modal) => {
+      if (!modal) return;
       lastFocus = document.activeElement;
+      $$("[data-modal].is-open").forEach((open) => {
+        if (open !== modal) closeModal(open);
+      });
       modal.classList.add("is-open");
       modal.setAttribute("aria-hidden", "false");
       document.body.classList.add("modal-open");
       setTimeout(() => $("input, textarea, select, button", modal)?.focus(), 80);
     };
 
-    openers.forEach((opener) => {
-      opener.addEventListener("click", () => {
-        const modal = $(`[data-modal="${opener.dataset.modalOpen}"]`);
-        if (modal) openModal(modal);
-      });
-    });
+    window.AzimutAppointment = {
+      open(options = {}) {
+        ensureLeadPipeline().then(() => {
+          const modal = ensureAppointmentModal();
+          const fake = document.createElement("button");
+          if (options.service) fake.dataset.selectService = options.service;
+          if (options.price) fake.dataset.selectPrice = options.price;
+          if (options.format) fake.dataset.selectFormat = options.format;
+          if (options.direction) fake.dataset.selectDirection = options.direction;
+          if (options.formName) fake.dataset.formName = options.formName;
+          prefillAppointmentForm(fake);
+          if (window.AzimutForms?.bindForm) {
+            const form = modal.querySelector("form[data-form]");
+            if (form && form.dataset.bound !== "true") window.AzimutForms.bindForm(form);
+          }
+          openModal(modal);
+        });
+      },
+      close() {
+        closeModal($('[data-modal="appointment-modal"].is-open'));
+      }
+    };
 
-    $$("[data-modal]").forEach((modal) => {
-      $$("[data-modal-close]", modal).forEach((closer) => {
-        closer.addEventListener("click", () => closeModal(modal));
+    document.addEventListener("click", (event) => {
+      const closer = event.target.closest("[data-modal-close]");
+      if (closer) {
+        const modal = closer.closest("[data-modal]");
+        if (modal) {
+          event.preventDefault();
+          closeModal(modal);
+        }
+        return;
+      }
+
+      const explicit = event.target.closest("[data-modal-open]");
+      if (explicit) {
+        const id = explicit.dataset.modalOpen;
+        if (id === "appointment-modal" || isBookingTrigger(explicit)) {
+          event.preventDefault();
+          const intent = bookingIntent(explicit);
+          Object.entries(intent).forEach(([key, value]) => {
+            if (!value) return;
+            const attr = key === "formName" ? "formName" : "select" + key.charAt(0).toUpperCase() + key.slice(1);
+            // map to dataset keys
+          });
+          explicit.dataset.selectService = intent.service || explicit.dataset.selectService || "";
+          explicit.dataset.selectPrice = intent.price || explicit.dataset.selectPrice || "";
+          explicit.dataset.selectFormat = intent.format || explicit.dataset.selectFormat || "";
+          explicit.dataset.selectDirection = intent.direction || explicit.dataset.selectDirection || "";
+          explicit.dataset.formName = intent.formName || explicit.dataset.formName || "site_modal";
+          ensureLeadPipeline().then(() => {
+            prefillAppointmentForm(explicit);
+            const modal = ensureAppointmentModal();
+            if (window.AzimutForms?.bindForm) {
+              const form = modal.querySelector("form[data-form]");
+              if (form) window.AzimutForms.bindForm(form);
+            }
+            openModal(modal);
+          });
+          return;
+        }
+        if (id === "call-modal") {
+          event.preventDefault();
+          openModal(ensureCallModal());
+          return;
+        }
+        const modal = $(`[data-modal="${id}"]`);
+        if (modal) {
+          event.preventDefault();
+          openModal(modal);
+        }
+        return;
+      }
+
+      const booking = event.target.closest("a, button");
+      if (!booking || !isBookingTrigger(booking)) return;
+      event.preventDefault();
+      const intent = bookingIntent(booking);
+      booking.dataset.selectService = intent.service || booking.dataset.selectService || "";
+      booking.dataset.selectPrice = intent.price || booking.dataset.selectPrice || "";
+      booking.dataset.selectFormat = intent.format || booking.dataset.selectFormat || "";
+      booking.dataset.selectDirection = intent.direction || booking.dataset.selectDirection || "";
+      booking.dataset.formName = intent.formName || "site_modal";
+      ensureLeadPipeline().then(() => {
+        prefillAppointmentForm(booking);
+        const modal = ensureAppointmentModal();
+        if (window.AzimutForms?.bindForm) {
+          const form = modal.querySelector("form[data-form]");
+          if (form) window.AzimutForms.bindForm(form);
+        }
+        openModal(modal);
       });
     });
 
@@ -851,7 +1154,7 @@
         <p class="doctor-exp"><strong>${escapeDoctorHtml(item.experience)}</strong></p>
         <p class="doctor-focus">${escapeDoctorHtml(displayFocus)}</p>
         ${detailed ? `${renderDoctorSpecialties(item)}${renderDoctorEducation(item)}${renderDoctorCourses(item)}${renderDoctorExtra(item)}` : ""}
-        ${hideActions ? "" : `<a class="button button-secondary" href="contacts.html#appointment" data-select-service="${escapeDoctorHtml(item.role)}" data-select-price="">Записаться</a>`}
+        ${hideActions ? "" : `<button class="button button-secondary" type="button" data-modal-open="appointment-modal" data-select-service="${escapeDoctorHtml(item.role)}" data-select-direction="${escapeDoctorHtml((item.categories && item.categories[0]) || "")}" data-form-name="doctor_card" data-select-price="">Записаться</button>`}
       </article>
     `;
     }).join("");
