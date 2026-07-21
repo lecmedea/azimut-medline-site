@@ -3987,10 +3987,6 @@ body.test-modal-open .site-header {
   box-shadow: 0 8px 18px rgba(21, 31, 45, 0.06);
 }
 
-.test-question {
-  scroll-margin-top: 72px;
-}
-
 .test-hourglass {
   --test-progress: 0;
   width: 66px;
@@ -4124,6 +4120,7 @@ body.test-modal-open .site-header {
   border: 1px solid rgba(219, 232, 232, 0.9);
   border-radius: 14px;
   background: rgba(247, 250, 250, 0.86);
+  scroll-margin-top: 72px;
 }
 
 .test-question legend {
