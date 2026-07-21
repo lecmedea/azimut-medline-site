@@ -41,7 +41,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalClinic","name":"Азимут Клиник","alternateName":["Центр ментального здоровья Азимут Клиник","Azimut Clinic","Азимут Клиник Москва"],"description":"Центр ментального здоровья в Москве: психиатрия, наркология, психологическая помощь круглосуточно.","url":"https://azimutclinic.ru/","logo":"https://azimutclinic.ru/assets/brand/azimut-clinic-emblem.jpg","image":"https://azimutclinic.ru/assets/brand/azimut-clinic-og.jpg","telephone":"+79251127799","email":"info@azimutclinic.ru","address":{"@type":"PostalAddress","streetAddress":"ш. Старокалужское, дом 62","addressLocality":"Москва","postalCode":"117630","addressRegion":"Москва","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":55.660607,"longitude":37.538170},"openingHours":"Mo-Su 00:00-24:00","medicalSpecialty":["Psychiatric","Psychologic","Addiction Medicine"],"areaServed":{"@type":"City","name":"Москва"},"hasMap":"https://yandex.ru/maps/?ll=37.538170%2C55.660607&z=16","sameAs":["https://azimutclinic.ru/"]}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Азимут Клиник","url":"https://azimutclinic.ru/","inLanguage":"ru-RU","publisher":{"@type":"MedicalOrganization","name":"Азимут Клиник","url":"https://azimutclinic.ru/"}}</script>
   <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
-  <link rel="stylesheet" href="css/style.css?v=20260721-emerald-btn">
+  <link rel="stylesheet" href="css/style.css?v=20260721-form-lock">
   <link rel="stylesheet" href="css/responsive.css?v=20260721-doctor-modal">
   <link rel="stylesheet" href="css/animations.css" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="css/animations.css"></noscript>
@@ -572,9 +572,9 @@
       <form class="contact-form amo-lead-form" data-form="lead" data-form-name="main_modal" data-amo-style="1">
         <input class="amo-lead-form__field" name="name" type="text" placeholder="ФИО" required autocomplete="name" aria-label="ФИО">
         <input class="amo-lead-form__field" name="phone" type="tel" placeholder="+7 Телефон" required autocomplete="tel" inputmode="tel" aria-label="Телефон">
-        <input class="amo-lead-form__field" name="email" type="email" placeholder="Email" autocomplete="email" aria-label="Email">
-        <textarea class="amo-lead-form__field amo-lead-form__note" name="message" rows="3" placeholder="Примечание" aria-label="Примечание"></textarea>
-        <button class="amo-lead-form__submit" type="submit">Отправить</button>
+        <input class="amo-lead-form__field" name="email" type="email" placeholder="Email" required autocomplete="email" aria-label="Email">
+        <textarea class="amo-lead-form__field amo-lead-form__note" name="message" rows="3" placeholder="Примечание" required aria-label="Примечание"></textarea>
+        <button class="amo-lead-form__submit" type="submit" disabled aria-disabled="true">Отправить</button>
         <p class="form-status" aria-live="polite"></p>
         <p class="amo-lead-form__badge">Работает на amoCRM</p>
         <p class="amo-lead-form__legal">Нажимая «Отправить», вы соглашаетесь с обработкой персональных данных и политикой конфиденциальности.</p>
@@ -641,9 +641,9 @@
   </footer>
 
   <script src="data/doctors.js?v=20260721-doctors-full" defer></script>
-  <script src="js/main.js?v=20260721-amo-ui" defer></script>
+  <script src="js/main.js?v=20260721-form-lock" defer></script>
   <script src="js/crm-bridge.js?v=20260721-one-form" defer></script>
-  <script src="js/forms.js?v=20260721-amo-ui" defer></script>
+  <script src="js/forms.js?v=20260721-form-lock" defer></script>
   <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
   <!-- Филипп: сразу на desktop; на mobile — после idle (джойстик приоритетнее) -->
   <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
