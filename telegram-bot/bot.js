@@ -30,7 +30,22 @@ function loadDotEnv(filePath) {
 
 loadDotEnv(path.join(__dirname, ".env"));
 
-const TELEGRAM_API = "https://api.telegram.org/bot";
+/**
+ * Telegram Bot API base ending with `/bot`.
+ * On Yandex Cloud, api.telegram.org is often blocked — set:
+ *   TELEGRAM_API=https://azimut-medline-site.vercel.app/api/tg-proxy/bot
+ *   TG_PROXY_SECRET=...
+ */
+const TELEGRAM_API = (() => {
+  const raw = (process.env.TELEGRAM_API || "https://api.telegram.org/bot").trim();
+  if (raw.endsWith("/bot")) return raw;
+  if (raw.endsWith("/bot/")) return raw.slice(0, -1);
+  if (raw.endsWith("/")) return `${raw}bot`;
+  return `${raw}/bot`;
+})();
+const TG_PROXY_SECRET = process.env.TG_PROXY_SECRET || "";
+/** Long-poll seconds; keep ≤8 when using a serverless proxy (Vercel free ~10–60s). */
+const TELEGRAM_POLL_TIMEOUT = Number(process.env.TELEGRAM_POLL_TIMEOUT || (TG_PROXY_SECRET ? 8 : 25));
 const DEEPSEEK_API_URL = process.env.DEEPSEEK_API_URL || "https://api.deepseek.com/chat/completions";
 const DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL || "deepseek-chat";
 const CLINIC_NAME = process.env.CLINIC_NAME || "Азимут Клиник";
@@ -40,6 +55,10 @@ const BOT_LOGO_URL = process.env.BOT_LOGO_URL || `${CLINIC_SITE_URL.replace(/\/$
 const WELCOME_PHOTO_PATH =
   process.env.WELCOME_PHOTO_PATH || path.join(__dirname, "assets", "welcome-clinic.jpg");
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || "";
+/** Google Apps Script web app URL that appends rows to the clinic leads spreadsheet */
+const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL || "";
+const GOOGLE_SHEETS_WEBHOOK_SECRET = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET || "azimut-tg-leads-2026";
+const GOOGLE_SHEETS_ID = process.env.GOOGLE_SHEETS_ID || "14mN2aNqmYdg-TdLrKIWrLK7z8woTECd3qpLNqy6mMq8";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
@@ -225,10 +244,16 @@ function getChatId(update) {
   return update.message?.chat?.id || update.callback_query?.message?.chat?.id;
 }
 
+function telegramHeaders(extra = {}) {
+  const headers = { ...extra };
+  if (TG_PROXY_SECRET) headers["X-Azimut-Tg-Proxy"] = TG_PROXY_SECRET;
+  return headers;
+}
+
 async function telegram(method, payload) {
   const response = await fetch(`${TELEGRAM_API}${TELEGRAM_BOT_TOKEN}/${method}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: telegramHeaders({ "Content-Type": "application/json" }),
     body: JSON.stringify(payload)
   });
   const data = await response.json().catch(() => null);
@@ -256,6 +281,7 @@ async function telegramSendPhotoFile(chatId, filePath, caption, extra = {}) {
 
   const response = await fetch(`${TELEGRAM_API}${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
     method: "POST",
+    headers: telegramHeaders(),
     body: form
   });
   const data = await response.json().catch(() => null);
@@ -408,20 +434,104 @@ async function handleLeadMessage(chatId, text) {
   return true;
 }
 
+function moscowTimestamp(iso) {
+  try {
+    return new Intl.DateTimeFormat("sv-SE", {
+      timeZone: "Europe/Moscow",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    }).format(iso ? new Date(iso) : new Date()).replace("T", " ");
+  } catch {
+    return new Date().toISOString();
+  }
+}
+
+async function sendLeadToGoogleSheets(lead) {
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) {
+    console.warn(
+      "GOOGLE_SHEETS_WEBHOOK_URL is not set. Lead saved only to bot log. " +
+        "Deploy telegram-bot/google-sheets-leads.gs and set the web app URL in .env"
+    );
+    return { ok: false, skipped: true };
+  }
+
+  const payload = {
+    secret: GOOGLE_SHEETS_WEBHOOK_SECRET,
+    id: lead.id || `tg-${Date.now()}`,
+    createdAt: lead.createdAt,
+    createdAtMsk: moscowTimestamp(lead.createdAt),
+    source: lead.source || "Telegram bot",
+    platform: "Telegram",
+    name: lead.name || "",
+    phone: lead.phone || "",
+    email: lead.email || "",
+    service: lead.service || "",
+    direction: lead.service || "",
+    comment: lead.comment || "",
+    chatId: lead.chatId || "",
+    telegramUsername: lead.username || "",
+    pageUrl: "https://t.me/azimut_clinic_bot",
+    form: "telegram_bot_lead",
+    requestId: lead.id || `tg-${Date.now()}`,
+    consent: true,
+    status: "new",
+    spreadsheetId: GOOGLE_SHEETS_ID
+  };
+
+  const response = await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    redirect: "follow"
+  });
+  const text = await response.text();
+  let data = null;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    data = { raw: text.slice(0, 300) };
+  }
+  if (!response.ok || data?.ok === false) {
+    throw new Error(`Sheets webhook failed: HTTP ${response.status} ${JSON.stringify(data)}`);
+  }
+  console.log("Lead written to Google Sheets:", JSON.stringify(data));
+  return data;
+}
+
 async function finishLead(chatId, lead) {
   lead.createdAt = new Date().toISOString();
   lead.source = "Telegram bot";
+  lead.chatId = String(chatId);
+  lead.id = `tg-${chatId}-${Date.now()}`;
   console.log("Telegram clinic lead:", JSON.stringify(lead, null, 2));
 
+  let sheetsOk = false;
+  try {
+    const sheetsResult = await sendLeadToGoogleSheets(lead);
+    sheetsOk = !sheetsResult?.skipped;
+  } catch (error) {
+    console.error("Google Sheets lead error:", error.message);
+  }
+
   if (ADMIN_CHAT_ID) {
-    await sendMessage(ADMIN_CHAT_ID, [
-      "🆕 <b>Новая заявка из Telegram-бота</b>",
-      "",
-      `👤 Имя: ${escapeHtml(lead.name || "не указано")}`,
-      `☎️ Телефон: ${escapeHtml(lead.phone || "не указан")}`,
-      `🧭 Направление: ${escapeHtml(lead.service || "не указано")}`,
-      `📝 Комментарий: ${escapeHtml(lead.comment || "не указан")}`
-    ].join("\n"));
+    try {
+      await sendMessage(ADMIN_CHAT_ID, [
+        "🆕 <b>Новая заявка из Telegram-бота</b>",
+        "",
+        `👤 Имя: ${escapeHtml(lead.name || "не указано")}`,
+        `☎️ Телефон: ${escapeHtml(lead.phone || "не указан")}`,
+        `🧭 Направление: ${escapeHtml(lead.service || "не указано")}`,
+        `📝 Комментарий: ${escapeHtml(lead.comment || "не указан")}`,
+        sheetsOk ? "📊 Таблица: записано" : "📊 Таблица: не записано (проверьте webhook)"
+      ].join("\n"));
+    } catch (error) {
+      console.warn("Admin notify failed:", error.message);
+    }
   }
 
   userState.delete(chatId);
@@ -593,7 +703,7 @@ async function poll() {
     try {
       const updates = await telegram("getUpdates", {
         offset: updateOffset,
-        timeout: 25,
+        timeout: Number.isFinite(TELEGRAM_POLL_TIMEOUT) ? TELEGRAM_POLL_TIMEOUT : 25,
         allowed_updates: ["message", "callback_query"]
       });
 
