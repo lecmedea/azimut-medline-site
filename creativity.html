@@ -26,28 +26,78 @@
 </head>
 <body>
   <a class="skip-link" href="#main-content">Перейти к содержанию</a>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="Азимут Клиник">
-        <img class="brand-logo-main" src="assets/logo-header-transparent.png" alt="Азимут Клиник">
-        <span class="brand-text">Центр ментального здоровья Азимут Клиник</span>
-      </a>
-      <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
-      <nav class="main-nav" aria-label="Основная навигация">
+  <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img class="brand-logo-main" src="assets/logo-header-transparent.png" alt="Азимут Клиник. Психология и психиатрия"><span class="brand-text">Центр ментального здоровья Азимут Клиник</span></a><button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button><nav class="main-nav" aria-label="Основная навигация">
         <div class="nav-item"><a class="nav-link" href="index.html">Главная</a></div>
-        <div class="nav-item"><a class="nav-link" href="about.html">О нас</a></div>
-        <div class="nav-item"><a class="nav-link" href="blog.html">Блог</a></div>
-        <div class="nav-item"><a class="nav-link is-active" href="creativity.html">Наше творчество</a></div>
-        <div class="nav-item"><a class="nav-link" href="entertainment.html">Развлечения</a></div>
-        <div class="nav-item"><a class="nav-link" href="services.html">Услуги</a></div>
-        <div class="nav-item"><a class="nav-link" href="doctors.html">Направления и врачи</a></div>
-        <div class="nav-item"><a class="nav-link" href="contacts.html">Контакты</a></div>
-      </nav>
-      <div class="header-actions">
-        <a class="button button-primary" href="contacts.html#appointment">Записаться</a>
-      </div>
-    </div>
-  </header>
+        <div class="nav-item has-dropdown">
+          <a class="nav-link" href="about.html" aria-haspopup="true" aria-expanded="false">О нас <span class="nav-arrow" aria-hidden="true">⌄</span></a>
+          <button class="mobile-nav-accordion" type="button" aria-label="Открыть подразделы О нас" aria-expanded="false"><span class="nav-arrow" aria-hidden="true">⌄</span></button>
+          <div class="nav-dropdown" role="menu">
+            <a class="nav-dropdown-link" href="about.html" role="menuitem">О клинике</a>
+            <a class="nav-dropdown-link" href="about.html#reviews" role="menuitem">Отзывы пациентов</a>
+            <a class="nav-dropdown-link" href="about.html" role="menuitem">Лицензия и сертификат</a>
+            <a class="nav-dropdown-link" href="partnership.html" role="menuitem">Сотрудничество / условия партнёрства</a>
+          </div>
+        </div>        <div class="nav-item has-dropdown">
+          <a class="nav-link is-active" href="blog.html" aria-haspopup="true" aria-expanded="false">Блог <span class="nav-arrow" aria-hidden="true">⌄</span></a>
+          <button class="mobile-nav-accordion" type="button" aria-label="Открыть подразделы Блог" aria-expanded="false"><span class="nav-arrow" aria-hidden="true">⌄</span></button>
+          <div class="nav-dropdown" role="menu">
+            <a class="nav-dropdown-link" href="blog.html" role="menuitem">Все статьи</a>
+            <a class="nav-dropdown-link" href="tests.html" role="menuitem">Тесты</a>
+            <a class="nav-dropdown-link" href="creativity.html" role="menuitem" aria-current="page">Наше творчество</a>
+            <a class="nav-dropdown-link" href="entertainment.html" role="menuitem">Развлечения</a>
+
+            <a class="nav-dropdown-link" href="blog.html" role="menuitem">Психиатрия</a>
+            <a class="nav-dropdown-link" href="blog.html" role="menuitem">Психология</a>
+            <a class="nav-dropdown-link" href="blog.html" role="menuitem">Наркология</a>
+            <a class="nav-dropdown-link" href="blog.html" role="menuitem">Подростки</a>
+            <a class="nav-dropdown-link" href="blog.html" role="menuitem">Психологическое тестирование</a>
+            <a class="nav-dropdown-link" href="blog.html" role="menuitem">Онлайн-помощь</a>
+            <a class="nav-dropdown-link" href="blog.html" role="menuitem">Для родственников</a>
+            <a class="nav-dropdown-link" href="prices.html#faq" role="menuitem">FAQ</a>
+          </div>
+        </div>
+        <div class="nav-item has-dropdown">
+          <a class="nav-link" href="services.html" aria-haspopup="true" aria-expanded="false">Услуги <span class="nav-arrow" aria-hidden="true">⌄</span></a>
+          <button class="mobile-nav-accordion" type="button" aria-label="Открыть подразделы Услуги" aria-expanded="false"><span class="nav-arrow" aria-hidden="true">⌄</span></button>
+          <div class="nav-dropdown" role="menu">
+            <a class="nav-dropdown-link" href="services.html#clinic" role="menuitem">В клинике</a>
+            <a class="nav-dropdown-link" href="services.html#home" role="menuitem">На дому</a>
+            <a class="nav-dropdown-link" href="services.html#online" role="menuitem">Дистанционно</a>
+            <a class="nav-dropdown-link" href="services.html#service-form" role="menuitem">По телефону</a>
+            <a class="nav-dropdown-link" href="services.html" role="menuitem">Наркология</a>
+            <a class="nav-dropdown-link" href="services.html" role="menuitem">Психиатрия</a>
+            <a class="nav-dropdown-link" href="services.html" role="menuitem">Психология</a>
+            <a class="nav-dropdown-link" href="services.html" role="menuitem">Психологическое тестирование</a>
+            <a class="nav-dropdown-link" href="prices.html" role="menuitem">Стоимость услуг</a>
+            <a class="nav-dropdown-link" href="payment.html" role="menuitem">Оплата</a>
+          </div>
+        </div>
+        <div class="nav-item has-dropdown">
+          <a class="nav-link" href="doctors.html" aria-haspopup="true" aria-expanded="false">Направления и врачи <span class="nav-arrow" aria-hidden="true">⌄</span></a>
+          <button class="mobile-nav-accordion" type="button" aria-label="Открыть подразделы Направления и врачи" aria-expanded="false"><span class="nav-arrow" aria-hidden="true">⌄</span></button>
+          <div class="nav-dropdown" role="menu">
+            <a class="nav-dropdown-link" href="doctors.html" role="menuitem">Врачи</a>
+            <a class="nav-dropdown-link" href="doctors.html" role="menuitem">Направления</a>
+            <a class="nav-dropdown-link" href="doctors.html" role="menuitem">Психиатр</a>
+            <a class="nav-dropdown-link" href="doctors.html" role="menuitem">Нарколог</a>
+            <a class="nav-dropdown-link" href="doctors.html" role="menuitem">Психолог</a>
+            <a class="nav-dropdown-link" href="doctors.html" role="menuitem">Клинический психолог</a>
+            <a class="nav-dropdown-link" href="doctors.html" role="menuitem">Психотерапевт</a>
+          </div>
+        </div>
+        <div class="nav-item has-dropdown">
+          <a class="nav-link" href="contacts.html" aria-haspopup="true" aria-expanded="false">Контакты <span class="nav-arrow" aria-hidden="true">⌄</span></a>
+          <button class="mobile-nav-accordion" type="button" aria-label="Открыть подразделы Контакты" aria-expanded="false"><span class="nav-arrow" aria-hidden="true">⌄</span></button>
+          <div class="nav-dropdown" role="menu">
+            <a class="nav-dropdown-link" href="contacts.html" role="menuitem">Адрес</a>
+            <a class="nav-dropdown-link" href="tel:+79251127799" role="menuitem">Телефон</a>
+
+            <a class="nav-dropdown-link" href="contacts.html#appointment" role="menuitem">Форма обратной связи</a>
+            <a class="nav-dropdown-link" href="contacts.html" role="menuitem">Как добраться</a>
+            <a class="nav-dropdown-link" href="contacts.html" role="menuitem">Реквизиты</a>
+          </div>
+        </div>
+      </nav><div class="header-actions"><div class="header-utility"><span class="round-badge">Круглосуточно</span><a class="phone-link" href="tel:+79251127799">8 (925) 112 77 99</a><a class="header-utility-link" href="contacts.html#appointment">Заказать звонок</a><a class="header-utility-link" href="services.html#home">Вызвать врача</a></div><a class="button button-primary" href="contacts.html#appointment">Записаться</a></div></div></header>
 
   <main id="main-content">
     <section class="page-hero blog-hero">
