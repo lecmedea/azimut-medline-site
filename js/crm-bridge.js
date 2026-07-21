@@ -119,12 +119,18 @@
     }
 
     const data = await sendToEndpoint(endpoint, flat);
-    const amoFailed = Array.isArray(data.warnings) && data.warnings.includes("AMOCRM_ERROR");
+    const warnings = Array.isArray(data.warnings) ? data.warnings : [];
+    const amoFailed = warnings.includes("AMOCRM_ERROR");
+    const amoOk =
+      Boolean(data.leadId) ||
+      data.deliveryMode === "public-form" ||
+      data.deliveryMode === "api-v4" ||
+      warnings.includes("AMOCRM_VIA_PUBLIC_FORM");
     const mode = data.ok === false
       ? "error"
-      : amoFailed
+      : amoFailed && !amoOk
         ? "captured"
-        : data.leadId
+        : amoOk
           ? "sent"
           : data.captured
             ? "captured"
