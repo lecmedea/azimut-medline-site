@@ -1121,7 +1121,7 @@
           <h3 class="test-specialist-invite__title">${escapeHtml(doctor.shortName || doctor.name)}</h3>
           <p class="test-specialist-invite__text">${escapeHtml(lead)}. ${escapeHtml(doctor.role)}. Тест — лишь ориентир: врач уточнит картину лично и бережно.</p>
           <div class="test-specialist-invite__actions">
-            <a class="button button-primary" href="contacts.html#appointment" data-select-service="${escapeHtml(doctor.role)}">Записаться к специалисту</a>
+            <button class="button button-primary" type="button" data-modal-open="appointment-modal" data-select-service="${escapeHtml(doctor.role)}" data-select-direction="${escapeHtml((doctor.categories && doctor.categories[0]) || test.direction || "")}" data-form-name="test_specialist_invite">Записаться к специалисту</button>
             <a class="button button-secondary" href="doctors.html">Все врачи</a>
           </div>
         </div>
