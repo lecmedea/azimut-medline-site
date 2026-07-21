@@ -1006,10 +1006,11 @@ button:focus-visible {
 .specialists-section .doctor-card::before {
   content: "";
   position: absolute;
-  inset: 34% 0 0;
+  /* shorter gradient — only for compact name + role at the bottom */
+  inset: 58% 0 0;
   z-index: 1;
   background:
-    linear-gradient(180deg, transparent, rgba(31, 27, 24, 0.38) 36%, rgba(31, 27, 24, 0.82) 100%);
+    linear-gradient(180deg, transparent, rgba(31, 27, 24, 0.32) 28%, rgba(31, 27, 24, 0.78) 100%);
   pointer-events: none;
 }
 
@@ -1035,44 +1036,48 @@ button:focus-visible {
   filter: saturate(0.92) contrast(1.04);
 }
 
-.specialists-section .doctor-card .eyebrow,
-.specialists-section .doctor-card h3,
-.specialists-section .doctor-card p {
+/* На фото — только подпись: Фамилия Имя + направление (без био/стажа) */
+.specialists-section .doctor-card .doctor-card__caption {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0 2px 2px;
+}
+
+.specialists-section .doctor-card .doctor-card__name,
+.specialists-section .doctor-card .doctor-role-line {
   position: relative;
   z-index: 2;
   margin: 0;
   color: #fffaf1;
 }
 
-.specialists-section .doctor-card .eyebrow {
-  max-width: 100%;
-  margin-bottom: 8px;
-  font-size: 11px;
+.specialists-section .doctor-card .doctor-card__name {
+  font-size: clamp(17px, 2.2vw, 21px);
+  font-weight: 500;
+  line-height: 1.15;
 }
 
-.specialists-section .doctor-card h3 {
-  margin-bottom: 6px;
-  font-size: 22px;
-  line-height: 1.08;
+.specialists-section .doctor-card .doctor-role-line {
+  display: block;
+  font-size: 13px;
+  line-height: 1.3;
+  color: rgba(255, 250, 241, 0.9);
 }
 
-@media (min-width: 901px) {
-  .specialists-section .doctor-card h3.doctor-name-compact {
-    font-size: clamp(12px, 0.8vw, 14px);
-    white-space: nowrap;
-    overflow-wrap: normal;
-    word-break: keep-all;
-    text-wrap: nowrap;
-  }
-}
-
-.specialists-section .doctor-card .doctor-role-line,
+.specialists-section .doctor-card .doctor-badge,
+.specialists-section .doctor-card .eyebrow,
+.specialists-section .doctor-card .doctor-exp,
+.specialists-section .doctor-card .doctor-focus,
+.specialists-section .doctor-card .doctor-card__extra,
 .specialists-section .doctor-card .doctor-details,
 .specialists-section .doctor-card .doctor-note,
 .specialists-section .doctor-card .doctor-card__hint,
 .specialists-section .doctor-card .doctor-card__actions,
 .specialists-section .doctor-card .button {
-  display: none;
+  display: none !important;
 }
 
 .specialists-section .doctor-card--clickable {
@@ -1094,25 +1099,6 @@ button:focus-visible {
   letter-spacing: 0.03em;
   text-transform: uppercase;
   backdrop-filter: blur(6px);
-}
-
-.specialists-section .doctor-card p:not(.eyebrow) {
-  font-size: 13px;
-  color: rgba(255, 250, 241, 0.84);
-}
-
-.specialists-section .doctor-card .doctor-focus {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-top: 6px;
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.specialists-section .doctor-card h3 {
-  font-size: clamp(16px, 2.2vw, 20px);
 }
 
 .section-heading {
@@ -2034,28 +2020,22 @@ button:focus-visible {
   align-items: start;
 }
 
-.specialists-section .doctor-card .doctor-badge,
-.specialists-section .doctor-card .doctor-role-line,
-.specialists-section .doctor-card .doctor-focus {
-  position: relative;
-  z-index: 2;
-}
-
-.specialists-section .doctor-card .doctor-badge {
-  background: rgba(255, 250, 241, 0.16);
-  color: #fffaf1;
-}
-
-.specialists-section .doctor-card .doctor-role-line,
-.specialists-section .doctor-card .doctor-focus,
-.specialists-section .doctor-card .doctor-exp {
-  color: rgba(255, 250, 241, 0.88);
-}
-
-.specialists-section .doctor-card .doctor-details,
-.specialists-section .doctor-card .doctor-note,
-.specialists-section .doctor-card .button {
+/* detailed doctors grid: text under photo — keep compact caption + extra only when detailed */
+.doctor-card--minimal:not(.doctor-card--detailed) .doctor-card__extra,
+.doctor-card--minimal:not(.doctor-card--detailed) .doctor-badge {
   display: none;
+}
+
+.doctor-card--detailed .doctor-card__caption {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.doctor-card--detailed .doctor-card__name {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.2;
 }
 
 .article-card:hover .article-image,
