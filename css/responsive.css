@@ -602,6 +602,13 @@
   transform: translateX(-50%);
 }
 
+/* Как в блоге: джойстик на mobile на всех неглавных страницах */
+@media (max-width: 860px) {
+  body:not(.is-home) .azimut-joystick {
+    display: block;
+  }
+}
+
 body.blog-utility-mode .azimut-joystick {
   display: block;
 }
@@ -673,6 +680,17 @@ body.blog-utility-mode.joystick-audio-open .azimut-mini-player {
   background: #fff;
 }
 
+.azimut-joystick-action--tests {
+  background: linear-gradient(145deg, #fffbf5, #f3e6d2);
+  border-color: rgba(154, 76, 57, 0.35);
+}
+
+.azimut-joystick-tests-icon {
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+
 .azimut-joystick-action--philipp img {
   width: 100%;
   height: 100%;
@@ -698,7 +716,7 @@ body.blog-utility-mode.joystick-audio-open .azimut-mini-player {
   left: 50%;
   bottom: 0;
   display: grid;
-  grid-template-columns: repeat(3, 46px);
+  grid-template-columns: repeat(4, 46px);
   gap: 8px;
   padding: 8px;
   border: 1px solid rgba(213, 185, 139, 0.42);
