@@ -4384,11 +4384,48 @@ h1 {
 
 .site-footer {
   position: relative;
-  padding: 58px 0 46px;
+  padding: 58px 0 28px;
   background:
     linear-gradient(180deg, rgba(251, 247, 238, 0.98) 0%, rgba(255, 250, 242, 0.86) 16%, rgba(246, 236, 220, 0.66) 44%, rgba(246, 236, 220, 0.66) 100%),
     url("../assets/images/onyx-warm-bg.jpg") center / cover;
   color: #51483f;
+}
+
+.footer-author {
+  position: relative;
+  z-index: 1;
+  margin: 8px auto 0;
+  max-width: 1200px;
+  padding: 0 20px 4px;
+  text-align: right;
+}
+
+.footer-author p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: rgba(81, 72, 63, 0.72);
+  letter-spacing: 0.01em;
+}
+
+.footer-author a {
+  color: rgba(81, 72, 63, 0.88);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(174, 139, 102, 0.35);
+}
+
+.footer-author a:hover,
+.footer-author a:focus-visible {
+  color: #9a4c39;
+  border-bottom-color: rgba(154, 76, 57, 0.55);
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .footer-author {
+    text-align: center;
+    padding-bottom: 8px;
+  }
 }
 
 .site-footer::before {
