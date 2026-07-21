@@ -740,26 +740,121 @@
     });
   }
 
+  function escapeDoctorHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function renderDoctorEducation(item) {
+    const education = item.education || [];
+    if (!education.length) return "";
+    return `
+      <details class="doctor-details">
+        <summary>Образование</summary>
+        <ul class="doctor-meta-list">
+          ${education.map((row) => `
+            <li>
+              <span class="doctor-meta-year">${escapeDoctorHtml(row.year)}</span>
+              <div>
+                <strong>${escapeDoctorHtml(row.specialty)}</strong>
+                <span>${escapeDoctorHtml(row.place)}</span>
+                ${row.kind ? `<em>${escapeDoctorHtml(row.kind)}</em>` : ""}
+              </div>
+            </li>
+          `).join("")}
+        </ul>
+      </details>
+    `;
+  }
+
+  function renderDoctorCourses(item) {
+    const courses = item.courses || [];
+    if (!courses.length) return "";
+    return `
+      <details class="doctor-details">
+        <summary>Повышение квалификации</summary>
+        <ul class="doctor-meta-list doctor-meta-list--plain">
+          ${courses.map((row) => `
+            <li>
+              ${row.year && row.year !== "—" ? `<span class="doctor-meta-year">${escapeDoctorHtml(row.year)}</span>` : ""}
+              <div><span>${escapeDoctorHtml(row.title)}</span></div>
+            </li>
+          `).join("")}
+        </ul>
+      </details>
+    `;
+  }
+
+  function renderDoctorSpecialties(item) {
+    const specialties = item.specialties || [];
+    if (!specialties.length) return "";
+    return `
+      <details class="doctor-details" open>
+        <summary>Направления работы</summary>
+        <ul class="doctor-chip-list">
+          ${specialties.map((s) => `<li>${escapeDoctorHtml(s)}</li>`).join("")}
+        </ul>
+      </details>
+    `;
+  }
+
+  function renderDoctorExtra(item) {
+    const blocks = [];
+    if (item.experienceDetails && item.experienceDetails.length) {
+      blocks.push(`
+        <details class="doctor-details">
+          <summary>Опыт работы</summary>
+          <ul class="doctor-meta-list doctor-meta-list--plain">
+            ${item.experienceDetails.map((line) => `<li><div><span>${escapeDoctorHtml(line)}</span></div></li>`).join("")}
+          </ul>
+        </details>
+      `);
+    }
+    if (item.activity && item.activity.length) {
+      blocks.push(`
+        <details class="doctor-details">
+          <summary>Научная и профессиональная деятельность</summary>
+          <ul class="doctor-meta-list doctor-meta-list--plain">
+            ${item.activity.map((line) => `<li><div><span>${escapeDoctorHtml(line)}</span></div></li>`).join("")}
+          </ul>
+        </details>
+      `);
+    }
+    if (item.note) {
+      blocks.push(`<p class="doctor-note">${escapeDoctorHtml(item.note)}</p>`);
+    }
+    return blocks.join("");
+  }
+
   function renderDoctors(target) {
     const limit = Number(target.dataset.limit || 0);
     const hideActions = target.dataset.hideActions === "true";
+    const detailed = target.dataset.detailed === "true";
     const excludedDoctors = (target.dataset.exclude || "").split(",").map((item) => item.trim()).filter(Boolean);
     const items = (window.AZIMUT_DOCTORS || [])
-      .filter((item) => !excludedDoctors.includes(item.name))
+      .filter((item) => !excludedDoctors.includes(item.name) && !excludedDoctors.includes(item.id))
       .slice(0, limit || undefined);
-    target.innerHTML = items.map((item) => `
-      <article class="doctor-card">
-        ${item.photo ? `<div class="doctor-photo-frame" role="img" aria-label="${item.role}">
-          <div class="doctor-photo doctor-photo-primary" data-photo="${item.photo}" style="background-position: ${item.photoPosition || "50% 50%"}"></div>
-          ${item.smilePhoto ? `<div class="doctor-photo doctor-photo-smile" aria-hidden="true" data-smile-photo="${item.smilePhoto}" style="background-position: ${item.photoPosition || "50% 50%"}"></div>` : ""}
+    target.innerHTML = items.map((item) => {
+      const displayFocus = detailed ? item.focus : (item.homeHighlight || item.focus);
+      return `
+      <article class="doctor-card${detailed ? " doctor-card--detailed" : ""}" data-doctor-id="${escapeDoctorHtml(item.id || "")}">
+        ${item.photo ? `<div class="doctor-photo-frame" role="img" aria-label="${escapeDoctorHtml(item.role)}">
+          <div class="doctor-photo doctor-photo-primary" data-photo="${escapeDoctorHtml(item.photo)}" style="background-position: ${escapeDoctorHtml(item.photoPosition || "50% 50%")}"></div>
+          ${item.smilePhoto ? `<div class="doctor-photo doctor-photo-smile" aria-hidden="true" data-smile-photo="${escapeDoctorHtml(item.smilePhoto)}" style="background-position: ${escapeDoctorHtml(item.photoPosition || "50% 50%")}"></div>` : ""}
         </div>` : ""}
-        <p class="eyebrow">${item.role}</p>
-        <h3 class="${item.compactName ? "doctor-name-compact" : ""}">${item.name}</h3>
-        <p><strong>${item.experience}</strong></p>
-        <p>${item.focus}</p>
-        ${hideActions ? "" : `<a class="button button-secondary" href="contacts.html#appointment" data-select-service="${item.role}" data-select-price="">Записаться</a>`}
+        ${item.badge ? `<p class="doctor-badge">${escapeDoctorHtml(item.badge)}</p>` : `<p class="eyebrow">${escapeDoctorHtml(item.role)}</p>`}
+        <h3 class="${item.compactName ? "doctor-name-compact" : ""}">${escapeDoctorHtml(item.name)}</h3>
+        <p class="doctor-role-line">${escapeDoctorHtml(item.role)}</p>
+        <p class="doctor-exp"><strong>${escapeDoctorHtml(item.experience)}</strong></p>
+        <p class="doctor-focus">${escapeDoctorHtml(displayFocus)}</p>
+        ${detailed ? `${renderDoctorSpecialties(item)}${renderDoctorEducation(item)}${renderDoctorCourses(item)}${renderDoctorExtra(item)}` : ""}
+        ${hideActions ? "" : `<a class="button button-secondary" href="contacts.html#appointment" data-select-service="${escapeDoctorHtml(item.role)}" data-select-price="">Записаться</a>`}
       </article>
-    `).join("");
+    `;
+    }).join("");
     attachDoctorPhotoLoading(target);
   }
 
