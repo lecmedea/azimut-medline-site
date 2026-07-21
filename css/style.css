@@ -1066,7 +1066,9 @@ button:focus-visible {
   }
 }
 
-.specialists-section .doctor-card p:not(.eyebrow):last-of-type,
+.specialists-section .doctor-card .doctor-role-line,
+.specialists-section .doctor-card .doctor-details,
+.specialists-section .doctor-card .doctor-note,
 .specialists-section .doctor-card .button {
   display: none;
 }
@@ -1074,6 +1076,20 @@ button:focus-visible {
 .specialists-section .doctor-card p:not(.eyebrow) {
   font-size: 13px;
   color: rgba(255, 250, 241, 0.84);
+}
+
+.specialists-section .doctor-card .doctor-focus {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.specialists-section .doctor-card h3 {
+  font-size: clamp(16px, 2.2vw, 20px);
 }
 
 .section-heading {
@@ -1548,6 +1564,190 @@ button:focus-visible {
   opacity: 1;
   transform: scale(1.075);
   filter: saturate(1.07) brightness(1.03);
+}
+
+.doctor-badge {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(185, 144, 89, 0.14);
+  color: var(--gold-deep, #8b6a32);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.doctor-role-line {
+  margin: 0 0 6px;
+  color: var(--muted, #6b6560);
+  font-size: 14px;
+}
+
+.doctor-exp {
+  margin: 0 0 10px;
+}
+
+.doctor-focus {
+  margin: 0 0 14px;
+  line-height: 1.55;
+}
+
+.doctor-card--detailed {
+  min-height: 0;
+}
+
+.doctor-card--detailed .doctor-photo-frame {
+  aspect-ratio: 4 / 5;
+  min-height: 240px;
+}
+
+.doctor-details {
+  margin: 0 0 12px;
+  border: 1px solid rgba(185, 144, 89, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 250, 241, 0.55);
+  overflow: hidden;
+}
+
+.doctor-details summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue-dark, #1f2f3a);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.doctor-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.doctor-details summary::after {
+  content: "+";
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gold-deep, #8b6a32);
+  line-height: 1;
+}
+
+.doctor-details[open] summary::after {
+  content: "−";
+}
+
+.doctor-details summary:hover {
+  background: rgba(185, 144, 89, 0.08);
+}
+
+.doctor-meta-list,
+.doctor-chip-list {
+  margin: 0;
+  padding: 0 14px 14px;
+  list-style: none;
+}
+
+.doctor-meta-list li {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(31, 47, 58, 0.08);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.doctor-meta-list--plain li {
+  grid-template-columns: auto 1fr;
+}
+
+.doctor-meta-year {
+  color: var(--gold-deep, #8b6a32);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.doctor-meta-list strong {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--blue-dark, #1f2f3a);
+}
+
+.doctor-meta-list span {
+  display: block;
+  color: var(--muted, #6b6560);
+}
+
+.doctor-meta-list em {
+  display: block;
+  margin-top: 2px;
+  font-style: normal;
+  font-size: 12px;
+  color: rgba(31, 47, 58, 0.55);
+}
+
+.doctor-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.doctor-chip-list li {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(31, 47, 58, 0.06);
+  color: var(--blue-dark, #1f2f3a);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.doctor-note {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(154, 76, 57, 0.08);
+  color: #6e3a30;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.doctor-card--detailed .button {
+  margin-top: 4px;
+  align-self: flex-start;
+}
+
+.doctors-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  align-items: start;
+}
+
+.specialists-section .doctor-card .doctor-badge,
+.specialists-section .doctor-card .doctor-role-line,
+.specialists-section .doctor-card .doctor-focus {
+  position: relative;
+  z-index: 2;
+}
+
+.specialists-section .doctor-card .doctor-badge {
+  background: rgba(255, 250, 241, 0.16);
+  color: #fffaf1;
+}
+
+.specialists-section .doctor-card .doctor-role-line,
+.specialists-section .doctor-card .doctor-focus,
+.specialists-section .doctor-card .doctor-exp {
+  color: rgba(255, 250, 241, 0.88);
+}
+
+.specialists-section .doctor-card .doctor-details,
+.specialists-section .doctor-card .doctor-note,
+.specialists-section .doctor-card .button {
+  display: none;
 }
 
 .article-card:hover .article-image,
@@ -3636,6 +3836,85 @@ body.test-modal-open {
 
 .test-result.is-visible {
   display: block;
+}
+
+.test-specialist-invite {
+  display: none;
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid rgba(185, 144, 89, 0.35);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 241, 0.96), rgba(245, 236, 220, 0.9));
+  box-shadow: 0 10px 28px rgba(31, 47, 58, 0.08);
+}
+
+.test-specialist-invite.is-visible {
+  display: block;
+  animation: testInviteIn 420ms ease both;
+}
+
+@keyframes testInviteIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.test-specialist-invite__inner {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.test-specialist-invite__photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center 18%;
+  background-color: rgba(185, 144, 89, 0.15);
+  box-shadow: 0 0 0 2px rgba(185, 144, 89, 0.45);
+}
+
+.test-specialist-invite__eyebrow {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gold-deep, #8b6a32);
+}
+
+.test-specialist-invite__title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--blue-dark, #1f2f3a);
+}
+
+.test-specialist-invite__text {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted, #6b6560);
+}
+
+.test-specialist-invite__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.test-specialist-invite__actions .button {
+  min-height: 36px;
+  padding: 8px 14px;
+  font-size: 13px;
 }
 
 .you-alone-section .button-primary {
