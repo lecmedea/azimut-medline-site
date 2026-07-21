@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#fbf7ee">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <title>Наше творчество — Азимут Клиник</title>
+  <meta name="description" content="Музей клиники Азимут: пространство, где хранятся работы наших клиентов — картины, стихи, тетради.">
+  <link rel="canonical" href="https://azimutclinic.ru/creativity.html">
+  <meta property="og:title" content="Наше творчество — Азимут Клиник">
+  <meta property="og:image" content="https://azimutclinic.ru/assets/brand/azimut-clinic-og.jpg">
+  <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
+  <link rel="stylesheet" href="css/style.css?v=20260721-creativity">
+  <link rel="stylesheet" href="css/responsive.css?v=20260721-ui-cta">
+  <link rel="stylesheet" href="css/creativity.css?v=20260721-museum">
+  <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
+  <link rel="stylesheet" href="css/cookie-consent.css?v=20260721-cookies">
+  <script src="js/access-gate.js?v=20260716-public"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Азимут Клиник">
+        <img class="brand-logo-main" src="assets/logo-header-transparent.png" alt="Азимут Клиник">
+        <span class="brand-text">Центр ментального здоровья Азимут Клиник</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
+      <nav class="main-nav" aria-label="Основная навигация">
+        <div class="nav-item"><a class="nav-link" href="index.html">Главная</a></div>
+        <div class="nav-item"><a class="nav-link" href="about.html">О нас</a></div>
+        <div class="nav-item"><a class="nav-link" href="blog.html">Блог</a></div>
+        <div class="nav-item"><a class="nav-link is-active" href="creativity.html">Наше творчество</a></div>
+        <div class="nav-item"><a class="nav-link" href="services.html">Услуги</a></div>
+        <div class="nav-item"><a class="nav-link" href="doctors.html">Направления и врачи</a></div>
+        <div class="nav-item"><a class="nav-link" href="contacts.html">Контакты</a></div>
+      </nav>
+      <div class="header-actions">
+        <a class="button button-primary" href="contacts.html#appointment">Записаться</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="page-hero blog-hero">
+      <div class="container narrow">
+        <p class="eyebrow">Блог · Музей клиники</p>
+        <h1>Наше творчество</h1>
+        <p class="lead">Этот раздел — <strong>музей клиники</strong>. Здесь мы бережно храним и показываем работы наших клиентов: картины, стихи, дневники, образы, которые рождаются на пути к себе.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container narrow">
+        <h2>Зачем этот музей</h2>
+        <p>Творчество помогает выразить то, что трудно сказать словами. В «Нашем творчестве» нет оценок и соревнования — только пространство памяти и уважения. С согласия авторов работы могут «поселиться» в этой ретро-гостиной: на стенах, в шкафах, на полках.</p>
+        <p class="notice">Макет ниже — интерактивная гостиная. Нажмите на шкаф или тумбу, чтобы «открыть» дверцы. Пока экспозиция наполняется — на багетах ждут пустые холсты.</p>
+      </div>
+    </section>
+
+    <section class="section section-soft creativity-museum-section" aria-label="Интерактивная гостиная музея">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Экспозиция</p>
+          <h2>Гостиная в ретро-стиле</h2>
+          <p>Дорогой советский интерьер, ручные багеты и шкафы, в которых может жить ваша история.</p>
+        </div>
+
+        <div class="museum-stage" id="museum-stage">
+          <img class="museum-room" src="assets/creativity/room-bg.jpg" width="1600" height="900" alt="Ретро-гостиная музея клиники" decoding="async">
+
+          <!-- Frames on wall -->
+          <button type="button" class="museum-hotspot museum-frame museum-frame--a" aria-label="Багет: здесь может быть ваша картина">
+            <img src="assets/creativity/frame-canvas.png" alt="Пустой холст в багете: Здесь может быть ваша картина" loading="lazy" decoding="async">
+          </button>
+          <button type="button" class="museum-hotspot museum-frame museum-frame--b" aria-label="Второй багет: здесь может быть ваша картина">
+            <img src="assets/creativity/frame-canvas-2.png" alt="Пустой холст в багете" loading="lazy" decoding="async">
+          </button>
+
+          <!-- Cabinet interactive -->
+          <button type="button" class="museum-hotspot museum-cabinet" data-toggle-pair aria-expanded="false" aria-label="Шкаф: нажмите, чтобы открыть">
+            <img class="museum-state is-default" src="assets/creativity/cabinet-closed.png" alt="Шкаф с закрытыми дверцами" loading="lazy" decoding="async">
+            <img class="museum-state is-open" src="assets/creativity/cabinet-open.png" alt="Шкаф открыт: книги и табличка для стихов" loading="lazy" decoding="async" hidden>
+            <span class="museum-tooltip">Ваши стихи могут храниться в этом шкафчике</span>
+          </button>
+
+          <!-- Side table interactive -->
+          <button type="button" class="museum-hotspot museum-table" data-toggle-pair aria-expanded="false" aria-label="Тумба: нажмите, чтобы открыть ящик">
+            <img class="museum-state is-default" src="assets/creativity/table-closed.png" alt="Тумба с закрытыми ящиками" loading="lazy" decoding="async">
+            <img class="museum-state is-open" src="assets/creativity/table-open.png" alt="Тумба открыта: тетради" loading="lazy" decoding="async" hidden>
+            <span class="museum-tooltip">Здесь могут жить ваши тетради и черновики</span>
+          </button>
+        </div>
+
+        <p class="museum-hint">Нажмите на шкаф или тумбу — дверцы «откроются». Это макет будущей экспозиции.</p>
+        <div class="hero-actions" style="justify-content:center;margin-top:1.5rem">
+          <a class="button button-primary" href="contacts.html#appointment">Хочу оставить работу в музее</a>
+          <a class="button button-secondary" href="blog.html">К статьям блога</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-shell">
+      <div class="footer-info">
+        <h3>Центр ментального здоровья Азимут Клиник</h3>
+        <p class="footer-tagline">Помощь доступна круглосуточно</p>
+      </div>
+      <nav class="footer-column" aria-label="Документы">
+        <h3>Документы</h3>
+        <a href="privacy.html">Политика конфиденциальности</a>
+        <a href="licenses.html">Лицензии</a>
+        <a href="blog.html">Блог</a>
+        <a href="creativity.html">Наше творчество</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/main.js?v=20260721-creativity" defer></script>
+  <script src="js/creativity-museum.js?v=20260721-museum" defer></script>
+  <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
+  <script src="js/chat-config.js?v=20260713-philipp-icon" defer></script>
+  <script src="js/chatbot.js?v=20260713-philipp-icon" defer></script>
+</body>
+</html>
