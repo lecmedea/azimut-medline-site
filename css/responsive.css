@@ -418,45 +418,27 @@
   }
 
   .footer-shell {
-    grid-template-columns: minmax(140px, 0.85fr) 1.15fr;
-    row-gap: 28px;
+    grid-template-columns: 1fr;
+    row-gap: 22px;
     column-gap: 0;
-    padding: 44px 0 36px;
+    padding: 36px 0 32px;
   }
 
-  .footer-brand-panel {
-    padding: 0 28px 0 0;
-    border-left: none;
-    margin: 0;
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .footer-info {
-    padding: 0 0 0 28px;
-    grid-column: 2;
-    grid-row: 1;
-    border-left: 1px solid rgba(174, 139, 102, 0.28);
-  }
-
-  .footer-column[aria-label="Документы"] {
-    grid-column: 1;
-    grid-row: 2;
-    padding: 28px 28px 0 0;
-    border-left: none;
-    border-top: 1px solid rgba(174, 139, 102, 0.24);
-  }
-
+  .footer-brand-panel,
+  .footer-info,
+  .footer-column[aria-label="Документы"],
   .footer-column[aria-label="Разделы"] {
-    grid-column: 2;
-    grid-row: 2;
-    padding: 28px 0 0 28px;
-    border-left: 1px solid rgba(174, 139, 102, 0.28);
-    border-top: 1px solid rgba(174, 139, 102, 0.24);
+    grid-column: 1;
+    grid-row: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-left: none;
+    border-top: none;
   }
 
   .footer-brand-stack {
-    width: min(140px, 100%);
+    width: min(160px, 100%);
   }
 
   .section-heading,
