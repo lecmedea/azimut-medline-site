@@ -1,3 +1,5 @@
+/* Наше творчество — уютная гостиная + pin-gate для команды */
+
 .creativity-museum-section {
   overflow: hidden;
 }
@@ -19,6 +21,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
   user-select: none;
   pointer-events: none;
 }
@@ -28,49 +31,76 @@
   appearance: none;
   border: 0;
   padding: 0;
+  margin: 0;
   background: transparent;
   cursor: pointer;
-  transition: transform 0.25s ease, filter 0.25s ease;
+  transition: transform 0.22s ease, filter 0.22s ease;
+  z-index: 2;
 }
 
 .museum-hotspot:hover,
 .museum-hotspot:focus-visible {
-  transform: translateY(-2px) scale(1.02);
-  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28));
+  transform: translateY(-2px);
+  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.28));
   outline: none;
 }
 
-.museum-hotspot img {
+/* Keep open/closed images in the same box so layout does not jump */
+.museum-hotspot .museum-state {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 100%;
+  max-height: none;
+  object-fit: contain;
+  object-position: bottom center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.museum-hotspot .museum-state[hidden] {
+  display: none !important;
+}
+
+/* Frames — on the walls */
+.museum-frame {
+  /* stacked natural height from image */
+}
+
+.museum-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
   object-fit: contain;
   pointer-events: none;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.22));
 }
 
+/* Left wall, mid-height */
 .museum-frame--a {
-  left: 8%;
-  top: 12%;
-  width: min(18%, 160px);
+  left: 10%;
+  top: 16%;
+  width: min(15%, 150px);
 }
 
+/* Right wall (before curtain), mid-height */
 .museum-frame--b {
-  right: 10%;
-  top: 14%;
-  width: min(16%, 140px);
+  right: 22%;
+  top: 18%;
+  width: min(13.5%, 132px);
 }
 
+/* Cabinet — against left wall, standing on the floor */
 .museum-cabinet {
-  left: 6%;
-  bottom: 4%;
-  width: min(28%, 260px);
+  left: 5%;
+  bottom: 6%;
+  width: min(30%, 270px);
 }
 
+/* Table — right side of room, on the floor */
 .museum-table {
-  right: 12%;
-  bottom: 6%;
-  width: min(18%, 170px);
+  right: 10%;
+  bottom: 7%;
+  width: min(20%, 180px);
 }
 
 .museum-tooltip {
@@ -78,11 +108,11 @@
   left: 50%;
   bottom: calc(100% + 8px);
   transform: translateX(-50%);
-  min-width: 160px;
+  min-width: 150px;
   max-width: 220px;
   padding: 8px 10px;
   border-radius: 10px;
-  background: rgba(37, 33, 29, 0.88);
+  background: rgba(37, 33, 29, 0.9);
   color: #fff8ef;
   font-size: 0.78rem;
   line-height: 1.35;
@@ -90,6 +120,7 @@
   pointer-events: none;
   transition: opacity 0.2s ease;
   z-index: 3;
+  white-space: normal;
 }
 
 .museum-hotspot:hover .museum-tooltip,
@@ -105,21 +136,152 @@
   font-size: 0.95rem;
 }
 
+/* —— PIN gate (team only) —— */
+html.creativity-pin-locked,
+html.creativity-pin-locked body {
+  overflow: hidden !important;
+}
+
+html.creativity-pin-locked body > *:not(.creativity-pin-gate) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.creativity-pin-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(185, 144, 89, 0.18), transparent 55%),
+    #f7f1e6;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.creativity-pin-panel {
+  width: min(400px, 100%);
+  padding: 28px 24px 24px;
+  border-radius: 20px;
+  background: #fffdf8;
+  border: 1px solid rgba(185, 144, 89, 0.28);
+  box-shadow: 0 24px 60px rgba(74, 58, 35, 0.14);
+  text-align: center;
+}
+
+.creativity-pin-logo {
+  display: block;
+  height: 44px;
+  width: auto;
+  margin: 0 auto 14px;
+  object-fit: contain;
+}
+
+.creativity-pin-eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8b6a32;
+}
+
+.creativity-pin-title {
+  margin: 0 0 10px;
+  font-size: 24px;
+  color: #1f2f3a;
+}
+
+.creativity-pin-text {
+  margin: 0 0 18px;
+  color: #6b6560;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.creativity-pin-form {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+
+.creativity-pin-label {
+  font-size: 13px;
+  color: #6b6560;
+}
+
+.creativity-pin-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid rgba(185, 144, 89, 0.35);
+  border-radius: 12px;
+  background: #f6f1e8;
+  font: inherit;
+  font-size: 18px;
+  letter-spacing: 0.2em;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.creativity-pin-input:focus {
+  outline: 2px solid rgba(15, 118, 110, 0.35);
+  border-color: #0f766e;
+  background: #fff;
+}
+
+.creativity-pin-error {
+  margin: 0;
+  color: #9a4c39;
+  font-size: 13px;
+  text-align: center;
+}
+
+.creativity-pin-submit {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.creativity-pin-back {
+  display: inline-block;
+  margin-top: 16px;
+  color: #8b6a32;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.creativity-pin-back:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 720px) {
   .museum-stage {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 4;
   }
 
-  .museum-frame--a,
+  .museum-frame--a {
+    left: 6%;
+    top: 14%;
+    width: min(26%, 110px);
+  }
+
   .museum-frame--b {
-    width: min(28%, 120px);
+    right: 8%;
+    top: 16%;
+    width: min(24%, 100px);
   }
 
   .museum-cabinet {
-    width: min(42%, 200px);
+    left: 3%;
+    bottom: 5%;
+    width: min(48%, 200px);
   }
 
   .museum-table {
-    width: min(30%, 130px);
+    right: 4%;
+    bottom: 6%;
+    width: min(36%, 140px);
   }
 }
