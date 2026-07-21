@@ -47,19 +47,34 @@ def collect_files() -> list[str]:
         for path in sorted(ROOT.glob(pattern)):
             add(path)
 
+    # All site CSS / JS / API (so new pages like entertainment don't 404)
+    for pattern in ("css/*.css", "js/*.js", "api/*.js", "data/*.js"):
+        for path in sorted(ROOT.glob(pattern)):
+            add(path)
+
     for rel in (
         "css/style.css",
         "css/responsive.css",
         "css/blog.css",
+        "css/entertainment.css",
+        "css/creativity.css",
+        "css/cookie-consent.css",
         "data/doctors.js",
         "js/tests.js",
         "js/tests-batch200.js",
         "js/blog.js",
         "js/main.js",
+        "js/entertainment.js",
+        "js/creativity-museum.js",
+        "js/creativity-pin.js",
+        "js/forms.js",
+        "js/crm-bridge.js",
+        "js/cookie-consent.js",
         "js/audio-player.js",
         "js/chatbot.js",
         "js/chat-config.js",
         "api/chat.js",
+        "api/amo-lead.js",
         "css/chatbot.css",
         "css/access-gate.css",
         "css/animations.css",
@@ -107,6 +122,11 @@ def collect_files() -> list[str]:
     for pattern in ("assets/icons/iconly/*.svg", "assets/icons/site-symbols/*.png"):
         for path in sorted(ROOT.glob(pattern)):
             add(path)
+
+    for pattern in ("assets/creativity/*", "assets/icons/joystick-gear.*"):
+        for path in sorted(ROOT.glob(pattern)):
+            if path.is_file() and path.name != ".DS_Store":
+                add(path)
 
     return rels
 
