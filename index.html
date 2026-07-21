@@ -640,8 +640,8 @@
   </footer>
 
   <script src="data/doctors.js?v=20260721-doctors-full" defer></script>
-  <script src="js/main.js?v=20260721-doctors-full" defer></script>
-  <script src="js/forms.js?v=20260721-form-required" defer></script>
+  <script src="js/main.js?v=20260721-amo-modal" defer></script>
+  <script src="js/forms.js?v=20260721-modal-lead" defer></script>
   <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
   <!-- Филипп: сразу на desktop; на mobile — после idle (джойстик приоритетнее) -->
   <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
@@ -659,7 +659,7 @@
         document.body.appendChild(s);
       }
       function loadSecondary() {
-        loadScript("js/crm-bridge.js?v=20260717-amo");
+        loadScript("js/crm-bridge.js?v=20260721-amo-endpoint");
       }
       if ("requestIdleCallback" in window) {
         requestIdleCallback(loadSecondary, { timeout: 4000 });
