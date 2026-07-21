@@ -33,6 +33,26 @@
       title: "Дыхательный круг",
       hint: "Спокойное дыхание 4–4–4: вдох — пауза — выдох. Только визуальная подсказка, без аудио.",
       mount: mountBreath
+    },
+    sequence: {
+      title: "Повтори мелодию",
+      hint: "Запомните последовательность цветных кнопок и повторите её. Классика рабочей памяти.",
+      mount: mountSequence
+    },
+    gonogo: {
+      title: "Стоп / Иди",
+      hint: "Нажимайте только на зелёное. На красное — пауза. Тренировка сдержанности импульса.",
+      mount: mountGoNoGo
+    },
+    oddone: {
+      title: "Найди лишнее",
+      hint: "Среди похожих фигур найдите одну, которая чуть отличается. Мягкая тренировка внимания.",
+      mount: mountOddOne
+    },
+    compass: {
+      title: "Компас Азимут",
+      hint: "Укажите, куда смотрит стрелка: С / Ю / З / В. Спокойная игра на ориентацию.",
+      mount: mountCompass
     }
   };
 
@@ -405,6 +425,319 @@
     return () => {
       running = false;
       cancelLoop();
+    };
+  }
+
+  /* ——— Sequence (Simon-like) ——— */
+  function mountSequence(board, api) {
+    const colors = [
+      { id: "a", css: "#0f766e", label: "изумруд" },
+      { id: "b", css: "#b99059", label: "золото" },
+      { id: "c", css: "#9a4c39", label: "бордо" },
+      { id: "d", css: "#5c6570", label: "графит" }
+    ];
+    let sequence = [];
+    let step = 0;
+    let playing = false;
+    let score = 0;
+
+    const scoreEl = document.createElement("div");
+    scoreEl.className = "fun-score";
+    const pad = document.createElement("div");
+    pad.className = "fun-seq-pad";
+    board.append(scoreEl, pad);
+
+    const buttons = colors.map((c) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "fun-seq-btn";
+      btn.style.setProperty("--seq-color", c.css);
+      btn.dataset.id = c.id;
+      btn.setAttribute("aria-label", c.label);
+      btn.disabled = true;
+      pad.appendChild(btn);
+      return btn;
+    });
+
+    function paintScore() {
+      scoreEl.innerHTML = `<span>Серия: <strong>${score}</strong></span><span>Длина: <strong>${sequence.length}</strong></span>`;
+    }
+
+    function flash(btn, ms = 420) {
+      return new Promise((resolve) => {
+        btn.classList.add("is-lit");
+        setTimeout(() => {
+          btn.classList.remove("is-lit");
+          setTimeout(resolve, 120);
+        }, ms);
+      });
+    }
+
+    async function playSequence() {
+      playing = true;
+      buttons.forEach((b) => {
+        b.disabled = true;
+      });
+      api.setStatus("Смотрите…");
+      for (const id of sequence) {
+        const btn = buttons.find((b) => b.dataset.id === id);
+        if (btn) await flash(btn);
+      }
+      playing = false;
+      step = 0;
+      buttons.forEach((b) => {
+        b.disabled = false;
+      });
+      api.setStatus("Повторите последовательность.");
+    }
+
+    function nextRound() {
+      const pick = colors[Math.floor(Math.random() * colors.length)].id;
+      sequence.push(pick);
+      paintScore();
+      playSequence();
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (playing) return;
+        const id = btn.dataset.id;
+        await flash(btn, 220);
+        if (id !== sequence[step]) {
+          api.setStatus(`Ошибка на шаге ${step + 1}. Серия: ${score}. Нажмите «Сначала».`);
+          buttons.forEach((b) => {
+            b.disabled = true;
+          });
+          return;
+        }
+        step += 1;
+        if (step >= sequence.length) {
+          score += 1;
+          paintScore();
+          api.setStatus("Верно! Дальше сложнее.");
+          setTimeout(nextRound, 500);
+        }
+      });
+    });
+
+    paintScore();
+    api.setStatus("Запомните вспышки и повторите.");
+    setTimeout(nextRound, 400);
+
+    return () => {
+      playing = true;
+      sequence = [];
+    };
+  }
+
+  /* ——— Go / No-Go ——— */
+  function mountGoNoGo(board, api) {
+    let hits = 0;
+    let falseAlarms = 0;
+    let misses = 0;
+    let round = 0;
+    const total = 14;
+    let timer = 0;
+    let current = null; // "go" | "nogo"
+    let answered = false;
+
+    const scoreEl = document.createElement("div");
+    scoreEl.className = "fun-score";
+    const stim = document.createElement("button");
+    stim.type = "button";
+    stim.className = "fun-gonogo-stim";
+    stim.textContent = "Старт";
+    board.append(scoreEl, stim);
+
+    function paint() {
+      scoreEl.innerHTML = `<span>Верно: <strong>${hits}</strong></span><span>Ложные: <strong>${falseAlarms}</strong></span><span>Пропуски: <strong>${misses}</strong></span>`;
+    }
+
+    function clearTimer() {
+      if (timer) {
+        clearTimeout(timer);
+        timer = 0;
+      }
+    }
+
+    function endIfDone() {
+      if (round >= total) {
+        stim.className = "fun-gonogo-stim";
+        stim.textContent = "Готово";
+        stim.disabled = true;
+        api.setStatus(`Итог: верно ${hits}, ложные ${falseAlarms}, пропуски ${misses}.`);
+        return true;
+      }
+      return false;
+    }
+
+    function showNext() {
+      if (endIfDone()) return;
+      round += 1;
+      answered = false;
+      current = Math.random() < 0.65 ? "go" : "nogo";
+      stim.disabled = false;
+      stim.className = `fun-gonogo-stim is-${current}`;
+      stim.textContent = current === "go" ? "ИДИ" : "СТОП";
+      paint();
+      clearTimer();
+      timer = setTimeout(() => {
+        if (!answered && current === "go") {
+          misses += 1;
+          paint();
+        }
+        showNext();
+      }, 1100);
+    }
+
+    stim.addEventListener("click", () => {
+      if (stim.textContent === "Старт") {
+        api.setStatus("Зелёное — жмите. Красное — ждите.");
+        showNext();
+        return;
+      }
+      if (answered || stim.disabled) return;
+      answered = true;
+      clearTimer();
+      if (current === "go") {
+        hits += 1;
+        api.setStatus("Вовремя.");
+      } else {
+        falseAlarms += 1;
+        api.setStatus("Это был СТОП.");
+      }
+      paint();
+      setTimeout(showNext, 280);
+    });
+
+    paint();
+    api.setStatus("Нажмите «Старт», когда будете готовы.");
+    return () => clearTimer();
+  }
+
+  /* ——— Odd one out ——— */
+  function mountOddOne(board, api) {
+    let score = 0;
+    let round = 0;
+    const total = 10;
+    const shapes = ["●", "◆", "■", "▲", "★", "✚"];
+
+    const scoreEl = document.createElement("div");
+    scoreEl.className = "fun-score";
+    const grid = document.createElement("div");
+    grid.className = "fun-odd-grid";
+    board.append(scoreEl, grid);
+
+    function paintScore() {
+      scoreEl.innerHTML = `<span>Раунд: <strong>${round}/${total}</strong></span><span>Верно: <strong>${score}</strong></span>`;
+    }
+
+    function next() {
+      if (round >= total) {
+        grid.innerHTML = "";
+        api.setStatus(`Готово: ${score} из ${total}.`);
+        return;
+      }
+      round += 1;
+      paintScore();
+      const base = shapes[Math.floor(Math.random() * shapes.length)];
+      let odd = shapes[Math.floor(Math.random() * shapes.length)];
+      while (odd === base) odd = shapes[Math.floor(Math.random() * shapes.length)];
+      const cells = Array(9).fill(base);
+      const oddIndex = Math.floor(Math.random() * 9);
+      cells[oddIndex] = odd;
+      grid.innerHTML = "";
+      cells.forEach((sym, i) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "fun-odd-cell";
+        btn.textContent = sym;
+        btn.addEventListener("click", () => {
+          if (i === oddIndex) {
+            score += 1;
+            api.setStatus("Верно — нашли отличие.");
+          } else {
+            api.setStatus("Не то. Ищите другое.");
+          }
+          paintScore();
+          setTimeout(next, 350);
+        });
+        grid.appendChild(btn);
+      });
+    }
+
+    paintScore();
+    next();
+    return () => {
+      grid.innerHTML = "";
+    };
+  }
+
+  /* ——— Compass ——— */
+  function mountCompass(board, api) {
+    const dirs = [
+      { key: "N", label: "С", deg: 0 },
+      { key: "E", label: "В", deg: 90 },
+      { key: "S", label: "Ю", deg: 180 },
+      { key: "W", label: "З", deg: 270 }
+    ];
+    let score = 0;
+    let round = 0;
+    const total = 12;
+    let answer = dirs[0];
+
+    const scoreEl = document.createElement("div");
+    scoreEl.className = "fun-score";
+    const wrap = document.createElement("div");
+    wrap.className = "fun-compass-wrap";
+    const dial = document.createElement("div");
+    dial.className = "fun-compass-dial";
+    dial.innerHTML = `<div class="fun-compass-needle" data-needle></div>`;
+    const row = document.createElement("div");
+    row.className = "fun-btn-row";
+    wrap.append(dial, row);
+    board.append(scoreEl, wrap);
+
+    function paintScore() {
+      scoreEl.innerHTML = `<span>Раунд: <strong>${round}/${total}</strong></span><span>Верно: <strong>${score}</strong></span>`;
+    }
+
+    function next() {
+      if (round >= total) {
+        row.innerHTML = "";
+        api.setStatus(`Курс пройден: ${score} из ${total}.`);
+        return;
+      }
+      round += 1;
+      paintScore();
+      answer = dirs[Math.floor(Math.random() * dirs.length)];
+      const needle = dial.querySelector("[data-needle]");
+      if (needle) needle.style.transform = `translate(-50%, -70%) rotate(${answer.deg}deg)`;
+      row.innerHTML = "";
+      dirs.forEach((d) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "fun-choice";
+        btn.textContent = d.label;
+        btn.addEventListener("click", () => {
+          if (d.key === answer.key) {
+            score += 1;
+            api.setStatus(`Верно: ${d.label}`);
+          } else {
+            api.setStatus(`Было: ${answer.label}`);
+          }
+          paintScore();
+          setTimeout(next, 380);
+        });
+        row.appendChild(btn);
+      });
+    }
+
+    paintScore();
+    api.setStatus("Куда указывает стрелка?");
+    next();
+    return () => {
+      row.innerHTML = "";
     };
   }
 
