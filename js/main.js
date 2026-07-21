@@ -363,7 +363,7 @@
     );
     mobileQuery.addEventListener("change", () => {
       if (mobileQuery.matches) {
-        setHint("Коснитесь компаса — укажет путь к клинике");
+        setHint("Коснитесь компаса и он мягко подскажет вам путь");
       } else {
         resetNeedle();
       }
