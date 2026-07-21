@@ -3367,6 +3367,108 @@ button:focus-visible {
   width: 100%;
 }
 
+/* amoCRM-style lead form (modal) */
+.appointment-dialog--amo {
+  width: min(420px, 100%);
+  gap: 14px;
+  padding: 28px 22px 22px;
+}
+
+.appointment-dialog--amo .appointment-dialog__head h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.appointment-dialog--amo .appointment-dialog__head p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--muted, #6b6560);
+}
+
+.amo-lead-form {
+  display: grid;
+  gap: 12px;
+}
+
+.amo-lead-form__field {
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 12px 16px;
+  border: 1px solid #e6e8eb;
+  border-radius: 12px;
+  background: #f3f4f6;
+  color: #1f2937;
+  font: inherit;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.amo-lead-form__field::placeholder {
+  color: #9aa3af;
+}
+
+.amo-lead-form__field:focus {
+  outline: 2px solid rgba(239, 104, 112, 0.35);
+  border-color: #ef6870;
+  background: #fff;
+}
+
+.amo-lead-form__note {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.amo-lead-form__submit {
+  appearance: none;
+  width: 100%;
+  min-height: 50px;
+  margin: 4px 0 0;
+  border: 0;
+  border-radius: 12px;
+  background: #ef6870;
+  color: #fff;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+.amo-lead-form__submit:hover:not(:disabled) {
+  background: #e4555e;
+}
+
+.amo-lead-form__submit:disabled,
+.amo-lead-form__submit.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.amo-lead-form__badge {
+  justify-self: end;
+  margin: 4px 0 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #5c6570;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.amo-lead-form__legal {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #8a8074;
+  text-align: left;
+}
+
+.amo-lead-form .form-status {
+  margin: 0;
+}
+
 .call-dialog {
   max-width: 520px;
 }
