@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
   <link rel="stylesheet" href="css/style.css?v=20260721-banner-cta">
   <link rel="stylesheet" href="css/responsive.css?v=20260721-test-modal">
-  <link rel="stylesheet" href="css/creativity.css?v=20260721-cozy-pin">
+  <link rel="stylesheet" href="css/creativity.css?v=20260721-rooms4">
   <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
   <link rel="stylesheet" href="css/cookie-consent.css?v=20260721-cookies">
   <script src="js/access-gate.js?v=20260716-public"></script>
@@ -66,43 +66,38 @@
       </div>
     </section>
 
-    <section class="section section-soft creativity-museum-section" aria-label="Уютная гостиная творчества">
+    <section class="section section-soft creativity-museum-section" aria-label="Гостиные творчества разных стран">
       <div class="container">
         <div class="section-heading">
-          <p class="eyebrow">Гостиная</p>
-          <h2>Комната, где можно быть собой</h2>
-          <p>Мягкий свет, знакомые вещи, место для рукоделия и слов. Сюда хочется зайти в домашнем ритме — не на выставку, а «в гости».</p>
+          <p class="eyebrow">Лента гостиных</p>
+          <h2>Четыре ретро-комнаты — четыре настроения</h2>
+          <p>Россия, Япония, Франция, Англия. Листайте стрелками по краям: в каждой комнате можно «открыть» шкаф и столик — место для ваших работ.</p>
         </div>
 
-        <div class="museum-stage" id="museum-stage">
-          <img class="museum-room" src="assets/creativity/room-bg.jpg?v=20260721-imagine" width="1280" height="720" alt="Уютная комната творчества Азимут Клиник" decoding="async">
-
-          <!-- Картины на стенах -->
-          <button type="button" class="museum-hotspot museum-frame museum-frame--a" aria-label="Картина на левой стене">
-            <img src="assets/creativity/frame-canvas.png?v=20260721-imagine" alt="Картина в багете на стене" loading="lazy" decoding="async">
-            <span class="museum-tooltip">Здесь может висеть ваша картина</span>
+        <div class="museum-carousel" id="museum-carousel" aria-roledescription="карусель" aria-label="Гостиные творчества">
+          <button type="button" class="museum-nav museum-nav--prev" data-museum-prev aria-label="Предыдущая гостиная">
+            <span aria-hidden="true">‹</span>
           </button>
-          <button type="button" class="museum-hotspot museum-frame museum-frame--b" aria-label="Картина на правой стене">
-            <img src="assets/creativity/frame-canvas-2.png?v=20260721-imagine" alt="Вторая картина в багете" loading="lazy" decoding="async">
-            <span class="museum-tooltip">И ваша тоже</span>
+          <button type="button" class="museum-nav museum-nav--next" data-museum-next aria-label="Следующая гостиная">
+            <span aria-hidden="true">›</span>
           </button>
 
-          <!-- Шкаф у стены: закрыт → открыт -->
-          <button type="button" class="museum-hotspot museum-cabinet" data-toggle-pair aria-expanded="false" aria-label="Шкаф у стены: нажмите, чтобы открыть">
-            <img class="museum-state is-default" src="assets/creativity/cabinet-closed.png?v=20260721-imagine" alt="Шкаф с закрытыми дверцами" loading="lazy" decoding="async" width="400" height="400">
-            <img class="museum-state is-open" src="assets/creativity/cabinet-open.png?v=20260721-imagine" alt="Шкаф открыт" loading="lazy" decoding="async" width="400" height="400" hidden>
-            <span class="museum-tooltip">Откройте — внутри могут жить стихи и открытки</span>
-          </button>
+          <div class="museum-carousel__meta">
+            <p class="museum-carousel__country" data-museum-country>Россия</p>
+            <h3 class="museum-carousel__title" data-museum-title>Светлая русская гостиная</h3>
+            <p class="museum-carousel__blurb" data-museum-blurb>Крем, дерево, бордовая штора — тихий дом, куда хочется принести рисунок или стихи.</p>
+          </div>
 
-          <!-- Столик: закрытая коробка → открытая -->
-          <button type="button" class="museum-hotspot museum-table" data-toggle-pair aria-expanded="false" aria-label="Столик: нажмите, чтобы открыть коробку">
-            <img class="museum-state is-default" src="assets/creativity/table-closed.png?v=20260721-imagine" alt="Столик с закрытой коробкой" loading="lazy" decoding="async" width="400" height="400">
-            <img class="museum-state is-open" src="assets/creativity/table-open.png?v=20260721-imagine" alt="Коробка открыта" loading="lazy" decoding="async" width="400" height="400" hidden>
-            <span class="museum-tooltip">Откройте — для тетрадей и черновиков</span>
-          </button>
+          <div class="museum-carousel__viewport">
+            <div class="museum-carousel__track" data-museum-track>
+              <!-- slides injected by creativity-museum.js -->
+            </div>
+          </div>
+
+          <div class="museum-carousel__dots" data-museum-dots role="tablist" aria-label="Выбор гостиной"></div>
         </div>
 
-        <p class="museum-hint">Клик по шкафу и столику переключает «закрыто / открыто». Комната постепенно наполнится работами с вашего согласия.</p>
+        <p class="museum-hint">Стрелки по краям или свайп — смена комнаты. Клик по шкафу и столику — «закрыто / открыто».</p>
         <div class="hero-actions" style="justify-content:center;margin-top:1.5rem">
           <a class="button button-primary" href="contacts.html#appointment">Хочу оставить работу</a>
           <a class="button button-secondary" href="blog.html">К статьям блога</a>
@@ -129,7 +124,7 @@
   </footer>
 
   <script src="js/main.js?v=20260721-fun" defer></script>
-  <script src="js/creativity-museum.js?v=20260721-cozy-pin" defer></script>
+  <script src="js/creativity-museum.js?v=20260721-rooms4" defer></script>
   <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
   <script src="js/chat-config.js?v=20260713-philipp-icon" defer></script>
   <script src="js/chatbot.js?v=20260713-philipp-icon" defer></script>
