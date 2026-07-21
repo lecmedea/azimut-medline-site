@@ -553,10 +553,10 @@
     });
   }
 
-  /** Same field set as contacts.html#appointment — единая ФОС → amoCRM */
+  /** Единая форма как на contacts.html#appointment */
   function getLeadFormMarkup(formName) {
     return `
-      <form class="contact-form" data-form="lead" data-form-name="${formName || "site_modal"}">
+      <form class="contact-form" data-form="lead" data-form-name="${formName || "site_modal"}" data-unified="1">
         <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required autocomplete="name"></label>
         <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel"></label>
         <label>Формат помощи<select name="service_type" required>
@@ -584,43 +584,27 @@
 
   function ensureAppointmentModal() {
     let modal = $('[data-modal="appointment-modal"]');
-    if (modal) {
-      // Upgrade old modal forms to the unified contacts form if structure is outdated
-      const form = modal.querySelector("form[data-form='lead']");
-      if (form && !form.querySelector('select[name="service_type"] option[value=""]')) {
-        // still ok
-      }
-      if (form && !form.dataset.unified) {
-        form.outerHTML = getLeadFormMarkup(form.dataset.formName || "site_modal");
-        const next = modal.querySelector("form[data-form='lead']");
-        if (next) {
-          next.dataset.unified = "1";
-          if (window.AzimutForms?.bindForm) window.AzimutForms.bindForm(next);
-        }
-      }
-      return modal;
+    if (!modal) {
+      const wrap = document.createElement("div");
+      wrap.innerHTML = `
+        <div class="appointment-modal" data-modal="appointment-modal" aria-hidden="true">
+          <div class="appointment-modal-backdrop" data-modal-close></div>
+          <section class="appointment-dialog" role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title">
+            <button class="modal-close" type="button" data-modal-close aria-label="Закрыть окно записи">×</button>
+            <div>
+              <p class="eyebrow">Запись</p>
+              <h2 id="appointment-modal-title">Не обязательно справляться одному</h2>
+              <p data-appointment-lead>Оставьте заявку — мы бережно уточним ситуацию и подскажем, с какого формата помощи лучше начать: консультация, выезд на дом, онлайн-встреча или очный приём.</p>
+            </div>
+            ${getLeadFormMarkup("site_modal")}
+          </section>
+        </div>
+      `.trim();
+      modal = wrap.firstElementChild;
+      document.body.appendChild(modal);
     }
-
-    const wrap = document.createElement("div");
-    wrap.innerHTML = `
-      <div class="appointment-modal" data-modal="appointment-modal" aria-hidden="true">
-        <div class="appointment-modal-backdrop" data-modal-close></div>
-        <section class="appointment-dialog" role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title">
-          <button class="modal-close" type="button" data-modal-close aria-label="Закрыть окно записи">×</button>
-          <div>
-            <p class="eyebrow">Запись</p>
-            <h2 id="appointment-modal-title">Не обязательно справляться одному</h2>
-            <p data-appointment-lead>Оставьте заявку — мы бережно уточним ситуацию и подскажем, с какого формата помощи лучше начать: консультация, выезд на дом, онлайн-встреча или очный приём.</p>
-          </div>
-          ${getLeadFormMarkup("site_modal")}
-        </section>
-      </div>
-    `.trim();
-    modal = wrap.firstElementChild;
-    const form = modal.querySelector("form[data-form]");
-    if (form) form.dataset.unified = "1";
-    document.body.appendChild(modal);
-    if (window.AzimutForms?.bindForm && form) window.AzimutForms.bindForm(form);
+    const form = modal.querySelector("form[data-form='lead']");
+    if (form && window.AzimutForms?.bindForm) window.AzimutForms.bindForm(form);
     return modal;
   }
 
