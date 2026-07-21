@@ -41,8 +41,8 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalClinic","name":"Азимут Клиник","alternateName":["Центр ментального здоровья Азимут Клиник","Azimut Clinic","Азимут Клиник Москва"],"description":"Центр ментального здоровья в Москве: психиатрия, наркология, психологическая помощь круглосуточно.","url":"https://azimutclinic.ru/","logo":"https://azimutclinic.ru/assets/brand/azimut-clinic-emblem.jpg","image":"https://azimutclinic.ru/assets/brand/azimut-clinic-og.jpg","telephone":"+79251127799","email":"info@azimutclinic.ru","address":{"@type":"PostalAddress","streetAddress":"ш. Старокалужское, дом 62","addressLocality":"Москва","postalCode":"117630","addressRegion":"Москва","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":55.660607,"longitude":37.538170},"openingHours":"Mo-Su 00:00-24:00","medicalSpecialty":["Psychiatric","Psychologic","Addiction Medicine"],"areaServed":{"@type":"City","name":"Москва"},"hasMap":"https://yandex.ru/maps/?ll=37.538170%2C55.660607&z=16","sameAs":["https://azimutclinic.ru/"]}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Азимут Клиник","url":"https://azimutclinic.ru/","inLanguage":"ru-RU","publisher":{"@type":"MedicalOrganization","name":"Азимут Клиник","url":"https://azimutclinic.ru/"}}</script>
   <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
-  <link rel="stylesheet" href="css/style.css?v=20260721-batch2">
-  <link rel="stylesheet" href="css/responsive.css?v=20260721-batch2">
+  <link rel="stylesheet" href="css/style.css?v=20260721-home-clean2">
+  <link rel="stylesheet" href="css/responsive.css?v=20260721-home-clean2">
   <link rel="stylesheet" href="css/animations.css" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="css/animations.css"></noscript>
   <script src="js/access-gate.js?v=20260716-public"></script>
@@ -135,11 +135,8 @@
   </header>
 
   <main id="main-content">
-    <div class="home-depth-bg home-depth-bg--wave home-wave-stage" data-parallax-bg>
-      <div class="home-wave-bg" aria-hidden="true"></div>
-      <div class="home-wave-overlay" aria-hidden="true"></div>
-
-    <section class="hero clarity-section">
+    <div class="home-hero-shell">
+    <section class="hero">
       <div class="container hero-grid hero-grid-premium">
         <div class="hero-content">
           <p class="eyebrow"><span class="anon-emphasis">Анонимная медицинская помощь</span> 24/7</p>
@@ -208,30 +205,6 @@
                 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="assets/banners-tight/banner-05.jpg" width="2660" height="551" alt="Восстановление ресурса при эмоциональном выгорании с помощью проверенных методик и при необходимости медикаментозной поддержки." loading="lazy" decoding="async">
               </picture>
             </figure>
-            <figure class="banner-slide" aria-label="Комплексный подход">
-              <picture>
-                <source media="(max-width: 720px)" data-srcset="assets/banners-mobile/banner-06.jpg">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="assets/banners-tight/banner-06.jpg" width="2688" height="565" alt="Комплексный подход к диагностике и лечению: консультация психолога, психотерапевта или психиатра." loading="lazy" decoding="async">
-              </picture>
-            </figure>
-            <figure class="banner-slide" aria-label="Когда вы не понимаете ребёнка">
-              <picture>
-                <source media="(max-width: 720px)" data-srcset="assets/banners-mobile/banner-07.jpg">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="assets/banners-tight/banner-07.jpg" width="1863" height="639" alt="Когда вы не понимаете, что происходит с ребёнком. Специалист подскажет, какие изменения требуют внимания." loading="lazy" decoding="async">
-              </picture>
-            </figure>
-            <figure class="banner-slide" aria-label="Когда эмоции становятся слишком громкими">
-              <picture>
-                <source media="(max-width: 720px)" data-srcset="assets/banners-mobile/banner-08.jpg">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="assets/banners-tight/banner-08.jpg" width="2688" height="589" alt="Когда эмоции становятся слишком громкими. Консультация специалиста поможет найти причину и вернуть устойчивость." loading="lazy" decoding="async">
-              </picture>
-            </figure>
-            <figure class="banner-slide" aria-label="Профессиональная помощь">
-              <picture>
-                <source media="(max-width: 720px)" data-srcset="assets/banners-mobile/banner-09.jpg">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="assets/banners-tight/banner-09.jpg" width="2688" height="578" alt="Профессиональная помощь, когда справляться в одиночку больше нет сил. В Азимут Клиник работают сертифицированные специалисты." loading="lazy" decoding="async">
-              </picture>
-            </figure>
           </div>
         </div>
         <div class="banner-carousel-dots" data-banner-dots aria-hidden="true"></div>
@@ -251,7 +224,7 @@
       </div>
     </section>
     -->
-    </div>
+    </div><!-- /.home-hero-shell -->
 
     <section class="section premium-accordion-section">
       <div class="container">
@@ -655,11 +628,14 @@
   </footer>
 
   <script src="data/doctors.js?v=20260721-batch2" defer></script>
-  <script src="js/main.js?v=20260721-home-fast" defer></script>
+  <script src="js/main.js?v=20260721-home-clean2" defer></script>
   <script src="js/forms.js?v=20260721-form-required" defer></script>
   <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
+  <!-- Филипп: сразу на desktop; на mobile — после idle (джойстик приоритетнее) -->
+  <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
+  <script src="js/chat-config.js?v=20260713-philipp-icon" defer></script>
+  <script src="js/chatbot.js?v=20260713-philipp-icon" defer></script>
   <script>
-    // Homepage: defer non-critical JS until idle / first interaction
     (function () {
       var loaded = {};
       function loadScript(src) {
@@ -670,38 +646,14 @@
         s.defer = true;
         document.body.appendChild(s);
       }
-      function loadCss(href) {
-        if (loaded[href]) return;
-        loaded[href] = true;
-        var l = document.createElement("link");
-        l.rel = "stylesheet";
-        l.href = href;
-        document.head.appendChild(l);
-      }
       function loadSecondary() {
-        loadCss("css/chatbot.css?v=20260718-speed-fix");
         loadScript("js/crm-bridge.js?v=20260717-amo");
-        loadScript("js/azimut-animations.js");
-        loadScript("js/chat-config.js?v=20260713-philipp-icon");
-        loadScript("js/chatbot.js?v=20260713-philipp-icon");
-      }
-      var fired = false;
-      function once() {
-        if (fired) return;
-        fired = true;
-        loadSecondary();
-        window.removeEventListener("scroll", once, { passive: true });
-        window.removeEventListener("pointerdown", once);
-        window.removeEventListener("keydown", once);
       }
       if ("requestIdleCallback" in window) {
-        requestIdleCallback(once, { timeout: 3500 });
+        requestIdleCallback(loadSecondary, { timeout: 4000 });
       } else {
-        setTimeout(once, 2800);
+        setTimeout(loadSecondary, 2500);
       }
-      window.addEventListener("scroll", once, { passive: true });
-      window.addEventListener("pointerdown", once);
-      window.addEventListener("keydown", once);
     })();
   </script>
 </body>
