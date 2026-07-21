@@ -1,77 +1,167 @@
 (function () {
-  "use strict";
+  const PIPELINES = {
+    intake: {
+      id: 11108006,
+      name: "Неразобранное",
+      statuses: {
+        chat: { id: 87274334, name: "Обращения из чатов" },
+        site: { id: 87274338, name: "Обращения на сайте" },
+        ads: { id: 87274342, name: "Лид реклама" },
+        partner: { id: 87274346, name: "Лид от партнёра" }
+      }
+    },
+    ambulatory: { id: 11115734, name: "Амбулатория" },
+    partners: { id: 11115738, name: "Партнеры" },
+    homeVisits: { id: 11115742, name: "Выезды" },
+    inpatient: { id: 11115746, name: "Стационар" },
+    rehab: { id: 11115750, name: "РЦ" }
+  };
 
-  const FORM_PAGE = "https://forms.amocrm.ru/rztvtdc";
-  const FORM_SCRIPT = "https://forms.amocrm.ru/forms/assets/js/amoforms.js?1784405709";
-  const FORM_BOOTSTRAP = "!function(a,m,o,c,r,m){a[o+c]=a[o+c]||{setMeta:function(p){this.params=(this.params||[]).concat([p])}},a[o+r]=a[o+r]||function(f){a[o+r].f=(a[o+r].f||[]).concat([f])},a[o+r]({id:\"1732346\",hash:\"192d2bf44a2541064146ce8a15f25a01\",locale:\"ru\"}),a[o+m]=a[o+m]||function(f,k){a[o+m].f=(a[o+m].f||[]).concat([[f,k]])}}(window,0,\"amo_forms_\",\"params\",\"load\",\"loaded\");";
+  const FIELD_NAMES = {
+    patientName: "ФИО Пациента",
+    phone: "Телефон",
+    serviceType: "Тип услуги",
+    direction: "Специализация врача",
+    plannedServices: "Планируемые услуги",
+    complaint: "Жалобы",
+    extraInfo: "Доп информация",
+    source: "Источник лида, партнер",
+    isSiteForm: "Это ФОС"
+  };
 
-  function officialFormUrl() {
-    const query = new URLSearchParams(location.search);
-    query.set("referrer", location.href);
-    return `${FORM_PAGE}?${query.toString()}`;
+  /** Production serverless bridge → amoCRM (Vercel). Site itself is on GitHub Pages. */
+  const DEFAULT_ENDPOINT = "https://azimut-medline-site.vercel.app/api/amo-lead";
+
+  function getEndpoint() {
+    if (window.AZIMUT_CRM_ENDPOINT) return String(window.AZIMUT_CRM_ENDPOINT).trim();
+    const meta = document.querySelector('meta[name="azimut-crm-endpoint"]');
+    if (meta?.content) return meta.content.trim();
+    const script = document.currentScript || document.querySelector('script[src*="crm-bridge.js"]');
+    const fromScript = script?.dataset?.endpoint?.trim();
+    if (fromScript) return fromScript;
+    return DEFAULT_ENDPOINT;
   }
 
-  function privacyNotice() {
-    const note = document.createElement("p");
-    note.className = "amo-native-form__privacy";
-    note.innerHTML = 'Нажимая «Записаться», вы соглашаетесь с <a href="personal-data.html">обработкой персональных данных</a> и <a href="privacy.html">политикой конфиденциальности</a>.';
-    return note;
+  function getApiKey() {
+    if (window.AZIMUT_CRM_API_KEY) return String(window.AZIMUT_CRM_API_KEY).trim();
+    const meta = document.querySelector('meta[name="azimut-crm-key"]');
+    return meta?.content?.trim() || "";
   }
 
-  function mountOfficialForm(target) {
-    const shell = document.createElement("div");
-    shell.className = "contact-form amo-native-form";
-    if (target.id) shell.id = target.id;
-    shell.setAttribute("data-amo-native-form", "1732346");
-
-    const bootstrap = document.createElement("script");
-    bootstrap.textContent = FORM_BOOTSTRAP;
-    const loader = document.createElement("script");
-    loader.id = "amoforms_script_1732346";
-    loader.async = true;
-    loader.charset = "utf-8";
-    loader.src = FORM_SCRIPT;
-
-    shell.append(bootstrap, loader, privacyNotice());
-    target.replaceWith(shell);
+  function clean(value) {
+    return String(value || "").trim();
   }
 
-  function replaceExtraForm(target) {
-    const shell = document.createElement("div");
-    shell.className = "contact-form amo-native-form amo-native-form--link";
-    shell.innerHTML = `<h3>Оставить заявку</h3><p>Единая защищённая форма создаёт обращение сразу в amoCRM.</p><a class="button button-primary" href="${officialFormUrl()}" target="_blank" rel="noopener">Открыть форму записи</a>`;
-    shell.append(privacyNotice());
-    target.replaceWith(shell);
+  /**
+   * Flat payload contract for api/amo-lead.js (production).
+   * Nested lead/raw objects are NOT accepted for phone/name.
+   */
+  function buildFlatLeadPayload(payload, options = {}) {
+    const sourceId = clean(payload.SOURCE_ID || options.sourceId || "site");
+    return {
+      NAME: clean(payload.NAME),
+      PHONE: clean(payload.PHONE),
+      EMAIL: clean(payload.EMAIL),
+      SERVICE_TYPE: clean(payload.SERVICE_TYPE),
+      DIRECTION: clean(payload.DIRECTION),
+      COMMENTS: clean(payload.COMMENTS),
+      SELECTED_SERVICE: clean(payload.SELECTED_SERVICE || payload.SERVICE_TYPE),
+      SELECTED_PRICE: clean(payload.SELECTED_PRICE),
+      SOURCE_ID: sourceId,
+      FORM_NAME: clean(payload.FORM_NAME || options.formName || "site"),
+      PAGE_URL: clean(payload.PAGE_URL || location.href),
+      UTM_SOURCE: clean(payload.UTM_SOURCE),
+      UTM_MEDIUM: clean(payload.UTM_MEDIUM),
+      UTM_CAMPAIGN: clean(payload.UTM_CAMPAIGN),
+      UTM_CONTENT: clean(payload.UTM_CONTENT),
+      UTM_TERM: clean(payload.UTM_TERM),
+      TELEGRAM_CHAT_ID: clean(payload.TELEGRAM_CHAT_ID),
+      TELEGRAM_USERNAME: clean(payload.TELEGRAM_USERNAME),
+      // keep legacy nested shape for debugging/logging only (server ignores if PHONE top-level present)
+      legacy: options.includeLegacy === true ? payload : undefined
+    };
   }
 
-  function mountForms() {
-    const forms = [...document.querySelectorAll('form[data-form="lead"]')];
-    forms.forEach((form, index) => index === 0 ? mountOfficialForm(form) : replaceExtraForm(form));
+  /** @deprecated kept for chat/debug callers that still expect nested shape */
+  function buildAmoPayload(payload, options = {}) {
+    return buildFlatLeadPayload(payload, options);
   }
 
-  function openForm() {
-    const modalButton = document.querySelector('[data-modal-open="appointment-modal"]');
-    if (modalButton) {
-      modalButton.click();
-      return true;
+  async function sendToEndpoint(endpoint, payload) {
+    const headers = { "Content-Type": "application/json" };
+    const apiKey = getApiKey();
+    if (apiKey) headers["X-Azimut-Key"] = apiKey;
+
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data?.error || data?.message || `CRM endpoint returned ${response.status}`);
     }
-    location.href = location.pathname.endsWith("contacts.html") ? "#appointment" : "contacts.html#appointment";
-    return true;
+    return data;
   }
 
-  document.addEventListener("DOMContentLoaded", mountForms);
+  async function sendLead(payload, options = {}) {
+    const flat = buildFlatLeadPayload(payload, options);
+    const endpoint = getEndpoint();
+
+    if (!endpoint) {
+      console.info("amoCRM payload is ready. Configure AZIMUT_CRM_ENDPOINT to send it:", flat);
+      return { ok: true, mode: "pending-endpoint", payload: flat };
+    }
+
+    if (!flat.PHONE) {
+      throw new Error("Укажите телефон для обратной связи.");
+    }
+
+    const data = await sendToEndpoint(endpoint, flat);
+    const amoFailed = Array.isArray(data.warnings) && data.warnings.includes("AMOCRM_ERROR");
+    const mode = data.ok === false
+      ? "error"
+      : amoFailed
+        ? "captured"
+        : data.leadId
+          ? "sent"
+          : data.captured
+            ? "captured"
+            : "sent";
+
+    return {
+      ok: Boolean(data.ok !== false),
+      mode,
+      payload: flat,
+      response: data,
+      leadId: data.leadId || null
+    };
+  }
+
+  async function sendChatLead(leadData) {
+    return sendLead({
+      ...leadData,
+      SOURCE_ID: leadData.SOURCE_ID || "AI chatbot",
+      FORM_NAME: leadData.FORM_NAME || "ai_chat"
+    }, {
+      sourceId: leadData.SOURCE_ID || "AI chatbot",
+      formName: "ai_chat"
+    });
+  }
 
   window.AzimutCRM = {
-    formUrl: officialFormUrl,
-    openForm,
-    sendLead() {
-      openForm();
-      return Promise.resolve({ ok: true, routedToOfficialForm: true });
-    },
-    sendChatLead(payload) {
-      try { sessionStorage.setItem("azimut-chat-lead-draft", JSON.stringify(payload || {})); } catch (_) {}
-      openForm();
-      return Promise.resolve({ ok: true, routedToOfficialForm: true });
-    }
+    pipelines: PIPELINES,
+    fieldNames: FIELD_NAMES,
+    endpoint: getEndpoint(),
+    buildAmoPayload,
+    buildFlatLeadPayload,
+    sendLead,
+    sendChatLead
+  };
+
+  window.AzimutBitrix = {
+    sendLead,
+    sendChatLeadToBitrix24: sendChatLead
   };
 })();
