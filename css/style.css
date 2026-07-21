@@ -2253,8 +2253,8 @@ button:focus-visible {
     align-items: center;
     justify-content: center;
     position: absolute;
-    /* Mobile: сдвиг от центра — влево 15%, вверх 4% (от размера баннера) */
-    left: calc(50% - 15%);
+    /* Mobile: сдвиг от центра — влево 17% (15%+2%), вверх 4% */
+    left: calc(50% - 17%);
     bottom: calc(14px + 4%);
     transform: translateX(-50%);
     z-index: 5;
