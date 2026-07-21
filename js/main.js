@@ -427,7 +427,6 @@
         </span>
       </button>
       <div class="azimut-joystick-actions" aria-label="Быстрые действия">
-        <button class="azimut-joystick-action" type="button" data-joystick-action="audio" aria-label="Открыть аудиоплеер"><span aria-hidden="true">♪</span></button>
         <button class="azimut-joystick-action" type="button" data-joystick-action="top" aria-label="Наверх страницы"><span aria-hidden="true">↑</span></button>
         <button class="azimut-joystick-action azimut-joystick-action--tests" type="button" data-joystick-action="tests" aria-label="Открыть тесты" title="Тесты">
           <span class="azimut-joystick-tests-icon" aria-hidden="true">
@@ -470,14 +469,6 @@
 
       if (action.dataset.joystickAction === "tests") {
         window.location.href = "tests.html";
-        setOpen(false);
-      }
-
-      if (action.dataset.joystickAction === "audio") {
-        const willOpen = !document.body.classList.contains("joystick-audio-open");
-        document.body.classList.toggle("joystick-audio-open", willOpen);
-        if (willOpen) window.AzimutAudio?.openPanel?.();
-        else window.AzimutAudio?.closePanel?.();
         setOpen(false);
       }
     });
