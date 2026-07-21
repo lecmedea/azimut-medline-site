@@ -41,8 +41,8 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalClinic","name":"Азимут Клиник","alternateName":["Центр ментального здоровья Азимут Клиник","Azimut Clinic","Азимут Клиник Москва"],"description":"Центр ментального здоровья в Москве: психиатрия, наркология, психологическая помощь круглосуточно.","url":"https://azimutclinic.ru/","logo":"https://azimutclinic.ru/assets/brand/azimut-clinic-emblem.jpg","image":"https://azimutclinic.ru/assets/brand/azimut-clinic-og.jpg","telephone":"+79251127799","email":"info@azimutclinic.ru","address":{"@type":"PostalAddress","streetAddress":"ш. Старокалужское, дом 62","addressLocality":"Москва","postalCode":"117630","addressRegion":"Москва","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":55.660607,"longitude":37.538170},"openingHours":"Mo-Su 00:00-24:00","medicalSpecialty":["Psychiatric","Psychologic","Addiction Medicine"],"areaServed":{"@type":"City","name":"Москва"},"hasMap":"https://yandex.ru/maps/?ll=37.538170%2C55.660607&z=16","sameAs":["https://azimutclinic.ru/"]}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Азимут Клиник","url":"https://azimutclinic.ru/","inLanguage":"ru-RU","publisher":{"@type":"MedicalOrganization","name":"Азимут Клиник","url":"https://azimutclinic.ru/"}}</script>
   <link rel="stylesheet" href="css/access-gate.css?v=20260713-mobile-fix">
-  <link rel="stylesheet" href="css/style.css?v=20260721-home-clean2">
-  <link rel="stylesheet" href="css/responsive.css?v=20260721-home-clean2">
+  <link rel="stylesheet" href="css/style.css?v=20260721-ui-cta">
+  <link rel="stylesheet" href="css/responsive.css?v=20260721-ui-cta">
   <link rel="stylesheet" href="css/animations.css" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="css/animations.css"></noscript>
   <script src="js/access-gate.js?v=20260716-public"></script>
@@ -155,7 +155,7 @@
                 <img class="compass-image" src="assets/generated/hero-compass-cutout.webp" alt="Компас Азимут" width="420" height="420" decoding="async" >
                 <div class="route-line" aria-hidden="true"></div>
               </div>
-              <p class="compass-hint">Коснитесь компаса и он мягко направит Вас к нам</p>
+              <p class="compass-hint">Коснитесь компаса и он мягко подскажет вам путь</p>
               <ul class="hero-proof-list">
                 <li><span class="anon-emphasis">Анонимно</span></li>
                 <li>Круглосуточно</li>
@@ -173,37 +173,47 @@
       <div class="banner-carousel" data-banner-carousel aria-roledescription="carousel" aria-label="Актуальные предложения клиники">
         <div class="banner-carousel-viewport">
           <div class="banner-carousel-track">
-            <figure class="banner-slide is-active" aria-label="Вернуться к себе — возможно">
+            <figure class="banner-slide is-active banner-slide--bookable" data-modal-open="appointment-modal" aria-label="Вернуться к себе — возможно">
               <picture>
                 <source media="(max-width: 720px)" type="image/webp" srcset="assets/banners-mobile/banner-01.webp">
                 <source media="(max-width: 720px)" srcset="assets/banners-mobile/banner-01.jpg">
                 <source type="image/webp" srcset="assets/banners-tight/banner-01.webp">
                 <img src="assets/banners-tight/banner-01.webp" width="1600" height="525" alt="Вернуться к себе возможно. Ментальное здоровье — способность жить полноценно и строить гармоничные отношения." loading="eager" decoding="async" fetchpriority="high">
               </picture>
+            
+              <button type="button" class="banner-cta" data-modal-open="appointment-modal">Записаться</button>
             </figure>
-            <figure class="banner-slide" aria-label="Сон — основа восстановления">
+            <figure class="banner-slide banner-slide--bookable" data-modal-open="appointment-modal" aria-label="Сон — основа восстановления">
               <picture>
                 <source media="(max-width: 720px)" data-srcset="assets/banners-mobile/banner-02.jpg">
                 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="assets/banners-tight/banner-02.jpg" width="2658" height="546" alt="Сон — основа восстановления. Если вы долго не можете уснуть или часто просыпаетесь, специалист поможет разобраться в причинах." loading="lazy" decoding="async">
               </picture>
+            
+              <button type="button" class="banner-cta" data-modal-open="appointment-modal">Записаться</button>
             </figure>
-            <figure class="banner-slide" aria-label="Отношениям иногда нужен переводчик">
+            <figure class="banner-slide banner-slide--bookable" data-modal-open="appointment-modal" aria-label="Отношениям иногда нужен переводчик">
               <picture>
                 <source media="(max-width: 720px)" data-srcset="assets/banners-mobile/banner-03.jpg">
                 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="assets/banners-tight/banner-03.jpg" width="2652" height="555" alt="Отношениям иногда нужен переводчик. Семейная терапия помогает восстановить диалог и снизить напряжение." loading="lazy" decoding="async">
               </picture>
+            
+              <button type="button" class="banner-cta" data-modal-open="appointment-modal">Записаться</button>
             </figure>
-            <figure class="banner-slide" aria-label="Консультация психиатра">
+            <figure class="banner-slide banner-slide--bookable" data-modal-open="appointment-modal" aria-label="Консультация психиатра">
               <picture>
                 <source media="(max-width: 720px)" data-srcset="assets/banners-mobile/banner-04.jpg">
                 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="assets/banners-tight/banner-04.jpg" width="2658" height="585" alt="Консультация психиатра — квалифицированная медицинская помощь, оценка состояния и понятный план дальнейших действий." loading="lazy" decoding="async">
               </picture>
+            
+              <button type="button" class="banner-cta" data-modal-open="appointment-modal">Записаться</button>
             </figure>
-            <figure class="banner-slide" aria-label="Восстановление ресурса">
+            <figure class="banner-slide banner-slide--bookable" data-modal-open="appointment-modal" aria-label="Восстановление ресурса">
               <picture>
                 <source media="(max-width: 720px)" data-srcset="assets/banners-mobile/banner-05.jpg">
                 <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="assets/banners-tight/banner-05.jpg" width="2660" height="551" alt="Восстановление ресурса при эмоциональном выгорании с помощью проверенных методик и при необходимости медикаментозной поддержки." loading="lazy" decoding="async">
               </picture>
+            
+              <button type="button" class="banner-cta" data-modal-open="appointment-modal">Записаться</button>
             </figure>
           </div>
         </div>
@@ -628,7 +638,7 @@
   </footer>
 
   <script src="data/doctors.js?v=20260721-batch2" defer></script>
-  <script src="js/main.js?v=20260721-home-clean2" defer></script>
+  <script src="js/main.js?v=20260721-ui-cta" defer></script>
   <script src="js/forms.js?v=20260721-form-required" defer></script>
   <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
   <!-- Филипп: сразу на desktop; на mobile — после idle (джойстик приоритетнее) -->
