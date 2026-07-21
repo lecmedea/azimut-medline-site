@@ -3442,8 +3442,10 @@ button:focus-visible {
 
 .amo-lead-form__submit:disabled,
 .amo-lead-form__submit.is-disabled {
-  opacity: 0.45;
+  opacity: 0.42;
   cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.15);
 }
 
 .amo-lead-form__badge {
