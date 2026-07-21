@@ -474,6 +474,103 @@ section {
   transform: translateX(5px);
 }
 
+/* Ссылка «Наше творчество» (раздел с замочком / PIN) — изумрудная строка + замок */
+.nav-dropdown-link[href="creativity.html"],
+.nav-link[href="creativity.html"],
+a[href="creativity.html"].nav-link-locked {
+  position: relative;
+  color: #0f5f58;
+}
+
+.nav-dropdown-link[href="creativity.html"] {
+  padding-right: 34px;
+}
+
+.nav-dropdown-link[href="creativity.html"]::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #0f766e;
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* green underline under creativity link */
+.nav-dropdown-link[href="creativity.html"]::after {
+  content: "";
+  position: absolute;
+  left: 28px;
+  right: 32px;
+  bottom: 7px;
+  height: 2px;
+  border-radius: 999px;
+  background: #0f766e;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.nav-dropdown-link[href="creativity.html"]:hover,
+.nav-dropdown-link[href="creativity.html"]:focus-visible {
+  color: #0a5c55;
+  background: rgba(15, 118, 110, 0.1);
+}
+
+/* lock icon on the right of creativity dropdown link */
+.nav-dropdown-link[href="creativity.html"] .nav-lock,
+.nav-link[href="creativity.html"] .nav-lock {
+  display: inline-flex;
+  margin-left: 6px;
+  color: #0f766e;
+  font-size: 12px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* absolute lock if no span in HTML */
+.nav-dropdown-link[href="creativity.html"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f766e' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='10' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px 14px;
+}
+
+.nav-link[href="creativity.html"].is-active::after,
+.nav-link[href="creativity.html"]:hover::after,
+.nav-link[href="creativity.html"].active::after {
+  background: linear-gradient(90deg, transparent, #0f766e, transparent);
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.nav-link[href="creativity.html"].is-active,
+.nav-link[href="creativity.html"].active {
+  color: #0f766e;
+}
+
+.footer-column a[href="creativity.html"] {
+  position: relative;
+  display: inline-block;
+  color: #0f766e;
+  padding-bottom: 3px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f766e' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='10' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 13px 13px;
+  padding-right: 20px;
+}
+
+.footer-column a[href="creativity.html"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 20px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: #0f766e;
+}
+
 .nav-dropdown-link:hover::before,
 .nav-dropdown-link:focus-visible::before {
   opacity: 1;
