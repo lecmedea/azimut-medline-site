@@ -112,10 +112,24 @@ function buildNote(body, normalized) {
   ].filter(Boolean).join("\n").slice(0, MAX_TEXT);
 }
 
+function getAmoAccessToken() {
+  // Prefer dedicated access token; accept legacy aliases if misnamed on Vercel.
+  return (
+    clean(process.env.AMOCRM_ACCESS_TOKEN, 5000) ||
+    clean(process.env.AMO_ACCESS_TOKEN, 5000) ||
+    clean(process.env.AMOCRM_TOKEN, 5000)
+  );
+}
+
 async function amoRequest(path, options = {}) {
   const baseUrl = clean(process.env.AMOCRM_BASE_URL || "https://lecmedea.amocrm.ru", 300).replace(/\/+$/, "");
-  const token = clean(process.env.AMOCRM_ACCESS_TOKEN, 5000);
-  if (!token) throw new Error("AMOCRM_ACCESS_TOKEN is not configured");
+  const token = getAmoAccessToken();
+  if (!token) {
+    throw new Error(
+      "AMOCRM_ACCESS_TOKEN is not configured on Vercel (Production). " +
+        "Create a long-lived token in amoCRM → Integrations → private integration, then set env AMOCRM_ACCESS_TOKEN."
+    );
+  }
 
   const response = await fetch(`${baseUrl}${path}`, {
     ...options,
@@ -208,6 +222,60 @@ function registryPayload(body, normalized, crm) {
   };
 }
 
+/**
+ * Fallback: official amoCRM web form endpoint (no OAuth token required).
+ * Form: lecmedea / form_id 1732346 (ФИО, телефон, email, примечание).
+ * Override via AMOCRM_FORM_ID / AMOCRM_FORM_HASH if the form is rebuilt.
+ */
+async function sendViaAmoPublicForm(normalized) {
+  const formId = clean(process.env.AMOCRM_FORM_ID || "1732346", 32);
+  const hash = clean(process.env.AMOCRM_FORM_HASH || "192d2bf44a2541064146ce8a15f25a01", 64);
+  if (!formId || !hash) throw new Error("AMOCRM public form is not configured");
+
+  const note = [
+    normalized.comment || "",
+    normalized.service ? `Услуга/направление: ${normalized.service}` : "",
+    normalized.source ? `Источник: ${normalized.source}` : "",
+    normalized.formName ? `Форма: ${normalized.formName}` : "",
+    normalized.pageUrl ? `Страница: ${normalized.pageUrl}` : "",
+    normalized.telegramChatId ? `TG chat: ${normalized.telegramChatId}` : "",
+    normalized.telegramUsername ? `TG: @${normalized.telegramUsername.replace(/^@/, "")}` : ""
+  ]
+    .filter(Boolean)
+    .join("\n")
+    .slice(0, 4000);
+
+  const body = new URLSearchParams();
+  body.set("form_id", formId);
+  body.set("hash", hash);
+  body.set("user_origin", normalized.pageUrl || "https://azimutclinic.ru/");
+  body.set("fields[name_1]", normalized.name || "Пациент с сайта");
+  body.set("fields[907951_1][1073443]", normalized.phone);
+  if (normalized.email) body.set("fields[907953_1][1073455]", normalized.email);
+  body.set("fields[note_2]", note || "Заявка с сайта azimutclinic.ru");
+
+  const response = await fetch("https://forms.amocrm.ru/queue/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      Origin: "https://azimutclinic.ru",
+      Referer: "https://azimutclinic.ru/"
+    },
+    body: body.toString()
+  });
+  const text = await response.text();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = { raw: text };
+  }
+  if (!response.ok || Number(data.error_code || 0) !== 0) {
+    throw new Error(`amo form HTTP ${response.status}: ${String(text).slice(0, 400)}`);
+  }
+  return { ok: true, mode: "public-form", formId, raw: data };
+}
+
 module.exports = async function amoLeadHandler(request, response) {
   setCors(request, response);
   if (request.method === "OPTIONS") {
@@ -272,11 +340,29 @@ module.exports = async function amoLeadHandler(request, response) {
           body: JSON.stringify([{ note_type: "common", params: { text: note } }])
         });
       }
-      crm = { ok: true, leadId, contactId, pipelineId, statusId, error: "" };
+      crm = { ok: true, leadId, contactId, pipelineId, statusId, error: "", mode: "api-v4" };
     } catch (crmError) {
       crm.error = String(crmError.message || crmError).slice(0, 1000);
       crm.status = crmError.status;
-      console.error("amoCRM delivery failed:", crmError);
+      console.error("amoCRM API delivery failed:", crmError);
+      // Fallback without OAuth: public amo form (always available if form id/hash correct)
+      try {
+        const formResult = await sendViaAmoPublicForm(normalized);
+        crm = {
+          ok: true,
+          leadId: null,
+          contactId: null,
+          pipelineId,
+          statusId,
+          error: "",
+          mode: formResult.mode,
+          formId: formResult.formId
+        };
+        console.info("amoCRM public form fallback succeeded for", normalized.phone);
+      } catch (formError) {
+        crm.error = `${crm.error} | form-fallback: ${String(formError.message || formError).slice(0, 400)}`;
+        console.error("amoCRM public form fallback failed:", formError);
+      }
     }
 
     let registry = { ok: false, error: "" };
@@ -295,6 +381,15 @@ module.exports = async function amoLeadHandler(request, response) {
       });
     }
 
+    const warnings = [
+      crm.mode === "public-form" ? "AMOCRM_VIA_PUBLIC_FORM" : "",
+      !crm.ok ? "AMOCRM_ERROR" : "",
+      !registry.ok ? "REGISTRY_ERROR" : ""
+    ].filter(Boolean);
+    if (!crm.ok && /AMOCRM_ACCESS_TOKEN is not configured/i.test(crm.error || "")) {
+      warnings.push("AMOCRM_TOKEN_MISSING");
+    }
+
     return sendJson(response, crm.ok ? 201 : 202, {
       ok: true,
       captured: registry.ok,
@@ -302,7 +397,10 @@ module.exports = async function amoLeadHandler(request, response) {
       contactId: crm.contactId,
       pipelineId,
       statusId,
-      warnings: [!crm.ok ? "AMOCRM_ERROR" : "", !registry.ok ? "REGISTRY_ERROR" : ""].filter(Boolean)
+      deliveryMode: crm.mode || (crm.ok ? "api-v4" : "none"),
+      warnings,
+      // Safe diagnostic for operators (no secrets). Helps debug Vercel env / expired token.
+      crmError: crm.ok ? undefined : String(crm.error || "unknown amoCRM error").slice(0, 300)
     });
   } catch (error) {
     console.error("amoCRM lead endpoint error:", error);
