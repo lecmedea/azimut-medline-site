@@ -1299,7 +1299,11 @@
       attachScoring(modalBody);
       const active = modalBody.querySelector(`[data-test-active="${testId}"]`);
       if (active) startTimer(test, active);
-      active?.querySelector(".test-question")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Scroll inside the dialog only — never under the fixed site header
+      const dialog = modal.querySelector(".test-modal__dialog");
+      if (dialog) {
+        dialog.scrollTop = 0;
+      }
     }
 
     listRoot.addEventListener("click", (event) => {
