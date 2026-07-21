@@ -347,7 +347,7 @@
         compass.style.setProperty("--needle-angle", "-90deg");
         compass.classList.remove("is-routing", "is-orientation", "is-following");
         if (hint) {
-          hint.textContent = "Коснитесь компаса и он мягко направит Вас к нам";
+          hint.textContent = "Коснитесь компаса и он мягко подскажет вам путь";
         }
       }
     };
@@ -370,7 +370,7 @@
     });
 
     if (mobileQuery.matches) {
-      setHint("Коснитесь компаса — укажет путь к клинике");
+      setHint("Коснитесь компаса и он мягко подскажет вам путь");
     } else {
       resetNeedle();
     }
