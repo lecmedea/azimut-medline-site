@@ -128,10 +128,16 @@ def collect_files() -> list[str]:
         "assets/creativity/**/*",  # per-room furniture ru/jp/fr/uk
         "assets/entertainment/*",
         "assets/icons/joystick-gear.*",
+        "assets/docs/*",
+        "assets/docs/**/*",  # legal document library
     ):
         for path in sorted(ROOT.glob(pattern)):
-            if path.is_file() and path.name != ".DS_Store":
-                add(path)
+            if not path.is_file() or path.name == ".DS_Store":
+                continue
+            # never publish internal HR / staff personal data
+            if "_internal" in path.parts or "not_public" in path.parts:
+                continue
+            add(path)
 
     return rels
 
