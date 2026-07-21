@@ -114,9 +114,53 @@
 
     <section class="section"><div class="container"><div class="section-heading"><p class="eyebrow">Направления</p><h2>Структура услуг центра</h2></div><div class="service-groups" data-render="services"></div></div></section>
 
-    <section class="section section-soft" id="home"><div class="container split-layout"><div><p class="eyebrow">Выезд на дом</p><h2>Специалист может приехать на дом</h2><p>Выезд возможен по Москве и Московской области. Точное время приезда зависит от адреса, дорожной ситуации и загруженности специалистов.</p><a class="button button-primary" href="#service-form" data-select-service="Вызов специалиста на дом" data-select-price="">Вызвать специалиста</a></div><form class="contact-form" data-form="lead" data-form-name="home_visit" id="service-form"><label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required></label><label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required></label><label>Формат помощи<select name="service_type"><option>на дому</option><option>в клинике</option><option>онлайн</option><option>по телефону</option></select></label><label>Направление<select name="direction"><option>наркология</option><option>психиатрия</option><option>психология</option><option>психологическое тестирование</option><option>другое</option></select></label><label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label><label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label><button class="button button-primary" type="submit">Получить консультацию специалиста</button><p class="form-status" aria-live="polite"></p></form></div></section>
+    <section class="section section-soft" id="home"><div class="container split-layout"><div><p class="eyebrow">Выезд на дом</p><h2>Специалист может приехать на дом</h2><p>Выезд возможен по Москве и Московской области. Точное время приезда зависит от адреса, дорожной ситуации и загруженности специалистов.</p><a class="button button-primary" href="#service-form" data-select-service="Вызов специалиста на дом" data-select-price="">Вызвать специалиста</a></div><form id="service-form" class="contact-form" data-form="lead" data-form-name="home_visit" data-unified="1">
+        <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required autocomplete="name"></label>
+        <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel"></label>
+        <label>Формат помощи<select name="service_type" required>
+          <option value="">Выберите…</option>
+          <option value="в клинике">в клинике</option>
+          <option value="на дому">на дому</option>
+          <option value="онлайн">онлайн</option>
+          <option value="по телефону">по телефону</option>
+        </select></label>
+        <label>Направление<select name="direction" required>
+          <option value="">Выберите…</option>
+          <option value="психиатрия">психиатрия</option>
+          <option value="психология">психология</option>
+          <option value="наркология">наркология</option>
+          <option value="психологическое тестирование">психологическое тестирование</option>
+          <option value="другое">другое</option>
+        </select></label>
+        <label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label>
+        <label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
+        <button class="button button-primary" type="submit">Получить консультацию специалиста</button>
+        <p class="form-status" aria-live="polite"></p>
+      </form></div></section>
 
-    <section class="section" id="online"><div class="container split-layout reverse"><form class="contact-form" data-form="lead" data-form-name="online_consultation"><label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required></label><label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required></label><label>Формат помощи<select name="service_type"><option>онлайн</option><option>по телефону</option><option>в клинике</option><option>на дому</option></select></label><label>Направление<select name="direction"><option>психология</option><option>психиатрия</option><option>наркология</option><option>психологическое тестирование</option><option>другое</option></select></label><label>Комментарий<textarea name="message" rows="4" placeholder="Что важно обсудить"></textarea></label><label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label><button class="button button-primary" type="submit">Записаться онлайн</button><p class="form-status" aria-live="polite"></p></form><div><p class="eyebrow">Онлайн-консультации</p><h2>Можно начать дистанционно</h2><p>Онлайн-консультация помогает получить первичную поддержку, обсудить ситуацию и понять, какой следующий шаг будет наиболее подходящим.</p><div class="hero-actions"><a class="button button-secondary" href="tel:+79251127799">Позвонить круглосуточно</a></div></div></div></section>
+    <section class="section" id="online"><div class="container split-layout reverse"><form class="contact-form" data-form="lead" data-form-name="online_consultation" data-unified="1">
+        <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required autocomplete="name"></label>
+        <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel"></label>
+        <label>Формат помощи<select name="service_type" required>
+          <option value="">Выберите…</option>
+          <option value="в клинике">в клинике</option>
+          <option value="на дому">на дому</option>
+          <option value="онлайн">онлайн</option>
+          <option value="по телефону">по телефону</option>
+        </select></label>
+        <label>Направление<select name="direction" required>
+          <option value="">Выберите…</option>
+          <option value="психиатрия">психиатрия</option>
+          <option value="психология">психология</option>
+          <option value="наркология">наркология</option>
+          <option value="психологическое тестирование">психологическое тестирование</option>
+          <option value="другое">другое</option>
+        </select></label>
+        <label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label>
+        <label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
+        <button class="button button-primary" type="submit">Получить консультацию специалиста</button>
+        <p class="form-status" aria-live="polite"></p>
+      </form><div><p class="eyebrow">Онлайн-консультации</p><h2>Можно начать дистанционно</h2><p>Онлайн-консультация помогает получить первичную поддержку, обсудить ситуацию и понять, какой следующий шаг будет наиболее подходящим.</p><div class="hero-actions"><a class="button button-secondary" href="tel:+79251127799">Позвонить круглосуточно</a></div></div></div></section>
 
     <section class="section section-soft" id="services-prices"><div class="container"><div class="section-heading"><p class="eyebrow">Услуги и цены</p><h2>Выберите раздел прайса</h2><p class="notice">Сначала выберите нужное направление. Внутри раскроется список услуг с описанием и ориентиром по стоимости.</p></div><div class="service-price-accordion" data-render="service-price-accordion"></div></div></section>
 
@@ -170,10 +214,10 @@
 
   <script src="data/services.js"></script>
   <script src="data/prices.js"></script>
-  <script src="js/crm-bridge.js?v=20260721-amo-flat" defer></script>
-  <script src="js/main.js?v=20260721-amo-flat" defer></script>
+  <script src="js/crm-bridge.js?v=20260721-one-form" defer></script>
+  <script src="js/main.js?v=20260721-one-form" defer></script>
   <script src="js/azimut-animations.js" defer></script>
-  <script src="js/forms.js?v=20260721-amo-flat" defer></script>
+  <script src="js/forms.js?v=20260721-one-form" defer></script>
   <script src="js/chat-config.js?v=20260713-philipp-icon" defer></script>
   <script src="js/chatbot.js?v=20260713-philipp-icon" defer></script>
   <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
