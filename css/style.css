@@ -1778,6 +1778,21 @@ button:focus-visible {
   justify-self: start;
 }
 
+/* Submit: emerald green CTA for lead forms */
+.contact-form button[type="submit"].button-primary,
+.appointment-dialog .contact-form button[type="submit"].button-primary {
+  background: #0f766e;
+  border-color: #0d9488;
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(15, 118, 110, 0.28);
+}
+
+.contact-form button[type="submit"].button-primary:hover:not(:disabled),
+.appointment-dialog .contact-form button[type="submit"].button-primary:hover:not(:disabled) {
+  background: #0d9488;
+  border-color: #14b8a6;
+}
+
 /* Submit locked until all lead fields are filled */
 .contact-form button[type="submit"]:disabled,
 .contact-form input[type="submit"]:disabled,
@@ -1789,6 +1804,74 @@ button:focus-visible {
   filter: grayscale(0.15);
   box-shadow: none;
   transform: none;
+}
+
+/* Banner CTA → appointment modal */
+.banner-slide {
+  position: relative;
+}
+
+.banner-slide--bookable {
+  cursor: pointer;
+}
+
+.banner-cta {
+  display: none;
+  appearance: none;
+  margin: 12px auto 4px;
+  padding: 10px 28px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(174, 139, 102, 0.65);
+  background: rgba(255, 251, 245, 0.96);
+  color: #5c4a36;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(92, 74, 54, 0.12);
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.banner-cta:hover,
+.banner-cta:focus-visible {
+  background: #fff;
+  border-color: #9a4c39;
+  color: #9a4c39;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 860px) {
+  .banner-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    z-index: 5;
+    min-width: 148px;
+    margin: 0;
+  }
+
+  .banner-slide {
+    padding-bottom: 0;
+  }
+
+  .banner-slide picture,
+  .banner-slide img {
+    display: block;
+    width: 100%;
+  }
+}
+
+.contact-logo {
+  width: min(160px, 48vw);
+  height: auto;
+  display: block;
+  margin: 0 auto 12px;
+  object-fit: contain;
 }
 
 .form-status {
