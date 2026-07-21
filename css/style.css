@@ -3410,8 +3410,8 @@ button:focus-visible {
 }
 
 .amo-lead-form__field:focus {
-  outline: 2px solid rgba(239, 104, 112, 0.35);
-  border-color: #ef6870;
+  outline: 2px solid rgba(15, 118, 110, 0.35);
+  border-color: #0f766e;
   background: #fff;
 }
 
@@ -3427,7 +3427,7 @@ button:focus-visible {
   margin: 4px 0 0;
   border: 0;
   border-radius: 12px;
-  background: #ef6870;
+  background: #0f766e;
   color: #fff;
   font: inherit;
   font-size: 17px;
@@ -3437,7 +3437,7 @@ button:focus-visible {
 }
 
 .amo-lead-form__submit:hover:not(:disabled) {
-  background: #e4555e;
+  background: #0d9488;
 }
 
 .amo-lead-form__submit:disabled,
