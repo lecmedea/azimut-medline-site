@@ -1,26 +1,49 @@
 # Telegram-бот Азимут Клиник
 
-## Постоянная работа (Mac)
+## Production 24/7 — Yandex Cloud
 
-LaunchAgent уже настроен:
+Бот задеплоен на **Yandex Compute Cloud** (каталог `cloud-direktorpromo`):
+
+| Параметр | Значение |
+|----------|----------|
+| VM | `azimut-telegram-bot` |
+| Зона | `ru-central1-b` |
+| Публичный IP | `111.88.156.11` |
+| Unit | `systemd: azimut-telegram-bot.service` |
+| Код | `/opt/azimut-bot/bot.js` |
 
 ```bash
+# SSH (ключ ~/.ssh/azimut-yc)
+ssh -i ~/.ssh/azimut-yc ubuntu@111.88.156.11
+
+# статус / логи
+sudo systemctl status azimut-telegram-bot
+sudo journalctl -u azimut-telegram-bot -f
+```
+
+Обновление кода с Mac:
+
+```bash
+cd telegram-bot
+tar czf /tmp/azimut-bot.tgz bot.js package.json Dockerfile assets .env
+scp -i ~/.ssh/azimut-yc /tmp/azimut-bot.tgz ubuntu@111.88.156.11:/tmp/
+ssh -i ~/.ssh/azimut-yc ubuntu@111.88.156.11 \
+  'sudo tar xzf /tmp/azimut-bot.tgz -C /opt/azimut-bot && sudo systemctl restart azimut-telegram-bot'
+```
+
+**Важно:** не запускайте второй экземпляр (локальный LaunchAgent) — Telegram `getUpdates` конфликтует.
+
+## Локальный LaunchAgent (только для разработки)
+
+```bash
+# НЕ включайте, пока крутится cloud-VM
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/ru.azimutclinic.telegram-bot.plist
-# логи:
 tail -f /tmp/azimut-clinic-bot.log
 ```
 
-Бот поднимается при входе в macOS и перезапускается при падении (`KeepAlive`).
-Нужен включённый Mac (или всегда-онлайн VPS).
+## Альтернативы
 
-## Облако 24/7 (рекомендуется, если Mac выключается)
-
-1. Создайте **Background Worker** на [Render.com](https://render.com) (free plan).
-2. Root Directory: `telegram-bot`
-3. Dockerfile: `telegram-bot/Dockerfile` (есть `render.yaml`).
-4. Env vars: `TELEGRAM_BOT_TOKEN`, `DEEPSEEK_API_KEY`, `CLINIC_SITE_URL=https://azimutclinic.ru/`
-
-Либо Railway / Fly.io — тот же Docker image.
+Render / Railway / Fly.io — тот же `Dockerfile` в этой папке.
 
 ## Локально вручную
 
