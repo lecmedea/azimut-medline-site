@@ -563,9 +563,9 @@
       <form class="contact-form amo-lead-form" data-form="lead" data-form-name="${formName || "site_modal"}" data-amo-style="1">
         <input class="amo-lead-form__field" name="name" type="text" placeholder="ФИО" required autocomplete="name" aria-label="ФИО">
         <input class="amo-lead-form__field" name="phone" type="tel" placeholder="+7 Телефон" required autocomplete="tel" inputmode="tel" aria-label="Телефон">
-        <input class="amo-lead-form__field" name="email" type="email" placeholder="Email" autocomplete="email" aria-label="Email">
-        <textarea class="amo-lead-form__field amo-lead-form__note" name="message" rows="3" placeholder="Примечание" aria-label="Примечание"></textarea>
-        <button class="amo-lead-form__submit" type="submit">Отправить</button>
+        <input class="amo-lead-form__field" name="email" type="email" placeholder="Email" required autocomplete="email" aria-label="Email">
+        <textarea class="amo-lead-form__field amo-lead-form__note" name="message" rows="3" placeholder="Примечание" required aria-label="Примечание"></textarea>
+        <button class="amo-lead-form__submit" type="submit" disabled aria-disabled="true">Отправить</button>
         <p class="form-status" aria-live="polite"></p>
         <p class="amo-lead-form__badge">Работает на amoCRM</p>
         <p class="amo-lead-form__legal">Нажимая «Отправить», вы соглашаетесь с обработкой персональных данных и политикой конфиденциальности.</p>
