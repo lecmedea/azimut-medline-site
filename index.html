@@ -559,20 +559,34 @@
     </div>
   </main>
 
+  <!-- Единая ФОС как на contacts.html → amoCRM через Vercel api/amo-lead -->
   <div class="appointment-modal" data-modal="appointment-modal" aria-hidden="true">
     <div class="appointment-modal-backdrop" data-modal-close></div>
     <section class="appointment-dialog" role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title">
       <button class="modal-close" type="button" data-modal-close aria-label="Закрыть окно записи">×</button>
       <div>
-        <p class="eyebrow">Первичная запись</p>
-        <h2 id="appointment-modal-title">Записаться на консультацию</h2>
-        <p>Оставьте контакты — администратор бережно уточнит ситуацию и подскажет, с какого формата помощи лучше начать.</p>
+        <p class="eyebrow">Запись</p>
+        <h2 id="appointment-modal-title">Не обязательно справляться одному</h2>
+        <p data-appointment-lead>Оставьте заявку — мы бережно уточним ситуацию и подскажем, с какого формата помощи лучше начать: консультация, выезд на дом, онлайн-встреча или очный приём.</p>
       </div>
-      <form class="contact-form" data-form="lead" data-form-name="main_modal">
-        <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required></label>
-        <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required></label>
-        <label>Формат помощи<select name="service_type"><option>в клинике</option><option>на дому</option><option>онлайн</option><option>по телефону</option></select></label>
-        <label>Направление<select name="direction"><option>психиатрия</option><option>психология</option><option>наркология</option><option>психологическое тестирование</option><option>другое</option></select></label>
+      <form class="contact-form" data-form="lead" data-form-name="main_modal" data-unified="1">
+        <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required autocomplete="name"></label>
+        <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel"></label>
+        <label>Формат помощи<select name="service_type" required>
+          <option value="">Выберите…</option>
+          <option value="в клинике">в клинике</option>
+          <option value="на дому">на дому</option>
+          <option value="онлайн">онлайн</option>
+          <option value="по телефону">по телефону</option>
+        </select></label>
+        <label>Направление<select name="direction" required>
+          <option value="">Выберите…</option>
+          <option value="психиатрия">психиатрия</option>
+          <option value="психология">психология</option>
+          <option value="наркология">наркология</option>
+          <option value="психологическое тестирование">психологическое тестирование</option>
+          <option value="другое">другое</option>
+        </select></label>
         <label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label>
         <label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
         <button class="button button-primary" type="submit">Получить консультацию специалиста</button>
@@ -640,33 +654,13 @@
   </footer>
 
   <script src="data/doctors.js?v=20260721-doctors-full" defer></script>
-  <script src="js/main.js?v=20260721-doctor-modal" defer></script>
-  <script src="js/forms.js?v=20260721-modal-lead" defer></script>
+  <script src="js/main.js?v=20260721-amo-flat" defer></script>
+  <script src="js/crm-bridge.js?v=20260721-amo-flat" defer></script>
+  <script src="js/forms.js?v=20260721-amo-flat" defer></script>
   <script src="js/cookie-consent.js?v=20260721-cookies" defer></script>
   <!-- Филипп: сразу на desktop; на mobile — после idle (джойстик приоритетнее) -->
   <link rel="stylesheet" href="css/chatbot.css?v=20260718-speed-fix">
   <script src="js/chat-config.js?v=20260713-philipp-icon" defer></script>
   <script src="js/chatbot.js?v=20260713-philipp-icon" defer></script>
-  <script>
-    (function () {
-      var loaded = {};
-      function loadScript(src) {
-        if (loaded[src]) return;
-        loaded[src] = true;
-        var s = document.createElement("script");
-        s.src = src;
-        s.defer = true;
-        document.body.appendChild(s);
-      }
-      function loadSecondary() {
-        loadScript("js/crm-bridge.js?v=20260721-amo-endpoint");
-      }
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(loadSecondary, { timeout: 4000 });
-      } else {
-        setTimeout(loadSecondary, 2500);
-      }
-    })();
-  </script>
 </body>
 </html>
