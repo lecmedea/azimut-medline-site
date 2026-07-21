@@ -647,6 +647,22 @@ button:focus-visible {
   background: var(--blue-dark);
 }
 
+/* Hero: один спокойный фон, без лишних слоёв и анимаций */
+.home-hero-shell {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(255, 249, 238, 0.94) 0%, rgba(255, 249, 238, 0.72) 46%, rgba(255, 249, 238, 0.22) 100%),
+    url("../assets/generated/blog-hero-bg-wide.jpg") center / cover;
+}
+
+.home-hero-shell > .hero,
+.home-hero-shell > .hero-banners-section {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
 .hero {
   position: relative;
   overflow: hidden;
@@ -656,92 +672,18 @@ button:focus-visible {
     url("../assets/generated/blog-hero-bg-wide.jpg") center / cover;
 }
 
-.home-wave-stage {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-.home-wave-stage::before {
-  content: "";
-  position: absolute;
-  inset: -20% -10%;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at 12% 50%, rgba(255, 255, 255, 0.50), transparent 24%),
-    repeating-radial-gradient(ellipse at 78% 36%, rgba(255, 255, 255, 0.34) 0 2px, rgba(185, 144, 89, 0.16) 3px 4px, transparent 7px 18px),
-    linear-gradient(108deg, transparent 12%, rgba(255, 255, 255, 0.26) 33%, rgba(185, 144, 89, 0.16) 46%, transparent 67%);
-  filter: blur(16px);
-  opacity: 0.50;
-  mix-blend-mode: screen;
-  transform: translate3d(-3%, -1%, 0) rotate(-1deg);
-  animation: homeWaveBands 21s ease-in-out infinite alternate;
-}
-
-.home-wave-bg {
-  position: absolute;
-  inset: -8%;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.96;
-  background:
-    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.66), transparent 25%),
-    radial-gradient(circle at 74% 28%, rgba(213, 185, 139, 0.38), transparent 31%),
-    radial-gradient(circle at 38% 82%, rgba(101, 158, 151, 0.18), transparent 26%),
-    url("../assets/generated/home-flow-bg-tall.webp") center / cover no-repeat;
-  filter: saturate(0.96) contrast(1.02);
-  transform: translate3d(0, 0, 0) scale(1.04);
-  animation: homeWaveDrift 18s ease-in-out infinite alternate;
-}
-
+/* Legacy wave/depth layers disabled (kept selectors harmless) */
+.home-wave-stage::before,
+.home-wave-bg,
 .home-wave-bg::before,
-.home-wave-bg::after {
-  content: "";
-  position: absolute;
-  inset: -18%;
-  pointer-events: none;
-  background:
-    linear-gradient(116deg, transparent 16%, rgba(255, 255, 255, 0.30) 31%, transparent 46%),
-    linear-gradient(103deg, transparent 50%, rgba(213, 185, 139, 0.18) 62%, transparent 76%);
-  mix-blend-mode: screen;
-  opacity: 0.72;
-  transform: translateX(-4%);
-  animation: homeWaveSweep 15s ease-in-out infinite alternate;
-}
-
-.home-wave-bg::after {
-  opacity: 0.42;
-  filter: blur(10px);
-  animation-duration: 22s;
-  animation-direction: alternate-reverse;
-}
-
-.home-wave-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(255, 249, 238, 0.72) 0%, rgba(255, 249, 238, 0.50) 36%, rgba(255, 249, 238, 0.14) 72%, rgba(255, 249, 238, 0.06) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 249, 238, 0.04) 46%, rgba(251, 247, 238, 0.66) 100%);
-}
-
-.home-wave-stage > .hero,
-.home-wave-stage > .hero-banners-section {
-  position: relative;
-  z-index: 2;
-  background: transparent;
-}
-
-.home-depth-bg--wave::before {
-  opacity: 0;
-  visibility: hidden;
-}
-
+.home-wave-bg::after,
+.home-wave-overlay,
+.home-depth-bg--wave::before,
 .home-depth-bg--wave::after {
-  background:
-    linear-gradient(180deg, transparent 0 62%, rgba(251, 247, 238, 0.88) 100%);
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  animation: none !important;
 }
 
 .home-depth-bg {
@@ -853,16 +795,10 @@ button:focus-visible {
   }
 }
 
+/* Убран анимированный блик hero::after — лишний GPU-слой */
 .hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(112deg, transparent 0 34%, rgba(255, 255, 255, 0.42) 44%, rgba(185, 144, 89, 0.10) 49%, transparent 62% 100%);
-  transform: translateX(-74%);
-  animation: heroLightSweep 13s ease-in-out infinite;
+  content: none;
+  display: none;
 }
 
 .hero-grid,
