@@ -287,14 +287,14 @@
             // Without heading yet: point "up" toward bearing as if device faces north
             const bearing = bearingToClinic(userLat, userLon);
             setNeedleAngle(bearing - 90, "routing");
-            setHint("Ищем направление… поверните телефон");
+            setHint("Ваш путь в Азимут. Ваш путь к себе.");
           } else {
-            setHint("Стрелка указывает на клинику · Старокалужское ш., 62");
+            setHint("Ваш путь в Азимут. Ваш путь к себе.");
           }
           scheduleOrientationUpdate();
         },
         () => {
-          setHint("Разрешите геолокацию, чтобы компас указывал на клинику");
+          setHint("Ваш путь в Азимут. Ваш путь к себе.");
         },
         { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
       );
@@ -306,19 +306,19 @@
         if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
           const state = await DeviceOrientationEvent.requestPermission();
           if (state !== "granted") {
-            setHint("Нужен доступ к датчику ориентации (компас)");
+            setHint("Ваш путь в Азимут. Ваш путь к себе.");
             return;
           }
         }
       } catch {
-        setHint("Не удалось получить доступ к компасу устройства");
+        setHint("Ваш путь в Азимут. Ваш путь к себе.");
         return;
       }
       window.addEventListener("deviceorientationabsolute", onDeviceOrientation, true);
       window.addEventListener("deviceorientation", onDeviceOrientation, true);
       orientationActive = true;
       startGeo();
-      setHint("Компас активен · к Азимут Клиник");
+      setHint("Ваш путь в Азимут. Ваш путь к себе.");
     };
 
     const updatePointerNeedle = (event) => {
@@ -337,12 +337,8 @@
       startOrientation();
       // Fallback deep link if sensors unavailable after short wait
       window.setTimeout(() => {
-        if (deviceHeading == null && userLat == null) {
-          setHint(
-            'Коснитесь ещё раз или <a href="https://yandex.ru/maps/?rtext=~55.660607,37.538170" target="_blank" rel="noopener">откройте маршрут</a>'
-          );
-        }
-      }, 2500);
+        setHint("Ваш путь в Азимут. Ваш путь к себе.");
+      }, 400);
     };
 
     const resetNeedle = () => {
@@ -409,13 +405,18 @@
   }
 
   function initSiteJoystick() {
-    // Джойстик на всех страницах сайта, кроме главной
+    // Джойстик: все страницы кроме главной; dock-режим только на mobile (как в блоге)
     const raw = (location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
     const pageName = raw.split("?")[0].split("#")[0] || "index.html";
     const isHome = pageName === "index.html" || pageName === "index" || pageName === "";
     if (isHome) return;
 
-    document.body.classList.add("blog-utility-mode");
+    const mobileQuery = matchMedia("(max-width: 860px)");
+    const applyDockMode = () => {
+      document.body.classList.toggle("blog-utility-mode", mobileQuery.matches);
+    };
+    applyDockMode();
+    mobileQuery.addEventListener("change", applyDockMode);
 
     const joystick = document.createElement("div");
     joystick.className = "azimut-joystick";
@@ -428,6 +429,15 @@
       <div class="azimut-joystick-actions" aria-label="Быстрые действия">
         <button class="azimut-joystick-action" type="button" data-joystick-action="audio" aria-label="Открыть аудиоплеер"><span aria-hidden="true">♪</span></button>
         <button class="azimut-joystick-action" type="button" data-joystick-action="top" aria-label="Наверх страницы"><span aria-hidden="true">↑</span></button>
+        <button class="azimut-joystick-action azimut-joystick-action--tests" type="button" data-joystick-action="tests" aria-label="Открыть тесты" title="Тесты">
+          <span class="azimut-joystick-tests-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="3" width="16" height="18" rx="2.5" stroke="#9A4C39" stroke-width="1.8"/>
+              <path d="M8 8h8M8 12h8M8 16h5" stroke="#AE8B66" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="16.5" cy="16" r="1.6" fill="#9A4C39"/>
+            </svg>
+          </span>
+        </button>
         <button class="azimut-joystick-action azimut-joystick-action--philipp" type="button" data-joystick-action="chat" aria-label="Открыть Филиппа Филипповича">
           <img src="assets/icons/philipp-filippovich-avatar.jpg" width="34" height="34" alt="" decoding="async">
         </button>
@@ -455,6 +465,11 @@
 
       if (action.dataset.joystickAction === "chat") {
         $(".ai-chatbot-toggle")?.click();
+        setOpen(false);
+      }
+
+      if (action.dataset.joystickAction === "tests") {
+        window.location.href = "tests.html";
         setOpen(false);
       }
 
@@ -932,12 +947,19 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    const raw = (location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
+    const pageName = raw.split("?")[0].split("#")[0] || "index.html";
+    if (pageName === "index.html" || pageName === "index" || pageName === "") {
+      document.body.classList.add("is-home");
+    }
+
     setActiveNav();
     initMenu();
     initDropdowns();
     initCompass();
     initScrollTop();
     initSiteJoystick();
+    // Parallax depth layers removed from hero — skip heavy scroll work on home shell
     initHomeDepthParallax();
     initModals();
     initAccordions();
