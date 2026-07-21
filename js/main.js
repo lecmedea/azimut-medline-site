@@ -553,8 +553,53 @@
     });
   }
 
+  /** Same field set as contacts.html#appointment — единая ФОС → amoCRM */
+  function getLeadFormMarkup(formName) {
+    return `
+      <form class="contact-form" data-form="lead" data-form-name="${formName || "site_modal"}">
+        <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required autocomplete="name"></label>
+        <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel"></label>
+        <label>Формат помощи<select name="service_type" required>
+          <option value="">Выберите…</option>
+          <option value="в клинике">в клинике</option>
+          <option value="на дому">на дому</option>
+          <option value="онлайн">онлайн</option>
+          <option value="по телефону">по телефону</option>
+        </select></label>
+        <label>Направление<select name="direction" required>
+          <option value="">Выберите…</option>
+          <option value="психиатрия">психиатрия</option>
+          <option value="психология">психология</option>
+          <option value="наркология">наркология</option>
+          <option value="психологическое тестирование">психологическое тестирование</option>
+          <option value="другое">другое</option>
+        </select></label>
+        <label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label>
+        <label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
+        <button class="button button-primary" type="submit">Получить консультацию специалиста</button>
+        <p class="form-status" aria-live="polite"></p>
+      </form>
+    `;
+  }
+
   function ensureAppointmentModal() {
-    if ($('[data-modal="appointment-modal"]')) return $('[data-modal="appointment-modal"]');
+    let modal = $('[data-modal="appointment-modal"]');
+    if (modal) {
+      // Upgrade old modal forms to the unified contacts form if structure is outdated
+      const form = modal.querySelector("form[data-form='lead']");
+      if (form && !form.querySelector('select[name="service_type"] option[value=""]')) {
+        // still ok
+      }
+      if (form && !form.dataset.unified) {
+        form.outerHTML = getLeadFormMarkup(form.dataset.formName || "site_modal");
+        const next = modal.querySelector("form[data-form='lead']");
+        if (next) {
+          next.dataset.unified = "1";
+          if (window.AzimutForms?.bindForm) window.AzimutForms.bindForm(next);
+        }
+      }
+      return modal;
+    }
 
     const wrap = document.createElement("div");
     wrap.innerHTML = `
@@ -563,42 +608,19 @@
         <section class="appointment-dialog" role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title">
           <button class="modal-close" type="button" data-modal-close aria-label="Закрыть окно записи">×</button>
           <div>
-            <p class="eyebrow">Первичная запись</p>
-            <h2 id="appointment-modal-title">Записаться на консультацию</h2>
-            <p data-appointment-lead>Оставьте контакты — администратор бережно уточнит ситуацию и подскажет, с какого формата помощи лучше начать. Заявка поступит в amoCRM.</p>
+            <p class="eyebrow">Запись</p>
+            <h2 id="appointment-modal-title">Не обязательно справляться одному</h2>
+            <p data-appointment-lead>Оставьте заявку — мы бережно уточним ситуацию и подскажем, с какого формата помощи лучше начать: консультация, выезд на дом, онлайн-встреча или очный приём.</p>
           </div>
-          <form class="contact-form" data-form="lead" data-form-name="site_modal">
-            <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required autocomplete="name"></label>
-            <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required autocomplete="tel"></label>
-            <label>Формат помощи<select name="service_type" required>
-              <option value="">Выберите…</option>
-              <option value="в клинике">в клинике</option>
-              <option value="на дому">на дому</option>
-              <option value="онлайн">онлайн</option>
-              <option value="по телефону">по телефону</option>
-            </select></label>
-            <label>Направление<select name="direction" required>
-              <option value="">Выберите…</option>
-              <option value="психиатрия">психиатрия</option>
-              <option value="психология">психология</option>
-              <option value="наркология">наркология</option>
-              <option value="психологическое тестирование">психологическое тестирование</option>
-              <option value="другое">другое</option>
-            </select></label>
-            <label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label>
-            <label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
-            <button class="button button-primary" type="submit">Отправить заявку</button>
-            <p class="form-status" aria-live="polite"></p>
-          </form>
+          ${getLeadFormMarkup("site_modal")}
         </section>
       </div>
     `.trim();
-    const modal = wrap.firstElementChild;
+    modal = wrap.firstElementChild;
+    const form = modal.querySelector("form[data-form]");
+    if (form) form.dataset.unified = "1";
     document.body.appendChild(modal);
-    if (window.AzimutForms?.bindForm) {
-      const form = modal.querySelector("form[data-form]");
-      if (form) window.AzimutForms.bindForm(form);
-    }
+    if (window.AzimutForms?.bindForm && form) window.AzimutForms.bindForm(form);
     return modal;
   }
 
