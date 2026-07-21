@@ -553,31 +553,22 @@
     });
   }
 
-  /** Единая форма как на contacts.html#appointment */
-  function getLeadFormMarkup(formName) {
+  /**
+   * Форма как на «Контактах» / виджет amoCRM:
+   * ФИО, телефон, email, примечание, красная «Отправить».
+   * Ставится только в модалку (где ещё длинная кастомная форма).
+   */
+  function getAmoStyleLeadFormMarkup(formName) {
     return `
-      <form class="contact-form" data-form="lead" data-form-name="${formName || "site_modal"}" data-unified="1">
-        <label>Имя<input name="name" type="text" placeholder="Как к вам обращаться" required autocomplete="name"></label>
-        <label>Телефон<input name="phone" type="tel" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel"></label>
-        <label>Формат помощи<select name="service_type" required>
-          <option value="">Выберите…</option>
-          <option value="в клинике">в клинике</option>
-          <option value="на дому">на дому</option>
-          <option value="онлайн">онлайн</option>
-          <option value="по телефону">по телефону</option>
-        </select></label>
-        <label>Направление<select name="direction" required>
-          <option value="">Выберите…</option>
-          <option value="психиатрия">психиатрия</option>
-          <option value="психология">психология</option>
-          <option value="наркология">наркология</option>
-          <option value="психологическое тестирование">психологическое тестирование</option>
-          <option value="другое">другое</option>
-        </select></label>
-        <label>Комментарий<textarea name="message" rows="4" placeholder="Кратко опишите ситуацию"></textarea></label>
-        <label class="checkbox"><input name="privacy" type="checkbox" required> Согласен на обработку персональных данных</label>
-        <button class="button button-primary" type="submit">Получить консультацию специалиста</button>
+      <form class="contact-form amo-lead-form" data-form="lead" data-form-name="${formName || "site_modal"}" data-amo-style="1">
+        <input class="amo-lead-form__field" name="name" type="text" placeholder="ФИО" required autocomplete="name" aria-label="ФИО">
+        <input class="amo-lead-form__field" name="phone" type="tel" placeholder="+7 Телефон" required autocomplete="tel" inputmode="tel" aria-label="Телефон">
+        <input class="amo-lead-form__field" name="email" type="email" placeholder="Email" autocomplete="email" aria-label="Email">
+        <textarea class="amo-lead-form__field amo-lead-form__note" name="message" rows="3" placeholder="Примечание" aria-label="Примечание"></textarea>
+        <button class="amo-lead-form__submit" type="submit">Отправить</button>
         <p class="form-status" aria-live="polite"></p>
+        <p class="amo-lead-form__badge">Работает на amoCRM</p>
+        <p class="amo-lead-form__legal">Нажимая «Отправить», вы соглашаетесь с обработкой персональных данных и политикой конфиденциальности.</p>
       </form>
     `;
   }
@@ -589,19 +580,31 @@
       wrap.innerHTML = `
         <div class="appointment-modal" data-modal="appointment-modal" aria-hidden="true">
           <div class="appointment-modal-backdrop" data-modal-close></div>
-          <section class="appointment-dialog" role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title">
+          <section class="appointment-dialog appointment-dialog--amo" role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title">
             <button class="modal-close" type="button" data-modal-close aria-label="Закрыть окно записи">×</button>
-            <div>
+            <div class="appointment-dialog__head">
               <p class="eyebrow">Запись</p>
-              <h2 id="appointment-modal-title">Не обязательно справляться одному</h2>
-              <p data-appointment-lead>Оставьте заявку — мы бережно уточним ситуацию и подскажем, с какого формата помощи лучше начать: консультация, выезд на дом, онлайн-встреча или очный приём.</p>
+              <h2 id="appointment-modal-title">Оставить заявку</h2>
+              <p data-appointment-lead>Заявка уходит в amoCRM. Администратор свяжется с вами.</p>
             </div>
-            ${getLeadFormMarkup("site_modal")}
+            ${getAmoStyleLeadFormMarkup("site_modal")}
           </section>
         </div>
       `.trim();
       modal = wrap.firstElementChild;
       document.body.appendChild(modal);
+    } else {
+      // Upgrade old long modal form → amo-style (only if not already)
+      const form = modal.querySelector("form[data-form='lead']");
+      if (form && form.dataset.amoStyle !== "1") {
+        form.outerHTML = getAmoStyleLeadFormMarkup(form.dataset.formName || "site_modal");
+      }
+      const dialog = modal.querySelector(".appointment-dialog");
+      if (dialog) dialog.classList.add("appointment-dialog--amo");
+      const title = modal.querySelector("#appointment-modal-title");
+      if (title && /консультац/i.test(title.textContent || "")) {
+        title.textContent = "Оставить заявку";
+      }
     }
     const form = modal.querySelector("form[data-form='lead']");
     if (form && window.AzimutForms?.bindForm) window.AzimutForms.bindForm(form);
